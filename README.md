@@ -18,7 +18,7 @@
 
 | Student Name | Student Email | GitHub Username | Student's role |
 | :----------: | :-----------: | :-------------: | :------------: |
-|   Luis Acuna Mendez   | jdoe@sfsu.edu |      jdoe       |  Team Leader, Back End Helper   |
+|   Luis Acuna Mendez   | jdoe@sfsu.edu |      lacuna3       |  Team Leader, Back End Helper   |
 |   Dorrie Shen  | dshen2@sfsu.edu |      Dorrie1041       |  GitHub Master   |
 |   Gwangwoo Lee   | jdoe@sfsu.edu |      Pangwoo       |  Back End Master   |
 |   Vedang Sakxena   | jdoe@sfsu.edu |    vedangsakxena         |  Scrum Master   |
