@@ -23,7 +23,7 @@
 |   Gwangwoo Lee   | glee16@sfsu.edu |      Pangwoo       |  Back End Master   |
 |   Vedang Sakxena   | jdoe@sfsu.edu |    vedangsakxena         |  Scrum Master   |
 |   Jooho Chang   | jdoe@sfsu.edu |      jooho2055       |  Front End Master   |
-|   Leslie Mora Ponce   | jdoe@sfsu.edu |     Leslie-MP        |  Front End Helper   |
+|   Leslie Mora Ponce   | lmoraponce@sfsu.edu |     Leslie-MP        |  Front End Helper   |
 
 **NO code should be stored in the root of your repository. You may rename the
 `application/` folder to your team's application name if you'd like, but all the
