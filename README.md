@@ -19,15 +19,10 @@
 | Student Name | Student Email | GitHub Username | Student's role |
 | :----------: | :-----------: | :-------------: | :------------: |
 |   Luis Acuna Mendez   | jdoe@sfsu.edu |      jdoe       |  Team Leader, Back End Helper   |
-| :----------: | :-----------: | :-------------: | :------------: |
 |   Dorrie Shen  | dshen2@sfsu.edu |      Dorrie1041       |  GitHub Master   |
-| :----------: | :-----------: | :-------------: | :------------: |
 |   Gwangwoo Lee   | jdoe@sfsu.edu |      Pangwoo       |  Back End Master   |
-| :----------: | :-----------: | :-------------: | :------------: |
 |   Vedang Sakxena   | jdoe@sfsu.edu |    vedangsakxena         |  Scrum Master   |
-| :----------: | :-----------: | :-------------: | :------------: |
 |   Jooho Chang   | jdoe@sfsu.edu |      jooho2055       |  Front End Master   |
-| :----------: | :-----------: | :-------------: | :------------: |
 |   Leslie Mora Ponce   | jdoe@sfsu.edu |     Leslie-MP        |  Front End Helper   |
 
 **NO code should be stored in the root of your repository. You may rename the
