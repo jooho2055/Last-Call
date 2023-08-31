@@ -21,8 +21,8 @@
 |   Luis Acuna Mendez   | lacuna3@sfsu.edu |      luisAcme       |  Team Leader, Back End Helper   |
 |   Dorrie Shen  | dshen2@sfsu.edu |      Dorrie1041       |  GitHub Master   |
 |   Gwangwoo Lee   | glee16@sfsu.edu |      Pangwoo       |  Back End Master   |
-|   Vedang Sakxena   | jdoe@sfsu.edu |    vedangsakxena         |  Scrum Master   |
-|   Jooho Chang   | jdoe@sfsu.edu |      jooho2055       |  Front End Master   |
+|   Vedang Sakxena   | vsakxena@sfsu.edu |    vedangsakxena         |  Scrum Master   |
+|   Jooho Chang   | jchang17@sfsu.edu |      jooho2055       |  Front End Master   |
 |   Leslie Mora Ponce   | lmoraponce@sfsu.edu |     Leslie-MP        |  Front End Helper   |
 
 **NO code should be stored in the root of your repository. You may rename the
