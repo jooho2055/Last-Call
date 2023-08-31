@@ -20,7 +20,7 @@
 | :----------: | :-----------: | :-------------: | :------------: |
 |   Luis Acuna Mendez   | lacuna3@sfsu.edu |      luisAcme       |  Team Leader, Back End Helper   |
 |   Dorrie Shen  | dshen2@sfsu.edu |      Dorrie1041       |  GitHub Master   |
-|   Gwangwoo Lee   | jdoe@sfsu.edu |      Pangwoo       |  Back End Master   |
+|   Gwangwoo Lee   | glee16@sfsu.edu |      Pangwoo       |  Back End Master   |
 |   Vedang Sakxena   | jdoe@sfsu.edu |    vedangsakxena         |  Scrum Master   |
 |   Jooho Chang   | jdoe@sfsu.edu |      jooho2055       |  Front End Master   |
 |   Leslie Mora Ponce   | jdoe@sfsu.edu |     Leslie-MP        |  Front End Helper   |
