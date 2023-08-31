@@ -1,4 +1,4 @@
-# CSC648-fall23-01-team07 Repository
+# csc648-01-Fall23-team07 Repository
 
 **Application URL: <https://example.com>**
 
