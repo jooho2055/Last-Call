@@ -2,7 +2,7 @@
 
 **Application URL: <https://example.com>**
 
-## Before completing Milestone 0
+## Before completing Milestone 0 
 
 1. Change the name of the repository to csc648-spring23-SectionName-teamNN.
    - SectionName should be one of 01, 02, 03 or 04.
