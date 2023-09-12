@@ -1,0 +1,143 @@
+@import "reset.css";
+
+* {
+	box-sizing: border-box;
+}
+
+html {
+	scroll-behavior: smooth;
+}
+
+ul {
+	margin: 0;
+}
+
+ul {
+	list-style: none;
+	padding: 0;
+}
+
+#root {
+	width: 100vw;
+	height: 100vh;
+}
+
+/* Header */
+.header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.header__menu {
+	display: flex;
+	gap: 4px;
+}
+.header__menu__item a {
+	text-decoration: none;
+	color: inherit;
+}
+
+.aboutUs {
+	display: flex;
+	flex-direction: column;
+}
+
+.name-button {
+	text-align: center;
+	width: 13rem;
+	height: 2rem;
+	padding: 4px 10px;
+	margin-top: 1rem;
+	background-color: #506b88;
+	color: #ffffff;
+	border: none;
+	border-radius: 10px;
+	text-decoration: none;
+	transition: background-color 0.3s;
+}
+
+.name-button:hover {
+	background-color: #193758;
+}
+
+/* About me section */
+
+
+/* Jooho */
+.aboutme__container {
+	width: 100vw;
+	height: 100vh;
+	font-family: 'Open Sans', sans-serif;
+	color: white;
+	text-align: center;
+	background: rgb(188, 194, 198);
+	background: linear-gradient(
+		121deg,
+		rgba(188, 194, 198, 1) 0%,
+		rgba(123, 134, 142, 1) 25%,
+		rgba(83, 92, 101, 1) 50%,
+		rgba(62, 75, 87, 1) 75%,
+		rgba(29, 47, 65, 1) 100%
+	);
+}
+
+.aboutme__jooho {
+	margin-top: 0;
+	padding-top: 1.5rem;
+}
+
+.aboutme__major,
+.aboutme__role {
+	margin: 0;
+}
+
+.aboutme__middle {
+	margin: 3rem 8rem;
+	display: flex;
+	justify-content: center;
+}
+
+.aboutme__skills {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.aboutme__skill {
+	border: 2px solid white;
+	border-radius: 10px;
+	padding: 3px 4px;
+}
+
+.aboutme__main {
+	margin: 2rem 7rem;
+
+  
+ /* Dorrie */
+.Dorrie_title{
+	text-align: center;
+}
+.D_Left_part{
+	position: absolute;
+	left: 0px;
+	width: 50%;
+}
+.D_Right_part{
+	position: absolute;
+	right: 0px;
+	width: 50%;
+}
+.Dorrie_img{
+	width: 100%;
+	height: 100%;
+}
+.Dorrie_article{
+	position: relative;
+	padding: 20px;
+	top: 220px;
+	text-align: center;
+	transform: translateY(-50%)
+
+
+}

@@ -1,0 +1,15 @@
+/*Title*/
+h1 {
+    padding-top: 60px;
+    font-size: 40px;
+    text-align: center;
+    font-family: Snell Roundhand;
+    color: #000000;
+  }
+  /* Cat Pic */
+  img {
+      display: block; 
+      margin: 0 auto; 
+      width: 40px;
+  }
+  
