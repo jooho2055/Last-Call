@@ -42,7 +42,7 @@ ul {
 
 .name-button {
 	text-align: center;
-	width: 10rem;
+	width: 13rem;
 	height: 2rem;
 	padding: 4px 10px;
 	margin-top: 1rem;
@@ -59,3 +59,51 @@ ul {
 }
 
 /* About me section */
+
+/* Jooho */
+.aboutme__container {
+	width: 100vw;
+	height: 100vh;
+	font-family: 'Open Sans', sans-serif;
+	color: white;
+	text-align: center;
+	background: rgb(86, 122, 164);
+	background: linear-gradient(
+		184deg,
+		rgba(86, 122, 164, 0.8406862745098039) 0%,
+		rgba(55, 86, 122, 1) 48%,
+		rgba(29, 47, 70, 1) 100%
+	);
+}
+
+.aboutme__jooho {
+	margin-top: 0;
+	padding-top: 1.5rem;
+}
+
+.aboutme__major,
+.aboutme__role {
+	margin: 0;
+}
+
+.aboutme__middle {
+	margin: 3rem 8rem;
+	display: flex;
+	justify-content: center;
+}
+
+.aboutme__skills {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.aboutme__skill {
+	border: 2px solid white;
+	border-radius: 10px;
+	padding: 3px 4px;
+}
+
+.aboutme__main {
+	margin: 2rem 7rem;
+}
