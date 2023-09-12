@@ -11,10 +11,7 @@ import AboutMeVedang from './pages/TeamMembers/AboutMeVedang';
 import AboutMeLeslie from './pages/TeamMembers/AboutMeLeslie';
 import AboutMeLuis from './pages/TeamMembers/AboutMeLuis';
 
-const names = ["Dorrie", "Gwangwoo", "Vedang", "Leslie", "Luis"];
-const nameDic = {"Dorrie": AboutMeDorrie,
-"Gwangwoo": AboutMeGwangwoo, "Vedang": AboutMeVedang, "Leslie": AboutMeLeslie, 
-				"Luis":AboutMeLuis}
+
 const router = createBrowserRouter([
 	{
 		path: '/',
