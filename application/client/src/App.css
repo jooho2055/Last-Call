@@ -1,3 +1,5 @@
+@import "reset.css";
+
 * {
 	box-sizing: border-box;
 }
@@ -59,3 +61,28 @@ ul {
 }
 
 /* About me section */
+.Dorrie_title{
+	text-align: center;
+}
+.D_Left_part{
+	position: absolute;
+	left: 0px;
+	width: 50%;
+}
+.D_Right_part{
+	position: absolute;
+	right: 0px;
+	width: 50%;
+}
+.Dorrie_img{
+	width: 100%;
+	height: 100%;
+}
+.Dorrie_article{
+	position: relative;
+	padding: 20px;
+	top: 220px;
+	text-align: center;
+	transform: translateY(-50%)
+
+}
