@@ -4,7 +4,6 @@ import profile from '../../images/profiles/Jooho_Profile.ico';
 
 export default function AboutMeJooho() {
 	return (
-
 		<div className='aboutme__container'>
 			<h1 className='aboutme__jooho'>Hello, my name is Jooho</h1>
 			<p className='aboutme__major'>Major: Computer Science, Senior </p>
@@ -19,9 +18,8 @@ export default function AboutMeJooho() {
 
 			<p className='aboutme__main'>
 				I am really excited to take Software Engineering class with outstanding team members. It is
-				an honor to be able to participate in the project as a front end.
+				an honor to be able to participate in the project as a front end. ha
 			</p>
-
 		</div>
 	);
 }
