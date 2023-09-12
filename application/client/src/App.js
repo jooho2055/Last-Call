@@ -11,6 +11,7 @@ import AboutMeVedang from './pages/TeamMembers/AboutMeVedang';
 import AboutMeLeslie from './pages/TeamMembers/AboutMeLeslie';
 import AboutMeLuis from './pages/TeamMembers/AboutMeLuis';
 
+
 const router = createBrowserRouter([
 	{
 		path: '/',
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
 		children: [
 			{ index: true, element: <Home /> },
 			{ path: '/AboutUs', element: <AboutUs /> },
+			// name.forEach((name) => {
+				
+			// 	{ path: `/AboutUs/${name}`, element: <nameDic /> }
+			// })
 			{ path: '/AboutUs/Dorrie Shen', element: <AboutMeDorrie /> },
 			{ path: '/AboutUs/Gwangwoo Lee', element: <AboutMeGwangwoo /> },
 			{ path: '/AboutUs/Vedang Sakxena', element: <AboutMeVedang /> },

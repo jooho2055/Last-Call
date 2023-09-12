@@ -1,6 +1,6 @@
 import React from 'react';
 import NameButton from '../components/NameButton';
-
+const names = ["Dorrie", "Gwangwoo", "Vedang", "Leslie", "Luis"];
 export default function AboutUs() {
 	return (
 		<div className='aboutUs'>
