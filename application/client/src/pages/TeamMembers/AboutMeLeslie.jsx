@@ -3,6 +3,7 @@ import './AboutMeLeslie.css';
 import backgroundImage from '../../images/profiles/About_background.jpeg'; 
 
 export default function AboutMeLeslie() {
+
   const divStyle = {
     backgroundImage: `url(${backgroundImage})`,
     backgroundSize: 'cover',
