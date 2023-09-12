@@ -33,6 +33,7 @@ ul {
 }
 .header__menu__item a {
 	text-decoration: none;
+	color: inherit;
 }
 
 .aboutUs {
