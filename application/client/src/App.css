@@ -65,16 +65,16 @@ ul {
 	width: 100vw;
 	height: 100vh;
 	font-family: 'Open Sans', sans-serif;
-	color: black;
+	color: white;
 	text-align: center;
-	background: rgb(198, 164, 119);
+	background: rgb(188, 194, 198);
 	background: linear-gradient(
 		121deg,
-		rgba(198, 164, 119, 1) 0%,
-		rgba(236, 213, 159, 1) 25%,
-		rgba(211, 231, 238, 1) 50%,
-		rgba(171, 209, 220, 1) 75%,
-		rgba(112, 151, 171, 1) 100%
+		rgba(188, 194, 198, 1) 0%,
+		rgba(123, 134, 142, 1) 25%,
+		rgba(83, 92, 101, 1) 50%,
+		rgba(62, 75, 87, 1) 75%,
+		rgba(29, 47, 65, 1) 100%
 	);
 }
 
@@ -101,7 +101,7 @@ ul {
 }
 
 .aboutme__skill {
-	border: 2px solid rgb(13, 7, 39);
+	border: 2px solid white;
 	border-radius: 10px;
 	padding: 3px 4px;
 }
