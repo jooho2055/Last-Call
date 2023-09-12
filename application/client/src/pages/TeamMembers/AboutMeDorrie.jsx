@@ -3,6 +3,8 @@ import '../../App.css';
 import profile from '../../images/profiles/Dorrie_profile.jpg';
 
 export default function AboutMeDorrie() {
+
+
 	return <div>
 		   <h1 className='Dorrie_title'>About Dorrie</h1>
 		   <div className='D_Left_part'>
@@ -19,4 +21,5 @@ export default function AboutMeDorrie() {
 			</div>
 
 	</div>;
+
 }
