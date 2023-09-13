@@ -1,8 +1,10 @@
 import React from 'react';
 import NameButton from '../components/NameButton';
-const names = ["Dorrie", "Gwangwoo", "Vedang", "Leslie", "Luis"];
+import Familar from '../components/Familar';
+//const names = ["Dorrie", "Gwangwoo", "Vedang", "Leslie", "Luis"];
 export default function AboutUs() {
 	return (
+		<div>
 		<div className='aboutUs'>
 			<p>This is our About Us section</p>
 			<NameButton name='Dorrie Shen' />
@@ -36,6 +38,10 @@ export default function AboutUs() {
 </table>
 
 		
+		</div>
+        
+		<Familar />
+
 		</div>
 	);
 }
