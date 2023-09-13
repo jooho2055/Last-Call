@@ -170,15 +170,15 @@ ul {
 /*Familar_part*/
 .unfamilar_title{
 	position: absolute;
-	padding: 20px;
+	padding: 10px;
 	text-align: center;
 	left: 17%;
 }
 .unfamilar_table{
 	position: absolute;
 	top: 50px;
-	width: 90%;
-	left: 10%;
+	width: 100%;
+	left: 5%;
 }
 .unfamilar_table th{
 	padding-bottom: 12px;

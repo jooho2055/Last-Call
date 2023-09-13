@@ -3,7 +3,8 @@ import "../App.css";
 export default function Familar(){
 return(
     <div className="familar_container">
-        <h2 className='unfamilar_title'> Unfamilar Software Technology</h2>
+        <h3 className='unfamilar_title'> Unfamilar Software Technology</h3>
+       <br />
        <br />
         <table className="unfamilar_table">
             <tr>
