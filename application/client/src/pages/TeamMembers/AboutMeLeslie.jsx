@@ -14,9 +14,9 @@ export default function AboutMeLeslie() {
   };
   return (
     <div className="background" style={divStyle}>
-      <h1> &#127800; Welcome to my Page &#127800; </h1>
-      <img
-        className="Leslie_profile"
+      <h1 classname='leslie__h1'> &#127800; Welcome to my Page &#127800; </h1>
+      <img 
+        className="leslie__img"
         src={require('../../images/profiles/Leslie_perfil.png')}
         alt="Leslie's Profile"
      />
