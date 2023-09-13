@@ -60,29 +60,6 @@ ul {
 	background-color: #193758;
 }
 
-.table-container {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-	
-}
-.meetingSchedule {
-	margin-top: 35px; 
-	margin-left: 35px; 
-    border-collapse: collapse;
-    width: 100px;
-    border: 3px solid #881fa2; /* Add borders to the table */
-	border-radius: 10px;
-}
-.meetingSchedule th,.meetingSchedule td {
-    border: 2px solid #881fa2; /* Add borders to table cells */
-	padding: 8px;
-    text-align: center;
-	border-radius: 10px;
-	background-color:floralwhite
-}
-
-
 /* Name button  */
 
 /* Navar */
@@ -217,4 +194,31 @@ ul {
 	color: white;
 	background-color: #506b88;
 
+}
+
+/*Schedule*/
+
+.table-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+	
+}
+.meetingSchedule {
+	margin-top: 50px; 
+	margin-left: 30%; 
+    border-collapse: collapse;
+    width: 100px;
+    border: 3px solid #881fa2; /* Add borders to the table */
+	border-radius: 10px;
+	font-family: 'Monaco';
+	
+}
+.meetingSchedule th,.meetingSchedule td {
+    border: 2px solid #881fa2; /* Add borders to table cells */
+	padding: 8px;
+    text-align: center;
+	border-radius: 10px;
+	background-color:floralwhite
+	
 }
