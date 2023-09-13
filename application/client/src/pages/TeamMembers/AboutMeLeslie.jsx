@@ -24,4 +24,5 @@ export default function AboutMeLeslie() {
 			</div>
 		</div>
 	);
+
 }
