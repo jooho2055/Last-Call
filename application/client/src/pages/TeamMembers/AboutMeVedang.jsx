@@ -18,6 +18,7 @@ export default function AboutMeVedang() {
 				alt="vedang's profile"
 			/>
 		</div>
+
 	);
 }
 

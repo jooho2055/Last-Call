@@ -17,7 +17,7 @@ app.get("/AboutUs", (req,res) => {
   res.sendFile(path.join(__dirname, "../client/build/index.html"))
 })
 
-app.get("/AboutUs", (req,res) => {
+app.get("/AboutUs/:name", (req,res) => {
   res.sendFile(path.join(__dirname, "../client/build/index.html"))
 })
 
