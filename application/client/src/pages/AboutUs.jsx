@@ -1,7 +1,8 @@
 import React from 'react';
 import NameButton from '../components/NameButton';
 import Familar from '../components/Familar';
-//const names = ["Dorrie", "Gwangwoo", "Vedang", "Leslie", "Luis"];
+
+
 export default function AboutUs() {
 	return (
 		<div>
