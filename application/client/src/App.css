@@ -78,6 +78,28 @@ ul {
 		rgba(29, 47, 65, 1) 100%
 	);
 }
+.aboutme__avatar{
+	padding-left: 30px;
+	width:250px;
+	height: auto;
+}
+
+.aboutme__container2 {
+	width: 100vw;
+	height: 100vh;
+	font-family: 'Open Sans', sans-serif;
+	color: white;
+	text-align: center;
+	background: rgb(188, 194, 198);
+	background: linear-gradient(
+		121deg,
+		rgba(188, 194, 198, 1) 0%,
+		rgb(123, 142, 123) 25%,
+		rgb(84, 101, 83) 50%,
+		rgb(62, 87, 67) 75%,
+		rgb(33, 65, 29) 100%
+	);
+}
 
 .aboutme__jooho {
 	margin-top: 0;
