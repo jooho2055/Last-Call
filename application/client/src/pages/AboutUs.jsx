@@ -14,7 +14,7 @@ export default function AboutUs() {
 			<NameButton name='Jooho Chang' />
 			<NameButton name='Luis Acuna Mendez' />
 		</div>
-
+        
 		<Familar />
 
 		</div>

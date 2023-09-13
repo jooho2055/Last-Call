@@ -1,16 +1,41 @@
+import "../App.css";
 
 export default function Familar(){
 return(
-    <div className="familar_title">
-        <h2 className='unfamilar_title'> Unfamilar Software</h2>
-        <ul>
-            <li>AWS</li>
-            <li>JavaScript</li>
-            <li>React</li>
-            <li>MYSQL</li>
-            <li>Nginx</li>
-            <li>Express</li>
-        </ul>
-    </div>)
+    <div className="familar_container">
+        <h2 className='unfamilar_title'> Unfamilar Software Technology</h2>
+       <br />
+        <table className="unfamilar_table">
+            <tr>
+                <th>Software Technology</th>
+                <th>Average Familiar Scale (5)</th>
+            </tr>
+            <tr>
+                <th>AWS:</th>
+                <th>1.5</th>
+            </tr>
+            <tr>
+                <th>JavaScript:</th>
+                <th>3</th>
+            </tr>
+            <tr>
+                <th>React:</th>
+                <th>1.5</th>
+            </tr>
+            <tr>
+                <th>MYSQL:</th>
+                <th>1.6</th>
+            </tr>
+            <tr>
+                <th>Nginx:</th>
+                <th>1</th>
+            </tr>
+            <tr>
+                <th>Express</th>
+                <th>2</th>
+            </tr>
+        </table>
+    </div>
+    )
 
 }
