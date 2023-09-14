@@ -3,7 +3,7 @@ import '../App.css';
 export default function Familar() {
 	return (
 		<div className='familiar__container'>
-			<h3 className='unfamiliar__header'> Unfamilar Software Technology</h3>
+			<h3 className='unfamiliar__header'> Unfamiliar Software Technology</h3>
 
 			<table className='unfamiliar__table'>
 				<tr className='unfamiliar__title'>

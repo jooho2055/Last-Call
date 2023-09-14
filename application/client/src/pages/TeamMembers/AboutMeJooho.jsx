@@ -18,8 +18,7 @@ export default function AboutMeJooho() {
 
 			<p className='aboutme__main'>
 				I am really excited to take Software Engineering class with outstanding team members. It is
-				an honor to be able to participate in the project as a front end. ha
-			</p>
+				an honor to be able to participate in the project as a front end.
 		</div>
 	);
 }
