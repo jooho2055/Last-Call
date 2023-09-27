@@ -19,7 +19,7 @@
 | Student Name | Student Email | GitHub Username | Student's role |
 | :----------: | :-----------: | :-------------: | :------------: |
 |   Luis Acuna Mendez   | lacuna3@sfsu.edu |      luisAcme       |  Team Leader, Backend Engineer   |
-|   Dorrie Shen  | dshen2@sfsu.edu |      Dorrie1041       |  GitHub Master   |
+|   Dorrie Shen  | dshen2@sfsu.edu |      Dorrie1041       |  GitHub Master, Frontend Engineer  |
 |   Gwangwoo Lee   | glee16@sfsu.edu |      Pangwoo       |  Backend Leader   |
 |   Vedang Sakxena   | vsakxena@sfsu.edu |    vedangsakxena         |  Scrum Master, Backend Engineer   |
 |   Jooho Chang   | jchang17@sfsu.edu |      jooho2055       |  Frontend Leader   |
