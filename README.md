@@ -18,12 +18,12 @@
 
 | Student Name | Student Email | GitHub Username | Student's role |
 | :----------: | :-----------: | :-------------: | :------------: |
-|   Luis Acuna Mendez   | lacuna3@sfsu.edu |      luisAcme       |  Team Leader, Back End Master   |
+|   Luis Acuna Mendez   | lacuna3@sfsu.edu |      luisAcme       |  Team Leader, Backend Engineer   |
 |   Dorrie Shen  | dshen2@sfsu.edu |      Dorrie1041       |  GitHub Master   |
-|   Gwangwoo Lee   | glee16@sfsu.edu |      Pangwoo       |  Back End Leader   |
-|   Vedang Sakxena   | vsakxena@sfsu.edu |    vedangsakxena         |  Scrum Master   |
-|   Jooho Chang   | jchang17@sfsu.edu |      jooho2055       |  Front End Leader   |
-|   Leslie Mora Ponce   | lmoraponce@sfsu.edu |     Leslie-MP        |  Front End Master   |
+|   Gwangwoo Lee   | glee16@sfsu.edu |      Pangwoo       |  Backend Leader   |
+|   Vedang Sakxena   | vsakxena@sfsu.edu |    vedangsakxena         |  Scrum Master, Backend Engineer   |
+|   Jooho Chang   | jchang17@sfsu.edu |      jooho2055       |  Frontend Leader   |
+|   Leslie Mora Ponce   | lmoraponce@sfsu.edu |     Leslie-MP        |  Frontend Engineer   |
 
 **NO code should be stored in the root of your repository. You may rename the
 `application/` folder to your team's application name if you'd like, but all the
