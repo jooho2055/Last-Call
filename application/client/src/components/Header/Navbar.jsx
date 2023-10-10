@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './Navbar.css';
-import iconProfile from './User_Profile.png';
+import iconProfile from '../../images/profiles/UserProfile.png';
 
 
 export default function Navbar() {
