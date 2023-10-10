@@ -1,13 +1,21 @@
 import './Search.css';
-export default function Search (){
-    return(
-     <div className='search-container'>
-     <form>
-     <input type="text" className='Searchbox' placeholder='Search...' />
-     <button type="submit" className='search-button'>
+import { useRef } from 'react';
+const Search=()=>{
+  const inputRef = useRef(null);
+  function handleSubmit () {
+    console.log(inputRef.current.value);
+  }
+  return(
+    <div className='search-container'>
+     
+     <input type="text" className='Searchbox' placeholder='Search...' ref={inputRef}/>
+     <button type="submit" className='search-button' onClick={handleSubmit}>
      <img className='fa-search' src='https://upload.wikimedia.org/wikipedia/commons/5/55/Magnifying_glass_icon.svg' alt="searchingico"/>
     </button>
-     </form> 
      </div>   
-    );
+
+  )
+
 }
+
+export default Search;
