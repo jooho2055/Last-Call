@@ -1,0 +1,21 @@
+.Searchbox{
+    padding: 6px;
+    margin-top: 8px;
+    font-size: 17px;
+    border: solid 1px black;
+}
+
+.search-button{
+    padding: 6px 10px;
+    margin-top: 8px;
+    margin-right: 16px;
+    background: #ddd;
+    font-size: 17px;
+    border: none;
+    cursor: pointer;
+}
+.fa-search{
+    height: 18px;
+    width: 17px;
+
+}

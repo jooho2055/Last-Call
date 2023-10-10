@@ -217,3 +217,8 @@ ul {
 	border-radius: 10px;
 	background-color: floralwhite;
 }
+/*Use to moving search part*/
+.Search_div{
+	position: relative;
+	left: 0px;
+}
