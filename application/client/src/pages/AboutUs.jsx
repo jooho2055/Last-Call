@@ -1,7 +1,7 @@
 import React from 'react';
-import NameButton from '../../components/NameButton';
-import Familar from '../../components/Familar';
-import Schedule from '../../components/Schedule';
+import NameButton from '../components/AboutUs/NameButton'
+import Familar from '../components/AboutUs/Familar';
+import Schedule from '../components/AboutUs/Schedule';
 
 export default function AboutUs() {
 	return (
