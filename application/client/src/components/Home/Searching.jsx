@@ -8,9 +8,9 @@ const Search=()=>{
   return(
     <div className='search-container'>
      
-     <input type="text" className='Searchbox' placeholder='Search...' ref={inputRef}/>
-     <button type="submit" className='search-button' onClick={handleSubmit}>
-     <img className='fa-search' src='https://upload.wikimedia.org/wikipedia/commons/5/55/Magnifying_glass_icon.svg' alt="searchingico"/>
+     <input type="text" className='searchbox' placeholder='Search...' ref={inputRef}/>
+     <button type="submit" className='searchbutton' onClick={handleSubmit}>
+     <img className='searchpicture' src='https://upload.wikimedia.org/wikipedia/commons/5/55/Magnifying_glass_icon.svg' alt="searchingico"/>
     </button>
      </div>   
 

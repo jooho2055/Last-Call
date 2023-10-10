@@ -1,11 +1,11 @@
-.Searchbox{
+.searchbox{
     padding: 6px;
     margin-top: 8px;
     font-size: 17px;
     border: solid 1px black;
 }
 
-.search-button{
+.searchbutton{
     padding: 6px 10px;
     margin-top: 8px;
     margin-right: 16px;
@@ -14,7 +14,7 @@
     border: none;
     cursor: pointer;
 }
-.fa-search{
+.searchpicture{
     height: 18px;
     width: 17px;
 
