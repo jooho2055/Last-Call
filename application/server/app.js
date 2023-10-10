@@ -12,21 +12,19 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "../client/build/index.html"));
 });
 
-app.get(`/search?search=${searchValue}`, async(req, res)=>{
+app.get(`/search`, async(req, res)=>{
   const query = `SELECT * FROM member `;
+  console.log(req.query);
   console.log(req.query.search);
   console.log(req.query.search == null);
   if(req.query.search == null){
     var [rows, fields] = await db.query(query, []);
     res.status(200).json(rows);
   }else{
-    var [rows, fields] = await db.query(query, []);
+    var [rows, fields] = await db.query(`SELECT * FROM member `, []);
     res.status(200).json(rows);
   }
-  
-
-  res.status(200).json(rows[0]);
-})
+});
 
 app.get("/AboutUs", (req,res) => {
   res.sendFile(path.join(__dirname, "../client/build/index.html"))
