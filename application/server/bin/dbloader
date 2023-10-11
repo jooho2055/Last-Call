@@ -1,0 +1,35 @@
+"use strict";
+const mysql = require("mysql2/promise");
+require('dotenv').config();
+function waringMessage(warning){
+    switch(warning.Code){
+        case 1007:
+            console.log(`Skipping Database Creation --> ${warning.Message}`);
+            break;
+        case 1050:
+            console.log(`Skipping Table Creation --> ${warning.Message}`);
+            break;
+    }
+}
+
+async function getConnection(){
+    return await mysql.createConnection({
+        host: process.env.DB_HOST,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+    });
+}
+
+(async function main(){
+    let connection = null;
+    try{
+        connection = await getConnection();
+        await connection.query(`USE ${process.env.DB_USER}`);
+        connection.close();
+    } catch(error){
+        console.error(error);
+        if(connection != null){
+            connection.close();
+        }
+    }
+})();
