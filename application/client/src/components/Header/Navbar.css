@@ -1,34 +1,29 @@
-.header {
-    display: flex;
-    justify-content: center; 
-    align-items: center;   
-    background-color: #2f2f2f; 
-    height: 70px;           
-  }
-  .header__menu {
-    list-style: none; 
-    padding: 0;       
-    display: flex; 
-    margin: 0;   
-  }
-  .header__menu__item {
-    color: rgb(255, 255, 255);  
-    font-weight: bold; 
-    margin: 15px; 
-  }
-   .header__nav {
-    /* This we can use it later to add more style to our nav var*/
-  }
+/* Navbar.css */
 
-  .profile__icon {
-    display: flex;
-    align-items: center;
-    margin-left: auto; 
-  }
-  
-  .profile-icon img {
-    width: 40px;
-    height: 45px;
-    object-fit: cover; 
-  }
-  
+.header {
+  display: flex;
+  justify-content: center; 
+  align-items: center;   
+  background-color: #2f2f2f; 
+  height: 70px;           
+}
+.header__nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.header__menu__item {
+  margin: 10px;
+}
+.header__menu__item a {
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+}
+.profile-icon img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-left: 50px;
+}
