@@ -32,6 +32,9 @@ export default function Home() {
 		}).then((res)=>{
 			return res.json()
 		}).then((data) => setSearchResult(data))
+		.catch((error) => {
+			console.error('Error:', error);
+		});
 	}
 	return (
 		<div>
@@ -43,8 +46,8 @@ export default function Home() {
 				</form>
 				<ul>
 					<div>{searchResult.length}</div>
-					{searchResult.map((member) => (
-						<li>{member.name}</li>
+					{searchResult.map((restaurant) => (
+						<li>{restaurant.name_r + ' ' + restaurant.cuisine + ` ${restaurant.status > 0 ? 'open':'close'}`}</li>
 					))}
 				</ul>
 			</div>
