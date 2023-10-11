@@ -1,11 +1,12 @@
 import './Search.css';
 import { useState, useEffect } from 'react';
 import React from 'react';
+import { Card, CardContent, Input } from 'semantic-ui-react';
 
 function Search() {
-  const [searchValue, setSearchValue] = useState('');
 	const [searchResult, setSearchResult] = useState([]);
-  useEffect(() => {
+	const [searchValue, setSearchValue] = useState('');
+	useEffect(() => {
 		fetch("/search", {
 		method: 'GET'
 		})
@@ -22,7 +23,7 @@ function Search() {
 			console.error('Error:', error);
 		});
 	}, []);
-  const inputChange = (event) => {
+	const inputChange = (event) => {
 		setSearchValue(event.target.value)
 	}
 	const clicked = (event) => {
@@ -47,9 +48,20 @@ function Search() {
     </form>
         <ul>
 					<div>{searchResult.length}</div>
-					{searchResult.map((restaurant) => (
-						<li>{restaurant.name_r + ' ' + restaurant.cuisine + ` ${restaurant.status > 0 ? 'open':'close'}`}</li>
-					))}
+                    <Card.Group itemsPerRow={3} className='Card_style'>
+					{searchResult.map((restaurant) => {
+						return(
+						<><Card>
+								<CardContent>
+									<Card.Header>{restaurant.name_r}</Card.Header>
+									<Card.Description>{restaurant.cuisine}</Card.Description>
+									<Card.Description>{restaurant.status > 0 ? 'open' : 'close'}</Card.Description>
+								</CardContent>
+							</Card><br /></>
+						)
+						})}
+					</Card.Group>
+					
 		</ul>
 
      </div>   
