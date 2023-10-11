@@ -1,6 +1,6 @@
 # csc648-01-Fall23-team07 Repository
 
-**Application URL: <http://54.151.28.127/>**
+**Application URL: <http://13.52.182.209/>**
 
 ## Before completing Milestone 0 
 
