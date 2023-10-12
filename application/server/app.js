@@ -3,6 +3,13 @@ const path = require("path");
 const app = express();
 var db = require('./conf/database');
 const port = 5001;
+const cors = require('cors');
+let corsOptions = {
+  origin: 'http://localhost:3000',
+  credentials: true
+}
+
+app.use(cors(corsOptions));
 
 app.set("port", process.env.PORT || port);
 
