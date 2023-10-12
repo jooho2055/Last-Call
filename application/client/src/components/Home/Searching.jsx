@@ -49,7 +49,7 @@ function Search() {
     </form>
 	</div >
 	<div>{searchResult.length}</div>
-	<div className='CardGrid'>
+	<div className='card_grid'>
 
 	{searchResult.map((restaurant) => {
 						return(
