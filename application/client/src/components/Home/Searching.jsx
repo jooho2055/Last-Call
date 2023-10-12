@@ -1,7 +1,7 @@
 import './Search.css';
 import { useState, useEffect } from 'react';
 import React from 'react';
-import { Card, CardContent, Input } from 'semantic-ui-react';
+import { Card, CardContent } from 'semantic-ui-react';
 
 function Search() {
 	const [searchResult, setSearchResult] = useState([]);
@@ -39,6 +39,7 @@ function Search() {
 	}
 
   return(
+	<div style={{padding: 20}}>
     <div className='search-container'>
      <form onSubmit={clicked}>
      <input type="text" className='searchbox' placeholder='Search...' value={searchValue} onChange={inputChange}/>
@@ -46,25 +47,24 @@ function Search() {
      <img className='searchpicture' src='https://upload.wikimedia.org/wikipedia/commons/5/55/Magnifying_glass_icon.svg' alt="searchingico"/>
     </button>
     </form>
-        <ul>
-					<div>{searchResult.length}</div>
-                    <Card.Group itemsPerRow={3} className='Card_style'>
-					{searchResult.map((restaurant) => {
+	</div >
+	<div>{searchResult.length}</div>
+	<div className='CardGrid'>
+
+	{searchResult.map((restaurant) => {
 						return(
-						<><Card>
+						  <Card className='searching_card'>
 								<CardContent>
 									<Card.Header>{restaurant.name_r}</Card.Header>
 									<Card.Description>{restaurant.cuisine}</Card.Description>
 									<Card.Description>{restaurant.status > 0 ? 'open' : 'close'}</Card.Description>
 								</CardContent>
-							</Card><br /></>
+							</Card>
 						)
 						})}
-					</Card.Group>
-					
-		</ul>
 
-     </div>   
+	</div>
+	</div>			  
 
   )
 

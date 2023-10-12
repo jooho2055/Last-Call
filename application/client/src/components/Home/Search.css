@@ -19,3 +19,15 @@
     width: 17px;
 
 }
+
+.searching_card{
+    max-width: calc(33.33% - 20px); 
+  box-sizing: border-box; 
+  margin-bottom: 20px; 
+
+}
+.CardGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Display 3 items per row */
+    gap: 20px; /* Adjust the gap as needed */
+  }
