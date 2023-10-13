@@ -1,5 +1,5 @@
 import React from 'react';
-import '../../App.css';
+
 import profile from '../../images/profiles/Gwangwoo_Profile.jpeg';
 
 export default function AboutMeJooho() {

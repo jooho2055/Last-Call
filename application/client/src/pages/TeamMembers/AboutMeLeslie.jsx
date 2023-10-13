@@ -1,5 +1,5 @@
 import React from 'react';
-import './AboutMeLeslie.css';
+
 import backgroundImage from '../../images/profiles/About_background.jpeg';
 
 export default function AboutMeLeslie() {
@@ -24,6 +24,4 @@ export default function AboutMeLeslie() {
 			</div>
 		</div>
 	);
-
-
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import '../../App.css';
+
 import profile from '../../images/profiles/Jooho_Profile.ico';
 
 export default function AboutMeJooho() {

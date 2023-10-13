@@ -1,5 +1,5 @@
 import React from 'react';
-import NameButton from '../components/AboutUs/NameButton'
+import NameButton from '../components/AboutUs/NameButton';
 import Familar from '../components/AboutUs/Familar';
 import Schedule from '../components/AboutUs/Schedule';
 
