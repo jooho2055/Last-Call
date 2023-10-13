@@ -34,9 +34,9 @@ export default function Navbar() {
               <Link to='/AboutUs'>Order History</Link>
             </li>
           </div>
-          <div className="header__menu__item profile-icon">
+          <div className="header__menu__item">
             <li>
-              <img src={iconProfile} alt="icon" />
+              <img src={iconProfile} alt="icon" className="profile__icon" />
             </li>
           </div>
         </ul>
