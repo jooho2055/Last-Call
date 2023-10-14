@@ -5,9 +5,9 @@ import Schedule from '../components/AboutUs/Schedule';
 
 export default function AboutUs() {
 	return (
-		<div className='aboutUs'>
+		<div>
 			<p>This is our About Us section</p>
-			<div className='aboutUs__button'>
+			<div>
 				<NameButton name='Dorrie Shen' />
 				<NameButton name='Leslie Mora Ponce' />
 				<NameButton name='Gwangwoo Lee' />

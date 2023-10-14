@@ -40,19 +40,12 @@ function Search() {
 	};
 
 	return (
-		<div style={{ padding: 20 }}>
-			<div className='search-container'>
+		<div>
+			<div>
 				<form onSubmit={clicked}>
-					<input
-						type='text'
-						className='searchbox'
-						placeholder='Search...'
-						value={searchValue}
-						onChange={inputChange}
-					/>
-					<button type='submit' className='searchbutton'>
+					<input type='text' placeholder='Search...' value={searchValue} onChange={inputChange} />
+					<button type='submit'>
 						<img
-							className='searchpicture'
 							src='https://upload.wikimedia.org/wikipedia/commons/5/55/Magnifying_glass_icon.svg'
 							alt='searchingico'
 						/>
@@ -60,10 +53,10 @@ function Search() {
 				</form>
 			</div>
 
-			<div className='card_grid'>
+			<div>
 				{searchResult.map((restaurant) => {
 					return (
-						<Card className='searching_card'>
+						<Card>
 							<CardContent>
 								<Card.Header>{restaurant.name_r}</Card.Header>
 								<Card.Description>{restaurant.cuisine}</Card.Description>

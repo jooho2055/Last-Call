@@ -6,7 +6,7 @@ export default function Home() {
 		<div>
 			This is Team 7 Home section.
 			<></>
-			<div className='Search_div'>
+			<div>
 				<Search />
 			</div>
 		</div>

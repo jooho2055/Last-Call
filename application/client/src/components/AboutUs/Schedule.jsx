@@ -1,6 +1,6 @@
 export default function Schedule() {
 	return (
-		<table className='meetingSchedule'>
+		<table>
 			<caption>Meeting Weekly Schedule</caption>
 
 			<thead>
