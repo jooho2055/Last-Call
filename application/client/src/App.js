@@ -1,5 +1,6 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import Root from './pages/Root';
+import LandingPage from './pages/LandingPage';
 import NotFound from './pages/NotFound';
 import AboutUs from './pages/AboutUs';
 import Home from './pages/Home';
@@ -16,7 +17,7 @@ const router = createBrowserRouter([
 		element: <Root />,
 		errorElement: <NotFound />,
 		children: [
-			{ index: true, element: <Home /> },
+			{ index: true, element: <LandingPage /> }, // images and short description of our app
 			{ path: '/AboutUs', element: <AboutUs /> },
 			{ path: '/AboutUs/Dorrie Shen', element: <AboutMeDorrie /> },
 			{ path: '/AboutUs/Gwangwoo Lee', element: <AboutMeGwangwoo /> },

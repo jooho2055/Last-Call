@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { AiOutlineUser } from 'react-icons/ai';
 
 const navigation = [
@@ -14,6 +14,10 @@ function classNames(...classes) {
 }
 
 export default function Navbar() {
+	const [isSignIn, setIsSignin] = useState(false);
+	const userLocation = useLocation();
+	const isLandingPage = userLocation.pathname === '/';
+
 	return (
 		<nav className='bg-gray-200'>
 			<div className='mx-auto max-w-7xl px-2 sm:px-6 lg:px-8'>
@@ -25,21 +29,28 @@ export default function Navbar() {
 						</div>
 						<div className='hidden sm:ml-6 sm:block'>
 							<div className='flex space-x-4'>
-								{navigation.map((item) => (
-									<a
-										key={item.name}
-										href={item.href}
-										className={classNames(
-											item.current
-												? 'bg-gray-900 text-white'
-												: 'text-black-300 hover:bg-gray-300 hover:text-white',
-											'rounded-md px-3 py-2 text-base font-medium'
-										)}
-										aria-current={item.current ? 'page' : undefined}
-									>
-										{item.name}
-									</a>
-								))}
+								{isSignIn
+									? navigation.map((item) => (
+											<a
+												key={item.name}
+												href={item.href}
+												className={classNames(
+													item.current
+														? 'bg-gray-900 text-white'
+														: 'text-black-300 hover:bg-gray-300 hover:text-white',
+													'rounded-md px-3 py-2 text-base font-medium'
+												)}
+												aria-current={item.current ? 'page' : undefined}
+											>
+												{item.name}
+											</a>
+									  ))
+									: isLandingPage && (
+											<>
+												<Link to='/signin'>Sign In</Link>
+												<Link to='/signup'>Sign Up</Link>
+											</>
+									  )}
 							</div>
 						</div>
 					</div>
