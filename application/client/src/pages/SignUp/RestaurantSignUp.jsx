@@ -66,22 +66,20 @@ const optionsforstate=[
 ]
 function SignUpForm(){
 	return(<div>
-		<input type='text' placeholder='Restaurant Name' class="shadow appearance-none border border-black rounded-full px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>
+		<input type='text' placeholder='Restaurant Name' class="shadow appearance-none border border-black px-1.5 py-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>
 		<br />
         <br />
-		<input type='text' placeholder='Address' class="shadow appearance-none border border-black rounded-full px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>
+		<input type='text' placeholder='Address' class="shadow appearance-none border border-black px-1.5 py-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>
 		<br />
         <br />
-		<input type='text' placeholder='City' class="shadow appearance-none border border-black rounded-full px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>
+		<input type='text' placeholder='City' class="shadow appearance-none border border-black px-1.5 py-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>
 		<br />
         <br />
-		<div class="border px-20 bg-[#DFDFDF]">
-		<Select options={optionsforstate} />
-		</div>
+		<Select className="w-48 sm:w-50 h-10 border border-black" options={optionsforstate} />
+	
 		<br />
-		<div class="border px-20 bg-[#DFDFDF]">
-		<Select options={optionsforcuisine} />
-        </div>
+		<Select className="w-48 sm:w-50 h-10 border border-black " options={optionsforcuisine} />
+        
 		
 	    </div>);
 }

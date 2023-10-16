@@ -62,25 +62,26 @@ export default function SignUp(props) {
             <br />    
             <center>  
             <h1 class="text-center text-2xl">{props.title}</h1>
-            <div class="box-content h-6 w-16 bg-slate-800">
+            <br />
+            <div class="box-content h-6 w-16 bg-slate-800"> 
             <p class="text-center text-xs text-white">{props.character}</p> 
             </div>
             <div class="relative top-1">
             <form onSubmit={handleSubmit(onSubmit)}>
-                <input type='text' name='userid' placeholder='User ID' class="shadow appearance-none border border-black rounded-full px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>
+                <input type='text' name='userid' placeholder='User ID' class="shadow appearance-none border border-black px-1.5 py-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>
                 <br />
                 <br />
-                <input type='password' name='password' placeholder='password' class="shadow appearance-none border border-black rounded-full px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>
+                <input type='password' name='password' placeholder='password' class="shadow appearance-none border border-black px-1.5 py-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>
                 <br />
                 <br />
-                <input type='password' name='password' placeholder='comfirm password' class="shadow appearance-none border border-black rounded-full px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>
+                <input type='password' name='password' placeholder='comfirm password' class="shadow appearance-none border border-black px-1.5 py-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>
                 <br />
                 <br />
-                <input type='email' placeholder='Email' {...register("email", { required: true, pattern: /^\S+@\S+$/i })} class="shadow appearance-none border border-black rounded-full px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>
+                <input type='email' placeholder='Email' {...register("email", { required: true, pattern: /^\S+@\S+$/i })} class="shadow appearance-none border border-black px-1.5 py-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>
                 {errors.email && <p>Email is required and must be valid</p>}
                 <br />
                 <br />
-                <input type='number' placeholder='Phone Number' class="shadow appearance-none border border-black rounded-full px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>
+                <input type='number' placeholder='Phone Number' class="shadow appearance-none border border-black px-1.5 py-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>
                 <br />
                 <br />
                 {props.form_signup()}
