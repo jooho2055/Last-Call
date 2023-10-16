@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import InputForSign from './InputForSign';
 
 
 export default function SignUp(props) {
@@ -68,21 +69,15 @@ export default function SignUp(props) {
             </div>
             <div class="relative top-1">
             <form onSubmit={handleSubmit(onSubmit)}>
-                <input type='text' name='userid' placeholder='User ID' class="shadow appearance-none border border-black px-1.5 py-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>
+                <InputForSign type='text' name='userid' placeholder='User ID'/>
                 <br />
+                <InputForSign type='password' name='password' placeholder='password' />
                 <br />
-                <input type='password' name='password' placeholder='password' class="shadow appearance-none border border-black px-1.5 py-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>
+                <InputForSign type='password' name='password' placeholder='comfirm password' />
                 <br />
+                <InputForSign type='text' name='email' placeholder='Email' />
                 <br />
-                <input type='password' name='password' placeholder='comfirm password' class="shadow appearance-none border border-black px-1.5 py-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>
-                <br />
-                <br />
-                <input type='email' placeholder='Email' {...register("email", { required: true, pattern: /^\S+@\S+$/i })} class="shadow appearance-none border border-black px-1.5 py-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>
-                {errors.email && <p>Email is required and must be valid</p>}
-                <br />
-                <br />
-                <input type='number' placeholder='Phone Number' class="shadow appearance-none border border-black px-1.5 py-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"/>
-                <br />
+                <InputForSign type='number' name='phone' placeholder='Phone Number' />
                 <br />
                 {props.form_signup()}
                 <br />
