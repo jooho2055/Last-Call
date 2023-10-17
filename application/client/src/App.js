@@ -1,6 +1,7 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import Root from './pages/Root';
 import LandingPage from './pages/LandingPage';
+import SignIn from './pages/SignIn';
 import NotFound from './pages/NotFound';
 import AboutUs from './pages/AboutUs';
 import Home from './pages/Home';
@@ -10,6 +11,9 @@ import AboutMeGwangwoo from './pages/TeamMembers/AboutMeGwangwoo';
 import AboutMeVedang from './pages/TeamMembers/AboutMeVedang';
 import AboutMeLeslie from './pages/TeamMembers/AboutMeLeslie';
 import AboutMeLuis from './pages/TeamMembers/AboutMeLuis';
+import SignUpChoice from './pages/SignUp/SignUpChoice';
+import CustomerSignUp from './pages/SignUp/CustomerSignUp';
+import RestaurantSignUp from './pages/SignUp/RestaurantSignUp';
 
 const router = createBrowserRouter([
 	{
@@ -17,7 +21,12 @@ const router = createBrowserRouter([
 		element: <Root />,
 		errorElement: <NotFound />,
 		children: [
-			{ index: true, element: <Home /> }, // images and short description of our app
+			{ index: true, element: <LandingPage /> }, // images and short description of our app
+			{ path: '/signin', element: <SignIn /> },
+			{ path: '/signup', element: <SignUpChoice /> },
+			{ path: '/signup/customer', element: <CustomerSignUp /> },
+			{ path: '/signup/restaurant', element: <RestaurantSignUp /> },
+
 			{ path: '/AboutUs', element: <AboutUs /> },
 			{ path: '/AboutUs/Dorrie Shen', element: <AboutMeDorrie /> },
 			{ path: '/AboutUs/Gwangwoo Lee', element: <AboutMeGwangwoo /> },
