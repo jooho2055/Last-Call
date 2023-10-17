@@ -9,14 +9,15 @@ const navigation = [
 	{ name: 'Order History', href: '/orderhistory', current: false },
 ];
 
-function classNames(...classes) {
-	return classes.filter(Boolean).join(' ');
-}
+// function classNames(...classes) {
+// 	return classes.filter(Boolean).join(' ');
+// }
 
 export default function Navbar() {
 	const [isSignIn, setIsSignin] = useState(false);
 	const userLocation = useLocation();
 	const isLandingPage = userLocation.pathname === '/';
+	const isCustomerHomePage = userLocation.pathname === '/customerhome';
 
 	return (
 		<header className='flex justify-between'>
@@ -25,8 +26,12 @@ export default function Navbar() {
 			</div>
 			<nav>
 				<ul className='flex'>
-					{isSignIn
-						? navigation.map((item) => <li key={item.name}>{item.name}</li>)
+					{isCustomerHomePage
+						? navigation.map((item) => (
+								<li key={item.name} className='ml-7'>
+									{item.name}
+								</li>
+						  ))
 						: isLandingPage && (
 								<>
 									<li>
