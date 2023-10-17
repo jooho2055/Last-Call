@@ -1,6 +1,7 @@
 import React from 'react';
 
 export default function Sign(props) {
+
     return (
         <div class="box-content h-auto w-96 bg-[#DFDFDF] relative">
             <div class="bg-[#DFDFDF] absolute left-0 right-2 top-7" >
