@@ -17,7 +17,7 @@ const router = createBrowserRouter([
 		element: <Root />,
 		errorElement: <NotFound />,
 		children: [
-			{ index: true, element: <LandingPage /> }, // images and short description of our app
+			{ index: true, element: <Home /> }, // images and short description of our app
 			{ path: '/AboutUs', element: <AboutUs /> },
 			{ path: '/AboutUs/Dorrie Shen', element: <AboutMeDorrie /> },
 			{ path: '/AboutUs/Gwangwoo Lee', element: <AboutMeGwangwoo /> },
