@@ -6,7 +6,7 @@ export default function SignIn() {
 		<>
 			<div>This is Sign In page</div>
 			<Link to={`/signup`}>
-				<button>Go SignUp</button>
+				<button>Don't have accout? </button>
 			</Link>
 		</>
 	);

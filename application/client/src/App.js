@@ -26,6 +26,7 @@ const router = createBrowserRouter([
 			{ path: '/signup', element: <SignUpChoice /> },
 			{ path: '/signup/customer', element: <CustomerSignUp /> },
 			{ path: '/signup/restaurant', element: <RestaurantSignUp /> },
+			{ path: '/customerhome', element: <Home /> },
 
 			{ path: '/AboutUs', element: <AboutUs /> },
 			{ path: '/AboutUs/Dorrie Shen', element: <AboutMeDorrie /> },

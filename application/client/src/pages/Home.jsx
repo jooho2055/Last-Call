@@ -1,7 +1,6 @@
 import React from 'react';
 import Search from '../components/Search';
 import { useState, useEffect } from 'react';
-import { Card, CardContent } from 'semantic-ui-react';
 import RestaurantCard from '../components/RestaurantCard';
 
 export default function Home() {
@@ -28,7 +27,7 @@ export default function Home() {
 	};
 
 	return (
-		<div className='mt-24 h-full '>
+		<div className=''>
 			This is Team 7 Home section.
 			<div>
 				<Search onSearchSubmit={handleSearchSubmit} searchValue={searchValue} />
