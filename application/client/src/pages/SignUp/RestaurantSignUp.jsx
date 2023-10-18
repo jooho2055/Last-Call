@@ -2,6 +2,7 @@ import React from 'react';
 import Select from 'react-select';
 import SignUp from '../../components/SignInUp/SignUp';
 import InputForSign from '../../components/SignInUp/InputForSign';
+import { useState } from 'react';
 const optionsforcuisine=[
 	{value: 'pizza', label: 'Pizza'},
 	{value: 'hambuber', label: 'Hambuber'},
@@ -66,16 +67,56 @@ const optionsforstate=[
 
 ]
 function SignUpForm(){
+	const [values, setValues] = useState({
+		 restaurant_name:"",
+		 addres:"",
+         city:"",
+
+  });
+   const [selected, setSelected] = useState({
+	     state:"Select...",
+		 cuisine: "Select...",
+   })
+
+  const inputs =[
+	{
+        id: 1,
+        name: "restaurant_name",
+        type: "text",
+        placeholder: "Restaurant Name",
+              
+      },
+      {
+        id: 2,
+        name: "address",
+        type: "text",
+        placeholder: "Address",
+              
+      },
+      {
+        id: 3,
+        name: "city",
+        type: "text",
+        placeholder: "City",
+              
+      },
+  ]
+  const onChange = (e) =>{
+	setValues({...values, [e.target.name]: e.target.value});
+ }
+ //console.log(values);
+ const onSelectChange = (obj) => {
+	setSelected({...selected,[obj.name]:obj.value});
+ }
+ console.log(selected);
+	
 	return(<div>
-		<InputForSign type='text' name='restaurant_name' placeholder='Restaurant Name'/>
+		 {inputs.map((input)=>(
+                  <><InputForSign key={input.id} {...input} value= {values[input.name]} onChange={onChange}/><br /></>
+                ))}
+		<Select className="w-48 sm:w-50 h-10 border border-black" options={optionsforstate} name="state" />
 		<br />
-		<InputForSign type='text' name='address' placeholder='Address' />
-		<br />
-		<InputForSign type='text' name='city' placeholder='City'/>
-		<br />
-		<Select className="w-48 sm:w-50 h-10 border border-black" options={optionsforstate} />
-		<br />
-		<Select className="w-48 sm:w-50 h-10 border border-black " options={optionsforcuisine} />
+		<Select className="w-48 sm:w-50 h-10 border border-black " options={optionsforcuisine} name="cuisine" onChange={onSelectChange}/>
         
 		
 	    </div>);
