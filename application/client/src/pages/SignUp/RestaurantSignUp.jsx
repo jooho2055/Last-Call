@@ -69,13 +69,13 @@ const optionsforstate=[
 function SignUpForm(){
 	const [values, setValues] = useState({
 		 restaurant_name:"",
-		 addres:"",
+		 address:"",
          city:"",
 
   });
    const [selected, setSelected] = useState({
-	     state:"Select...",
-		 cuisine: "Select...",
+	     state:"",
+		 cuisine: "",
    })
 
   const inputs =[
@@ -104,9 +104,13 @@ function SignUpForm(){
   const onChange = (e) =>{
 	setValues({...values, [e.target.name]: e.target.value});
  }
- //console.log(values);
+ console.log(values);
  const onSelectChange = (obj) => {
-	setSelected({...selected,[obj.name]:obj.value});
+	if (obj.name === "state") {
+		setSelected({ ...selected, state: obj.value });
+	  } else if (obj.name === "cuisine") {
+		setSelected({ ...selected, cuisine: obj.value });
+	  }
  }
  console.log(selected);
 	
@@ -114,7 +118,7 @@ function SignUpForm(){
 		 {inputs.map((input)=>(
                   <><InputForSign key={input.id} {...input} value= {values[input.name]} onChange={onChange}/><br /></>
                 ))}
-		<Select className="w-48 sm:w-50 h-10 border border-black" options={optionsforstate} name="state" />
+		<Select className="w-48 sm:w-50 h-10 border border-black" options={optionsforstate} name="state" onChange={onSelectChange}/>
 		<br />
 		<Select className="w-48 sm:w-50 h-10 border border-black " options={optionsforcuisine} name="cuisine" onChange={onSelectChange}/>
         
