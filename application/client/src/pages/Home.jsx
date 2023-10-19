@@ -2,8 +2,6 @@ import React from 'react';
 import Search from '../components/Search';
 import { useState, useEffect } from 'react';
 import { Card, CardContent } from 'semantic-ui-react';
-import RestaurantSignUp from './SignUp/RestaurantSignUp';
-import UserSignUp from './SignUp/UserSignUp';
 
 export default function Home() {
 	const [restList, setRestList] = useState([]);
@@ -47,7 +45,6 @@ export default function Home() {
 					);
 				})}
 			</div>
-			<UserSignUp />
 		</div>
 	);
 }

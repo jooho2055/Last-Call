@@ -1,5 +1,6 @@
 import React from 'react';
 import Sign from '../../components/SignInUp/Sign';
+
 function SignUpform(){
     return(
         <div>
