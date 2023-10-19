@@ -6,7 +6,10 @@ export default function Root() {
 	return (
 		<>
 			<Navbar />
-			<Outlet />
+			<main className='pt-10'>
+				<Outlet />
+			</main>
+			<footer>Team 7</footer>
 		</>
 	);
 }
