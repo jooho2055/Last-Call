@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { AiOutlineUser } from 'react-icons/ai';
 import Dropdown from './Dropdown';
 
 const navigation = [
@@ -34,18 +33,18 @@ export default function Navbar() {
 								</li>
 						  ))
 						: isLandingPage && (
-								<div>
+								<>
 									<li>
 										<Link to='/signin'>Sign In</Link>
 									</li>
 									<li>
 										<Link to='/signup'>Sign Up</Link>
 									</li>
-								</div>
+								</>
 						  )}
-					<Dropdown />
 				</ul>
 			</nav>
+			<Dropdown />
 		</header>
 	);
 }
