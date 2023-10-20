@@ -14,6 +14,9 @@ import AboutMeLuis from './pages/TeamMembers/AboutMeLuis';
 import SignUpChoice from './pages/SignUp/SignUpChoice';
 import CustomerSignUp from './pages/SignUp/CustomerSignUp';
 import RestaurantSignUp from './pages/SignUp/RestaurantSignUp';
+import Order from './pages/Order';
+import CustomerProfile from './pages/CustomerProfile';
+import RestaurantProfile from './pages/RestaurantProfile';
 
 const router = createBrowserRouter([
 	{
@@ -27,6 +30,9 @@ const router = createBrowserRouter([
 			{ path: '/signup/customer', element: <CustomerSignUp /> },
 			{ path: '/signup/restaurant', element: <RestaurantSignUp /> },
 			{ path: '/customerhome', element: <Home /> },
+			{ path: '/order', element: <Order /> },
+			{ path: '/customerprofile', element: <CustomerProfile /> },
+			{ path: '/restaurantprofile', element: <RestaurantProfile /> },
 
 			{ path: '/AboutUs', element: <AboutUs /> },
 			{ path: '/AboutUs/Dorrie Shen', element: <AboutMeDorrie /> },

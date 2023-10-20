@@ -4,10 +4,9 @@ import { AiOutlineUser } from 'react-icons/ai';
 import Dropdown from './Dropdown';
 
 const navigation = [
-	{ name: 'Home', href: '/home', current: true },
-	{ name: 'About Us', href: '/aboutus', current: false },
-	{ name: 'Current Reservation', href: '/currentreservation', current: false },
-	{ name: 'Order History', href: '/orderhistory', current: false },
+	{ name: 'Home', href: '/customerhome', current: true },
+	{ name: 'Order', href: '/order', current: false },
+	{ name: 'About Us', href: '/AboutUs', current: false },
 ];
 
 // function classNames(...classes) {
@@ -31,18 +30,18 @@ export default function Navbar() {
 					{isCustomerHomePage
 						? navigation.map((item) => (
 								<li key={item.name} className='ml-7'>
-									{item.name}
+									<Link to={item.href}>{item.name}</Link>
 								</li>
 						  ))
 						: isLandingPage && (
-								<>
+								<div>
 									<li>
 										<Link to='/signin'>Sign In</Link>
 									</li>
 									<li>
 										<Link to='/signup'>Sign Up</Link>
 									</li>
-								</>
+								</div>
 						  )}
 					<Dropdown />
 				</ul>
