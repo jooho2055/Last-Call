@@ -44,7 +44,7 @@ export default function Navbar() {
 						  )}
 				</ul>
 			</nav>
-			<Dropdown />
+			{!isLandingPage && <Dropdown />}
 		</header>
 	);
 }

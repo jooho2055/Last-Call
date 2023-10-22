@@ -23,6 +23,10 @@ export default function CustomerSignup() {
 		phone: true,
 	});
 
+	const isSubmitDisabled =
+		!Object.values(validity).every((isValid) => isValid) ||
+		!Object.values(inputValues).every((value) => value);
+
 	const validateInput = (name, value) => {
 		let isValid = true;
 
@@ -35,7 +39,9 @@ export default function CustomerSignup() {
 				isValid = /^[A-Za-z]+$/.test(value);
 				break;
 			case 'pwd':
-				isValid = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$/.test(value);
+				isValid =
+					/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$/.test(value) &&
+					checkpassword(value, inputValues.cpwd);
 				break;
 			case 'cpwd':
 				isValid = value === inputValues.pwd;
@@ -53,6 +59,15 @@ export default function CustomerSignup() {
 
 		setValidity({ ...validity, [name]: isValid });
 	};
+
+	function checkpassword(pwd, cpwd) {
+		if (pwd && inputValues.cpwd) {
+			if (pwd !== cpwd) {
+				return false;
+			}
+		}
+		return true;
+	}
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -80,7 +95,9 @@ export default function CustomerSignup() {
 						isValid={validity[input.name]}
 					/>
 				))}
-				<button className='border text-4xl'>Submit</button>
+				<button className='border text-4xl' disabled={isSubmitDisabled}>
+					Submit
+				</button>
 			</form>
 		</div>
 	);
