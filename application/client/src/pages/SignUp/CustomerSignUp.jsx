@@ -1,35 +1,26 @@
 import React, { useState } from 'react';
-import { inputsForRestaurant, optionsForState, optionsForCuisine } from '../../utils/formConfig';
 import FormInput from '../../components/FormInput';
-import Select from 'react-select';
+import { inputsForCustomer } from '../../utils/formConfig';
 
-export default function RestaurantSignUp() {
+export default function CustomerSignup() {
 	const [inputValues, setInputValues] = useState({
 		username: '',
+		fname: '',
+		lname: '',
+		email: '',
 		pwd: '',
 		cpwd: '',
-		email: '',
 		phone: '',
-		rname: '',
-		street: '',
-		city: '',
-		zip: '',
-		state: '',
-		cuisine: '',
 	});
 
 	const [validity, setValidity] = useState({
 		username: true,
+		fname: true,
+		lname: true,
+		email: true,
 		pwd: true,
 		cpwd: true,
-		email: true,
 		phone: true,
-		rname: true,
-		street: true,
-		city: true,
-		zip: true,
-		state: true,
-		cuisine: true,
 	});
 
 	const isSubmitDisabled =
@@ -43,6 +34,10 @@ export default function RestaurantSignUp() {
 			case 'username':
 				isValid = /^[A-Za-z0-9]{5,16}$/.test(value);
 				break;
+			case 'fname':
+			case 'lname':
+				isValid = /^[A-Za-z]+$/.test(value);
+				break;
 			case 'pwd':
 				isValid =
 					/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$/.test(value) &&
@@ -55,19 +50,7 @@ export default function RestaurantSignUp() {
 				isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 				break;
 			case 'phone':
-				isValid = /^\d{10,10}$/.test(value);
-				break;
-			case 'rname':
-				isValid = /^[A-Za-z0-9\s]{2,50}$/.test(value);
-				break;
-			case 'street':
-				isValid = /^[a-zA-Z0-9\s,'#-]+$/.test(value);
-				break;
-			case 'city':
-				isValid = /^[A-Za-z\s]{2,50}$/.test(value);
-				break;
-			case 'zip':
-				isValid = /^\d+$/.test(value);
+				isValid = /^\d{10,15}$/.test(value);
 				break;
 
 			default:
@@ -97,21 +80,13 @@ export default function RestaurantSignUp() {
 		validateInput(name, value);
 	};
 
-	const handleState = (option) => {
-		setInputValues({ ...inputValues, state: option.value });
-	};
-
-	const handleCuisine = (option) => {
-		setInputValues({ ...inputValues, cuisine: option.value });
-	};
-
 	return (
 		<div className='container max-w-xl m-auto'>
 			<form onSubmit={handleSubmit} className='px-16  bg-slate-200'>
 				<h1 className='text-3xl'>
-					Join Us as a <strong>Restaurant Owner</strong>
+					Join Us as a <strong>Customer</strong>
 				</h1>
-				{inputsForRestaurant.map((input) => (
+				{inputsForCustomer.map((input) => (
 					<FormInput
 						key={input.id}
 						{...input}
@@ -120,13 +95,6 @@ export default function RestaurantSignUp() {
 						isValid={validity[input.name]}
 					/>
 				))}
-
-				<label className='pl-1'>State</label>
-				<Select options={optionsForState} onChange={handleState} />
-
-				<label className='pl-1'>Cuisin</label>
-				<Select options={optionsForCuisine} onChange={handleCuisine} />
-
 				<button className='border text-4xl' disabled={isSubmitDisabled}>
 					Submit
 				</button>

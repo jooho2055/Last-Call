@@ -1,21 +1,19 @@
 import React from 'react';
-import Sign from '../../components/SignInUp/Sign';
-
-function SignUpform(){
-    return(
-        <div>
-            <button type="button" class="text-white bg-slate-700 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300 font-medium text-lg px-14 py-12 text-center dark:bg-slate-600 dark:hover:bg-slate-700 dark:focus:ring-slate-800 absolute left-3 right-49 top-24">User</button>
-            <button type='button' class="text-white bg-slate-700 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300 font-medium text-lg px-12 py-12 text-center dark:bg-slate-600 dark:hover:bg-slate-700 dark:focus:ring-slate-800 absolute right-3 left-49 top-24">Restaurant</button>
-        </div>
-    );
-}
+import { Link } from 'react-router-dom';
 
 export default function SignUpChoice() {
-    return (
-        <div>
-            <Sign title="Sign Up" character="Are you signing up as...?" form={SignUpform}></Sign>
-            
-        </div>
-    );
-}
+	return (
+		<div className='container max-w-xl m-auto text-center rounded-lg bg-slate-500 p-12'>
+			<h1 className='text-3xl font-semibold text-black py-8'>here is sign up choice page</h1>
+			<div className='flex justify-between text-white'>
+				<Link to={`/signup/customer`}>
+					<button className='bg-black p-3 px-6 rounded text-center'>to customerSignup</button>
+				</Link>
 
+				<Link to={`/signup/restaurant`}>
+					<button className='bg-black p-3 px-6 rounded text-center'>to restSignup</button>
+				</Link>
+			</div>
+		</div>
+	);
+}

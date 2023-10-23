@@ -1,7 +1,7 @@
 import React from 'react';
 import Search from '../components/Search';
 import { useState, useEffect } from 'react';
-import { Card, CardContent } from 'semantic-ui-react';
+import RestaurantCard from '../components/RestaurantCard';
 
 export default function Home() {
 	const [restList, setRestList] = useState([]);
@@ -27,23 +27,15 @@ export default function Home() {
 	};
 
 	return (
-		<div>
+		<div className=''>
 			This is Team 7 Home section.
 			<div>
 				<Search onSearchSubmit={handleSearchSubmit} searchValue={searchValue} />
 			</div>
-			<div>
-				{restList.map((restaurant) => {
-					return (
-						<Card>
-							<CardContent>
-								<Card.Header>{restaurant.name_r}</Card.Header>
-								<Card.Description>{restaurant.cuisine}</Card.Description>
-								<Card.Description>{restaurant.status > 0 ? 'open' : 'close'}</Card.Description>
-							</CardContent>
-						</Card>
-					);
-				})}
+			<div className='h-full flex flex-col justify-center items-center '>
+				{restList.map((restaurant) => (
+					<RestaurantCard restaurantInfo={restaurant} />
+				))}
 			</div>
 		</div>
 	);
