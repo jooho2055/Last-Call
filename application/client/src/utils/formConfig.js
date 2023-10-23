@@ -1,4 +1,21 @@
-export const inputs = [
+export const inputsForSignIn = [
+	{
+		id: 1,
+		name: 'username',
+		type: 'text',
+		placeholder: 'Username',
+		label: 'Username',
+	},
+	{
+		id: 2,
+		name: 'pwd',
+		type: 'text',
+		placeholder: 'Password',
+		label: 'Password',
+	},
+];
+
+export const inputsForCustomer = [
 	{
 		id: 1,
 		name: 'username',
@@ -123,6 +140,14 @@ export const inputsForRestaurant = [
 		placeholder: 'City',
 		errorMessage: 'It should contain only letters, with no numbers or special characters!',
 		label: 'City',
+	},
+	{
+		id: 9,
+		name: 'zip',
+		type: 'text',
+		placeholder: 'Zip Code',
+		errorMessage: 'It should contain only numbers',
+		label: 'Zip Code',
 	},
 ];
 

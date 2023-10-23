@@ -13,6 +13,7 @@ export default function RestaurantSignUp() {
 		rname: '',
 		street: '',
 		city: '',
+		zip: '',
 		state: '',
 		cuisine: '',
 	});
@@ -26,6 +27,7 @@ export default function RestaurantSignUp() {
 		rname: true,
 		street: true,
 		city: true,
+		zip: true,
 		state: true,
 		cuisine: true,
 	});
@@ -64,6 +66,9 @@ export default function RestaurantSignUp() {
 			case 'city':
 				isValid = /^[A-Za-z\s]{2,50}$/.test(value);
 				break;
+			case 'zip':
+				isValid = /^\d+$/.test(value);
+				break;
 
 			default:
 				isValid = false;
@@ -101,7 +106,7 @@ export default function RestaurantSignUp() {
 	};
 
 	return (
-		<div className='flex justify-center items-center h-full'>
+		<div className='container max-w-xl m-auto'>
 			<form onSubmit={handleSubmit} className='px-16  bg-slate-200'>
 				<h1 className='text-3xl'>
 					Join Us as a <strong>Restaurant Owner</strong>

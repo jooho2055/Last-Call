@@ -20,7 +20,11 @@ export default function Navbar() {
 	const isCustomerHomePage = userLocation.pathname === '/customerhome';
 
 	return (
-		<header className='flex justify-between font-semibold text-lg bg-orange-500 px-4 py-4'>
+
+		
+
+		<>
+
 			<div>
 				<div>
 					<img class= "h-8" src={require("../../images/profiles/Leslie_perfil.png")} alt="temp_logo" />
@@ -51,6 +55,6 @@ export default function Navbar() {
 				</ul>
 			</nav>
 			{!isLandingPage && <Dropdown />}
-		</header>
+		</>
 	);
 }
