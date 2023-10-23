@@ -20,7 +20,7 @@ export default function Navbar() {
 	const isCustomerHomePage = userLocation.pathname === '/customerhome';
 
 	return (
-		<header className='flex justify-between'>
+		<>
 			<div>
 				<div>image goes here!!!</div>
 			</div>
@@ -45,6 +45,6 @@ export default function Navbar() {
 				</ul>
 			</nav>
 			{!isLandingPage && <Dropdown />}
-		</header>
+		</>
 	);
 }

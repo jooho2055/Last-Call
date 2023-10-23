@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import FormInput from '../../components/FormInput';
-import { inputs } from '../../utils/formConfig';
+import { inputsForCustomer } from '../../utils/formConfig';
 
 export default function CustomerSignup() {
 	const [inputValues, setInputValues] = useState({
@@ -81,12 +81,12 @@ export default function CustomerSignup() {
 	};
 
 	return (
-		<div className='flex justify-center items-center h-full'>
+		<div className='m-auto'>
 			<form onSubmit={handleSubmit} className='px-16  bg-slate-200'>
 				<h1 className='text-3xl'>
 					Join Us as a <strong>Customer</strong>
 				</h1>
-				{inputs.map((input) => (
+				{inputsForCustomer.map((input) => (
 					<FormInput
 						key={input.id}
 						{...input}

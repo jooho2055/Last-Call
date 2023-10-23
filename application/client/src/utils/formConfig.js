@@ -1,4 +1,21 @@
-export const inputs = [
+export const inputsForSignIn = [
+	{
+		id: 1,
+		name: 'username',
+		type: 'text',
+		placeholder: 'Username',
+		label: 'Username',
+	},
+	{
+		id: 2,
+		name: 'pwd',
+		type: 'text',
+		placeholder: 'Password',
+		label: 'Password',
+	},
+];
+
+export const inputsForCustomer = [
 	{
 		id: 1,
 		name: 'username',
