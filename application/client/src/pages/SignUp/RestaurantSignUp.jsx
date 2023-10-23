@@ -13,6 +13,7 @@ export default function RestaurantSignUp() {
 		rname: '',
 		street: '',
 		city: '',
+		zip: '',
 		state: '',
 		cuisine: '',
 	});
@@ -26,6 +27,7 @@ export default function RestaurantSignUp() {
 		rname: true,
 		street: true,
 		city: true,
+		zip: true,
 		state: true,
 		cuisine: true,
 	});
@@ -63,6 +65,9 @@ export default function RestaurantSignUp() {
 				break;
 			case 'city':
 				isValid = /^[A-Za-z\s]{2,50}$/.test(value);
+				break;
+			case 'zip':
+				isValid = /^\d+$/.test(value);
 				break;
 
 			default:
