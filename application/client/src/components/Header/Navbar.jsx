@@ -20,9 +20,15 @@ export default function Navbar() {
 	const isCustomerHomePage = userLocation.pathname === '/customerhome';
 
 	return (
+
+		
+
 		<>
+
 			<div>
-				<div>image goes here!!!</div>
+				<div>
+					<img class= "h-8" src={require("../../images/profiles/Leslie_perfil.png")} alt="temp_logo" />
+				</div>
 			</div>
 			<nav>
 				<ul className='flex'>
@@ -34,12 +40,16 @@ export default function Navbar() {
 						  ))
 						: isLandingPage && (
 								<>
+								<div>
 									<li>
 										<Link to='/signin'>Sign In</Link>
 									</li>
+									</div>
+									<div class="ml-5">
 									<li>
 										<Link to='/signup'>Sign Up</Link>
 									</li>
+									</div>
 								</>
 						  )}
 				</ul>
