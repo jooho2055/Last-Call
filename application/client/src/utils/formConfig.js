@@ -141,6 +141,14 @@ export const inputsForRestaurant = [
 		errorMessage: 'It should contain only letters, with no numbers or special characters!',
 		label: 'City',
 	},
+	{
+		id: 9,
+		name: 'zip',
+		type: 'text',
+		placeholder: 'Zip Code',
+		errorMessage: 'It should contain only numbers',
+		label: 'Zip Code',
+	},
 ];
 
 export const optionsForState = [

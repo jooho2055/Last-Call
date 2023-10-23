@@ -27,7 +27,7 @@ export default function SignIn() {
 		}
 	};
 	return (
-		<div className='flex justify-center items-center h-full'>
+		<div className='m-auto'>
 			<form onSubmit={handleSubmit} className='px-16 bg-slate-200'>
 				<h1 className='text-3xl'>Sign In</h1>
 				{inputsForSignIn.map((input) => (

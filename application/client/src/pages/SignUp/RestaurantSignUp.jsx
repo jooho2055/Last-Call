@@ -101,7 +101,7 @@ export default function RestaurantSignUp() {
 	};
 
 	return (
-		<div className='flex justify-center items-center h-full'>
+		<div className='container max-w-xl m-auto'>
 			<form onSubmit={handleSubmit} className='px-16  bg-slate-200'>
 				<h1 className='text-3xl'>
 					Join Us as a <strong>Restaurant Owner</strong>
