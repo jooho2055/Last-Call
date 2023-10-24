@@ -3,6 +3,7 @@ import Search from '../components/Search';
 import { useState, useEffect } from 'react';
 import RestaurantCard from '../components/RestaurantCard';
 
+
 export default function Home() {
 	const [restList, setRestList] = useState([]);
 	const [searchValue, setSearchValue] = useState('');
