@@ -3,8 +3,9 @@ import React from 'react';
 export default function CurrentOrderItem(props) {
     return (
         <div>
-            <p>{props.restaurant_name}</p>
+            <p>Restaurant: {props.restaurant_name}</p>
             <p>Total price: {props.price}</p>
+            <p>Menu List:</p>
             {props.foods.map((food)=>(
                 <p>{food.name}- {food.price}</p>
             ))}

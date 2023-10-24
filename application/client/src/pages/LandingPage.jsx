@@ -1,6 +1,5 @@
 import React from 'react';
 import landingpage from '../images/landingpage.jpg';
-import Order from './Order';
 
 export default function LandingPage() {
 	return (
@@ -11,7 +10,6 @@ export default function LandingPage() {
 					<p className='text-2xl mt-16'>Avoid food waste and Save money</p>
 				</div>
 			</section>
-			<Order />
 		</div>
 	);
 }

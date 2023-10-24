@@ -45,9 +45,10 @@ const inputsForcurrenttest =[
 
 
 export default function Order() {
-	return <div className='h-full flex flex-col justify-center items-center '>
+	return <div className='h-full flex flex-col justify-center items-center bg-white'>
 		<h1>Order</h1>
 		<h3>Current Order</h3>
+		<div className='flex flex-row'>
 		{inputsForcurrenttest.map((input)=>(
 			<CurrentOrderItem 
 			restaurant_name={input.restaurant_name}
@@ -56,7 +57,8 @@ export default function Order() {
 			price={input.price}
 			status={input.status}/>
 		))}
-		
+		</div>
+		<br />
 		<h3>Order History</h3>
 		<div>
 
