@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function historyOrderItem(props) {
+export default function HistoryOrderItem(props) {
     return (
         <div>
             <p>Date: {props.date}   {props.time}</p>

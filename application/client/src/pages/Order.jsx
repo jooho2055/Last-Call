@@ -1,6 +1,7 @@
 import React from 'react';
+import HistoryOrderItem from '../components/Order/HistoryOrderItem';
 import CurrentOrderItem from '../components/Order/currentOrderItem';
-//import Sample from '../images/samplefood.png'
+
 
 //This is the inputs for testing, will be move later
 const inputsForcurrenttest =[
