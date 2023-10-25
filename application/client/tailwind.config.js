@@ -6,6 +6,9 @@ module.exports = {
 			backgroundImage: {
 				landingpagebg: "url('./images/landingpage.jpg')",
 			},
+			backgroundColor: {
+				'custom-gray': '#c8ccd5',
+			},
 		},
 	},
 	plugins: [],

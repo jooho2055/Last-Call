@@ -20,9 +20,17 @@ export default function Navbar() {
 	const isCustomerHomePage = userLocation.pathname === '/customerhome';
 
 	return (
-		<>
+		<div
+			className={
+				isLandingPage ? 'bg-custom-gray flex justify-between' : 'flex justify-between'
+			}
+		>
 			<div>
-				<div>image goes here!!!</div>
+				<img
+					class='h-8'
+					src={require('../../images/profiles/Leslie_perfil.png')}
+					alt='temp_logo'
+				/>
 			</div>
 			<nav>
 				<ul className='flex'>
@@ -34,17 +42,21 @@ export default function Navbar() {
 						  ))
 						: isLandingPage && (
 								<>
-									<li>
-										<Link to='/signin'>Sign In</Link>
-									</li>
-									<li>
-										<Link to='/signup'>Sign Up</Link>
-									</li>
+									<div>
+										<li>
+											<Link to='/signin'>Sign In</Link>
+										</li>
+									</div>
+									<div class='ml-5'>
+										<li>
+											<Link to='/signup'>Sign Up</Link>
+										</li>
+									</div>
 								</>
 						  )}
 				</ul>
 			</nav>
 			{!isLandingPage && <Dropdown />}
-		</>
+		</div>
 	);
 }

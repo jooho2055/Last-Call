@@ -1,17 +1,20 @@
 import React from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import Navbar from '../components/Header/Navbar';
 
 export default function Root() {
+	const location = useLocation();
+	const isLandingPage = location.pathname === '/';
+
 	return (
 		<>
-			<header className='flex justify-between'>
+			<header>
 				<Navbar />
 			</header>
-			<main className='bg-orange-600 w-full justify-items-center m-auto'>
+			<main className='h-full w-full m-auto overflow-y-auto'>
 				<Outlet />
 			</main>
-			<footer>Team 7</footer>
+			<footer className={isLandingPage ? 'bg-custom-gray' : ''}>Team 7</footer>
 		</>
 	);
 }
