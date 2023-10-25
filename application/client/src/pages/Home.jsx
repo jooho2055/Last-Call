@@ -27,7 +27,7 @@ export default function Home() {
 	};
 
 	return (
-		<div className=''>
+		<div>
 			This is Team 7 Home section.
 			<div>
 				<Search onSearchSubmit={handleSearchSubmit} searchValue={searchValue} />

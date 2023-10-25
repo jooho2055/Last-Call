@@ -8,7 +8,7 @@ export default function Root() {
 			<header className='flex justify-between'>
 				<Navbar />
 			</header>
-			<main className='bg-orange-600 w-full justify-items-center m-auto'>
+			<main className='h-full w-full m-auto overflow-y-auto'>
 				<Outlet />
 			</main>
 			<footer>Team 7</footer>

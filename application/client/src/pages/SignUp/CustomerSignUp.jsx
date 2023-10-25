@@ -40,8 +40,9 @@ export default function CustomerSignup() {
 				break;
 			case 'pwd':
 				isValid =
-					/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$/.test(value) &&
-					checkpassword(value, inputValues.cpwd);
+					/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$/.test(
+						value
+					) && checkpassword(value, inputValues.cpwd);
 				break;
 			case 'cpwd':
 				isValid = value === inputValues.pwd;
@@ -81,7 +82,7 @@ export default function CustomerSignup() {
 	};
 
 	return (
-		<div className='container max-w-xl m-auto'>
+		<div className='max-w-xl m-auto max-h-full'>
 			<form onSubmit={handleSubmit} className='px-16  bg-slate-200'>
 				<h1 className='text-3xl'>
 					Join Us as a <strong>Customer</strong>

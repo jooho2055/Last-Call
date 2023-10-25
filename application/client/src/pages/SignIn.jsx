@@ -27,7 +27,7 @@ export default function SignIn() {
 		}
 	};
 	return (
-		<div className='m-auto'>
+		<div className='max-w-xl m-auto max-h-full'>
 			<form onSubmit={handleSubmit} className='px-16 bg-slate-200'>
 				<h1 className='text-3xl'>Sign In</h1>
 				{inputsForSignIn.map((input) => (

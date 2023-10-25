@@ -20,14 +20,14 @@ export default function Navbar() {
 	const isCustomerHomePage = userLocation.pathname === '/customerhome';
 
 	return (
-
-		
-
 		<>
-
 			<div>
 				<div>
-					<img class= "h-8" src={require("../../images/profiles/Leslie_perfil.png")} alt="temp_logo" />
+					<img
+						class='h-8'
+						src={require('../../images/profiles/Leslie_perfil.png')}
+						alt='temp_logo'
+					/>
 				</div>
 			</div>
 			<nav>
@@ -40,15 +40,15 @@ export default function Navbar() {
 						  ))
 						: isLandingPage && (
 								<>
-								<div>
-									<li>
-										<Link to='/signin'>Sign In</Link>
-									</li>
+									<div>
+										<li>
+											<Link to='/signin'>Sign In</Link>
+										</li>
 									</div>
-									<div class="ml-5">
-									<li>
-										<Link to='/signup'>Sign Up</Link>
-									</li>
+									<div class='ml-5'>
+										<li>
+											<Link to='/signup'>Sign Up</Link>
+										</li>
 									</div>
 								</>
 						  )}
