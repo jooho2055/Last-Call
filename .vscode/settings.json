@@ -1,0 +1,6 @@
+{
+	"prettier.tabWidth": 4,
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"prettier.useTabs": true,
+	"indentRainbow.errorColor": "rgba(128,32,32,0.45)"
+}
