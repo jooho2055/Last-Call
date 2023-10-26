@@ -7,7 +7,9 @@ export default function SignUpChoice() {
 			<h1 className='text-3xl font-semibold text-black py-8'>here is sign up choice page</h1>
 			<div className='flex justify-between text-white'>
 				<Link to={`/signup/customer`}>
-					<button className='bg-black p-3 px-6 rounded text-center'>to customerSignup</button>
+					<button className='bg-black p-3 px-6 rounded text-center'>
+						to customerSignup
+					</button>
 				</Link>
 
 				<Link to={`/signup/restaurant`}>
