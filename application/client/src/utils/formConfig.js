@@ -221,3 +221,78 @@ export const optionsForCuisine = [
 	{ value: 'indian', label: 'Indian' },
 	{ value: 'mexican', label: 'Mexican' },
 ];
+
+export const test = [
+	{
+		name: 'gen',
+		cusine: 'korean',
+		location: 'sunset',
+		status: '1',
+	},
+	{
+		name: 'mugubokka',
+		cusine: 'korean',
+		location: 'nycity',
+		status: '1',
+	},
+	{
+		name: 'pho 24',
+		cusine: 'veitnamese',
+		location: 'burchell ave',
+		status: '1',
+	},
+	{
+		name: 'san tung',
+		cusine: 'chinese',
+		location: 'charllet drive',
+		status: '0',
+	},
+	{
+		name: 'mc donald',
+		cusine: 'american',
+		location: 'oakland',
+		status: '1',
+	},
+	{
+		name: 'indianna',
+		cusine: 'indian',
+		location: 'busan',
+		status: '0',
+	},
+	{
+		name: 'showmen',
+		cusine: 'chinese',
+		location: 'seoul',
+		status: '1',
+	},
+	{
+		name: 'tacotatico',
+		cusine: 'mexican',
+		location: 'mxcity',
+		status: '1',
+	},
+	{
+		name: 'in-n-out',
+		cusine: 'american',
+		location: 'balboa',
+		status: '0',
+	},
+	{
+		name: 'miyakko',
+		cusine: 'japanese',
+		location: 'blossom hill',
+		status: '0',
+	},
+	{
+		name: 'paris buggget',
+		cusine: 'bakery',
+		location: 'daegu',
+		status: '1',
+	},
+	{
+		name: 'tour',
+		cusine: 'bakery',
+		location: 'busan',
+		status: '1',
+	},
+];

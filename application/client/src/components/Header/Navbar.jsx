@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+// import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import Dropdown from './Dropdown';
 
 const navigation = [
-	{ name: 'Home', href: '/customerhome', current: true },
+	{ name: 'Home', href: '/home', current: true },
 	{ name: 'Order', href: '/order', current: false },
 	{ name: 'About Us', href: '/AboutUs', current: false },
 ];

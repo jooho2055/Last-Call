@@ -4,7 +4,7 @@ import LandingPage from './pages/LandingPage';
 import SignIn from './pages/SignIn';
 import NotFound from './pages/NotFound';
 import AboutUs from './pages/AboutUs';
-import Home from './pages/Home';
+import CustomerHome from './pages/CustomerHome';
 import AboutMeJooho from './pages/TeamMembers/AboutMeJooho';
 import AboutMeDorrie from './pages/TeamMembers/AboutMeDorrie';
 import AboutMeGwangwoo from './pages/TeamMembers/AboutMeGwangwoo';
@@ -17,6 +17,7 @@ import RestaurantSignUp from './pages/SignUp/RestaurantSignUp';
 import Order from './pages/Order';
 import CustomerProfile from './pages/CustomerProfile';
 import RestaurantProfile from './pages/RestaurantProfile';
+import SearchDetail from './pages/SearchDetail';
 
 const router = createBrowserRouter([
 	{
@@ -29,7 +30,8 @@ const router = createBrowserRouter([
 			{ path: '/signup', element: <SignUpChoice /> },
 			{ path: '/signup/customer', element: <CustomerSignUp /> },
 			{ path: '/signup/restaurant', element: <RestaurantSignUp /> },
-			{ path: '/customerhome', element: <Home /> },
+			{ path: '/home', element: <CustomerHome /> },
+			{ path: '/search/:searchId', element: <SearchDetail /> },
 			{ path: '/order', element: <Order /> },
 			{ path: '/customerprofile', element: <CustomerProfile /> },
 			{ path: '/restaurantprofile', element: <RestaurantProfile /> },
