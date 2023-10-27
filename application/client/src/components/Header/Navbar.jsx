@@ -14,32 +14,29 @@ const navigation = [
 // }
 
 export default function Navbar() {
-	const [isSignIn, setIsSignin] = useState(false);
-	const userLocation = useLocation();
-	const isLandingPage = userLocation.pathname === '/';
-	const isSigninSignup = useLocation.pathname === '/signin' || 'signup';
+	// const [isSignIn, setIsSignin] = useState(false);
+
+	const { pathname } = useLocation();
+	const isLandingPage = pathname === '/';
+	const isSignin = pathname === '/signin';
+	const isSignup = pathname === '/signup';
+
+	const showNavItems = !isSignin && !isSignup && !isLandingPage;
 
 	return (
 		<div className='bg-stone-900 flex justify-between'>
-			<div>
-				<img
-					className='h-16'
-					src={require('../../images/profiles/Leslie_perfil.png')}
-					alt='temp_logo'
-				/>
-			</div>
-			<nav>
-				<ul className={!isLandingPage && 'flex space-x-3'}>
-					{!isSigninSignup &&
-						!isLandingPage &&
+			<div className='py-4 text-2xl ml-5'>LAST CALL</div>
+			<nav className='mr-24 pt-4'>
+				<ul className={!isLandingPage && 'flex space-x-16'}>
+					{showNavItems &&
 						navigation.map((item) => (
-							<li key={item.name} className='space-x-3'>
+							<li key={item.name} className='space-x-3 text-gray-50'>
 								<Link to={item.href}>{item.name}</Link>
 							</li>
 						))}
 				</ul>
 			</nav>
-			{!isSigninSignup && !isLandingPage && <Dropdown />}
+			{showNavItems && <Dropdown />}
 		</div>
 	);
 }
