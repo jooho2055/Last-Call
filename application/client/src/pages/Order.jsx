@@ -84,7 +84,7 @@ export default function Order() {
 	return <div className='h-full w-full flex flex-col justify-center items-center bg-white gap-4'>
 		<h1>Order</h1>
 		<h3>Current Order</h3>
-		<div className='flex flex-row border-spacing-3 gap-4'>
+		<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4'>
 		{inputsForcurrenttest.map((input)=>(
 			<CurrentOrderItem 
 			restaurant_name={input.restaurant_name}
@@ -96,6 +96,8 @@ export default function Order() {
 			status={input.status}/>
 		))}
 		</div>
+		<br />
+		<hr className='border-t-4 border-solid border-blue-500 w-full' />
 		<br />
 		<h3>Order History</h3>
 		<div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
