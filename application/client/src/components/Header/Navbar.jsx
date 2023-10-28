@@ -20,6 +20,7 @@ export default function Navbar() {
 	const isSigninSignup = useLocation.pathname === '/signin' || 'signup';
 
 	return (
+
 		<div className='bg-stone-900 flex justify-between'>
 			<div>
 				<img
