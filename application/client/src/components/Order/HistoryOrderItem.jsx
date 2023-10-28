@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function HistoryOrderItem(props) {
     return (
-        <div className='border border-slate-600 relative h-72 w-80 flex flex-col'>
+        <div className='border border-slate-600 relative h-72 w-96 flex flex-col'>
             <p>Date: {props.date}&emsp;{props.time}</p>
             <div className='relative bottom-0 left-0'>
                 <p>Restaurant: {props.restaurant_name}</p>
@@ -27,7 +27,7 @@ export default function HistoryOrderItem(props) {
          
             <hr />
             </div>
-            <div className='absolute bottom-0 left-0'>
+            <div className='absolute bottom-0 right-0'>
                 <p>Original Price: {props.original_p}</p>
                 <p>Actual paid: {props.actual_p}</p>
             </div>

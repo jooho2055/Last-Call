@@ -26,7 +26,7 @@ export default function CurrentOrderItem(props) {
             ))}
             </table>
             <hr />
-            <div className='absolute left-0 bottom-0'>    
+            <div className='absolute right-0 bottom-0'>    
             <p>Total price: {props.price}</p>
             </div>
         </div>
