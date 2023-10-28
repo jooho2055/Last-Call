@@ -1,81 +1,119 @@
 import React, { useState } from 'react';
+import ProfileInput from '../components/ProfileInput';
+import { inputsUserProfile } from '../utils/cusProfile';
+
 
 export default function CustomerProfile() {
-  const [profilePhoto, setProfilePhoto] = useState(null);
+    const [inputValues, setInputValues] = useState({
+		idea: '',
+		fname: '',
+		lname: '',
+		email: '',
+		pwd: '',
+		cpwd: '',
+		phone: '',
+        bio: '',
+	});
+    const [validity, setValidity] = useState({
+		idea: true,
+		fname: true,
+		lname: true,
+		email: true,
+		pwd: true,
+		cpwd: true,
+		phone: true,
+        bio: true,
+	});
+    const isSubmitDisabled =
+        !Object.values(validity).every((isValid) => isValid) ||
+        !Object.values(inputValues).every((value) => value);
 
-  const handlePhotoChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      setProfilePhoto(URL.createObjectURL(file));
-    } else {
-      setProfilePhoto(null);
+    const validateInput = (name, value) => {
+        let isValid = true;
+
+        switch (name) {
+            case 'idea':
+                isValid = /^[A-Za-z0-9]{5,16}$/.test(value);
+                break;
+            case 'fname':
+            case 'lname':
+                isValid = /^[A-Za-z]+$/.test(value);
+                break;
+            case 'pwd':
+                isValid =
+                    /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$/.test(
+                        value
+                    ) && checkpassword(value, inputValues.cpwd);
+                break;
+            case 'cpwd':
+                isValid = value === inputValues.pwd;
+                break;
+            case 'email':
+                isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+                break;
+            case 'phone':
+                isValid = /^\d{10,15}$/.test(value);
+                break;
+            case 'bio':
+                isValid = /^[A-Za-z0-9\s]{0,100}$/.test(value);
+                break;
+
+            default:
+                isValid = false;
+        }
+
+        setValidity({ ...validity, [name]: isValid });
+    };
+
+    function checkpassword(pwd, cpwd) {
+        if (pwd && inputValues.cpwd) {
+            if (pwd !== cpwd) {
+                return false;
+            }
+        }
+        return true;
     }
-  };
+
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        setInputValues({ ...inputValues, [name]: value });
+        validateInput(name, value);
+    };
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        console.log(inputValues);
+    };
+
+    const [editMode, setEditMode] = useState(false);
+
+    const toggleEditMode = () => {
+        setEditMode(!editMode);
+    };
 
   return (
-    <div className="bg-white sm:mx-4 md:mx-8 lg:mx-16 xl:mx-32">
-      <div className="w-1/2 max-w-lg mx-auto mt-4 px-4">
-        <form className="mx-2 my-2">
-          <div className="bg-slate-300 rounded-lg p-4"> 
-		  <h1 className="font-medium text-2 pt-5 px-2">User Profile</h1>
-            <div className="flex flex-col md:flex-row md:space-x-4">
-              <div className="md:w-1/2 mt-5">
-                {profilePhoto && (
-                  <img className="h-20 w-20 object-cover rounded-full" src={profilePhoto} alt="User Profile"/>
-                )}
-                <label className="block mt-3">
-                  <input
-                    type="file"
-                    className="w-full text-sm border border-black rounded p-2 text-zinc-900"
-                    onChange={handlePhotoChange}
-                  />
-                </label>
-              </div>
-
-              <div className="md:w-1/2 mt-5">
-                <label className="inline-flex items-baseline border border-black rounded p-2">
-                  <div className="flex-1 leading-none">
-                    <input
-                      type="text"
-                      className="w-full bg-transparent focus:outline-none"
-                      placeholder="Idea"
-                    />
-                  </div>
-                </label>
-
-                <label className="inline-flex items-baseline border border-black rounded p-2 mt-2">
-                  <div className="flex-1 leading-none">
-                    <input
-                      type="text"
-                      className="w-full bg-transparent focus:outline-none"
-                      placeholder="Name"
-                    />
-                  </div>
-                </label>
-
-                <label className="inline-flex items-baseline border border-black rounded p-2 mt-2">
-                  <div className="flex-1 leading-none">
-                    <input
-                      type="text"
-                      className="w-full bg-transparent focus:outline-none"
-                      placeholder="Email"
-                    />
-                  </div>
-                </label>
-              </div>
-            </div>
-            <div className="mt-2">
-              <label className="relative block p-2 border border-black rounded">
-                <span className="text-md font-semibold text-zinc-900">Bio</span>
-                <textarea
-                  className="w-full p-2 text-sm border-2 border-black rounded text-black"
-                  placeholder="Write your Bio...."
+    <div className='container mx-auto px-4 py-8'>
+            <form onSubmit={handleSubmit} className='bg-slate-100 p-8 rounded-lg shadow-md max-w-md mx-auto'>
+            <h1 className='text-xl mb-4 text-center font-semibold text-slate-950'>User Profile</h1>
+            {inputsUserProfile.map((input) => (
+                <ProfileInput
+                key={input.id}
+                {...input}
+                value={inputValues[input.name]}
+                onChange={handleChange}
+                isValid={validity[input.name]}
+                disabled={!editMode}
                 />
-              </label>
-            </div>
-          </div>
-        </form>
-      </div>
+                ))}
+                <div className="mt-4 flex justify-center">
+                <button className="bg-orange-300 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded-full" disabled={isSubmitDisabled}>
+                    Save
+                </button>
+                <button type='button' className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full" onClick={toggleEditMode}>
+                    {editMode ? 'Cancel' : 'Edit'}
+                </button>
+                </div>
+            </form>
     </div>
   );
 }
