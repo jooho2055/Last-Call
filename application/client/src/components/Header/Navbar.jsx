@@ -17,42 +17,30 @@ export default function Navbar() {
 	const [isSignIn, setIsSignin] = useState(false);
 	const userLocation = useLocation();
 	const isLandingPage = userLocation.pathname === '/';
-	const isCustomerHomePage = userLocation.pathname === '/customerhome';
+	const isSigninSignup = useLocation.pathname === '/signin' || 'signup';
 
 	return (
 
-		<>
-
+		<div className='bg-stone-900 flex justify-between'>
 			<div>
-				<div>
-					<img class= "h-8" src={require("../../images/profiles/Leslie_perfil.png")} alt="temp_logo" />
-				</div>
+				<img
+					className='h-16'
+					src={require('../../images/profiles/Leslie_perfil.png')}
+					alt='temp_logo'
+				/>
 			</div>
 			<nav>
-				<ul className='flex'>
-					{isCustomerHomePage
-						? navigation.map((item) => (
-								<li key={item.name} className='ml-7'>
-									<Link to={item.href}>{item.name}</Link>
-								</li>
-						  ))
-						: isLandingPage && (
-								<>
-								<div>
-									<li>
-										<Link to='/signin'>Sign In</Link>
-									</li>
-									</div>
-									<div class="ml-5">
-									<li>
-										<Link to='/signup'>Sign Up</Link>
-									</li>
-									</div>
-								</>
-						  )}
+				<ul className={!isLandingPage && 'flex space-x-3'}>
+					{!isSigninSignup &&
+						!isLandingPage &&
+						navigation.map((item) => (
+							<li key={item.name} className='space-x-3'>
+								<Link to={item.href}>{item.name}</Link>
+							</li>
+						))}
 				</ul>
 			</nav>
-			{!isLandingPage && <Dropdown />}
-		</>
+			{!isSigninSignup && !isLandingPage && <Dropdown />}
+		</div>
 	);
 }

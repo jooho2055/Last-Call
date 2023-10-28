@@ -3,6 +3,7 @@ import Search from '../components/Search';
 import { useState, useEffect } from 'react';
 import RestaurantCard from '../components/RestaurantCard';
 
+
 export default function Home() {
 	const [restList, setRestList] = useState([]);
 	const [searchValue, setSearchValue] = useState('');
@@ -27,7 +28,7 @@ export default function Home() {
 	};
 
 	return (
-		<div className=''>
+		<div>
 			This is Team 7 Home section.
 			<div>
 				<Search onSearchSubmit={handleSearchSubmit} searchValue={searchValue} />
