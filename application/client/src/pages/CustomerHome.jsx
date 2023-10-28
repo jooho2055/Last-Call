@@ -47,7 +47,7 @@ export default function CustomerHome() {
 					onSubmit={handleSubmit}
 				/>
 			</div>
-			<div className='h-full flex flex-col justify-center items-center '>
+			<div className='grid grid-cols-3 auto-rows-[minmax(14rem,auto)] p-6 gap-6'>
 				{test.map((restaurant, index) => (
 					<RestaurantList key={index} restaurantInfo={restaurant} /> // must use restaurant unique id as key in the future
 				))}

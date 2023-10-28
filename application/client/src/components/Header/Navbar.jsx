@@ -25,7 +25,9 @@ export default function Navbar() {
 
 	return (
 		<div className='bg-stone-900 flex justify-between'>
-			<div className='py-4 text-2xl ml-5'>LAST CALL</div>
+			<Link to={'/'}>
+				<div className='py-4 text-2xl ml-5'>LAST CALL</div>
+			</Link>
 			<nav className='mr-24 pt-4'>
 				<ul className={!isLandingPage && 'flex space-x-16'}>
 					{showNavItems &&

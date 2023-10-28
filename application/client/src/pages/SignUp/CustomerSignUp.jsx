@@ -82,7 +82,7 @@ export default function CustomerSignup() {
 	};
 
 	return (
-		<div className='max-w-xl m-auto max-h-full'>
+		<div className='max-w-xl m-auto'>
 			<form onSubmit={handleSubmit} className='px-16  bg-slate-200'>
 				<h1 className='text-3xl'>
 					Join Us as a <strong>Customer</strong>
