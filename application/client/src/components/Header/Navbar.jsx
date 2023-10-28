@@ -24,6 +24,7 @@ export default function Navbar() {
 	const showNavItems = !isSignin && !isSignup && !isLandingPage;
 
 	return (
+
 		<div className='bg-stone-900 flex justify-between'>
 			<Link to={'/'}>
 				<div className='py-4 text-2xl ml-5'>LAST CALL</div>
