@@ -8,13 +8,11 @@ export default function Root() {
 
 	return (
 		<>
-			<header>
-				<Navbar />
-			</header>
+			<header className='text-slate-100 text-lg'>{!isLandingPage && <Navbar />}</header>
 			<main className='h-full w-full m-auto overflow-y-auto'>
 				<Outlet />
 			</main>
-			<footer className={isLandingPage ? 'bg-custom-gray' : ''}>Team 7</footer>
+			{!isLandingPage && <footer>Team 7</footer>}
 		</>
 	);
 }

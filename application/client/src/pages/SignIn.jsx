@@ -43,13 +43,11 @@ export default function SignIn() {
 					<input type='checkbox' id='roleSwitch' onChange={handleCheckbox} />
 					<label htmlFor='roleSwitch'>Are you logging as a Restaurant Owner?</label>
 				</div>
+				<Link to={`/signup`}>
+					<button className='block'>Don't have accout? </button>
+				</Link>
 				<button className='border text-4xl'>Submit</button>
 			</form>
-
-			{/* <div>This is Sign In page</div>
-			<Link to={`/signup`}>
-				<button>Don't have accout? </button>
-			</Link> */}
 		</div>
 	);
 }

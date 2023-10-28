@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+// import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import Dropdown from './Dropdown';
 
 const navigation = [
-	{ name: 'Home', href: '/customerhome', current: true },
+	{ name: 'Home', href: '/home', current: true },
 	{ name: 'Order', href: '/order', current: false },
 	{ name: 'About Us', href: '/AboutUs', current: false },
 ];
@@ -14,49 +14,34 @@ const navigation = [
 // }
 
 export default function Navbar() {
-	const [isSignIn, setIsSignin] = useState(false);
-	const userLocation = useLocation();
-	const isLandingPage = userLocation.pathname === '/';
-	const isCustomerHomePage = userLocation.pathname === '/customerhome';
+	// const [isSignIn, setIsSignin] = useState(false);
+
+	const { pathname } = useLocation();
+	const isLandingPage = pathname === '/';
+	const isSignin = pathname === '/signin';
+	const isSignup = pathname === '/signup';
+	const isSignupCustomer = pathname === '/signup/customer';
+	const isSignupRestaurant = pathname === '/signup/restaurant';
+
+	const showNavItems =
+		!isSignin && !isSignup && !isLandingPage && !isSignupCustomer && !isSignupRestaurant;
 
 	return (
-		<div
-			className={
-				isLandingPage ? 'bg-custom-gray flex justify-between' : 'flex justify-between'
-			}
-		>
-			<div>
-				<img
-					class='h-8'
-					src={require('../../images/profiles/Leslie_perfil.png')}
-					alt='temp_logo'
-				/>
-			</div>
-			<nav>
-				<ul className='flex'>
-					{isCustomerHomePage
-						? navigation.map((item) => (
-								<li key={item.name} className='ml-7'>
-									<Link to={item.href}>{item.name}</Link>
-								</li>
-						  ))
-						: isLandingPage && (
-								<>
-									<div>
-										<li>
-											<Link to='/signin'>Sign In</Link>
-										</li>
-									</div>
-									<div class='ml-5'>
-										<li>
-											<Link to='/signup'>Sign Up</Link>
-										</li>
-									</div>
-								</>
-						  )}
+		<div className='bg-stone-900 flex justify-between'>
+			<Link to={'/'}>
+				<div className='py-4 text-2xl ml-5'>LAST CALL</div>
+			</Link>
+			<nav className='mr-24 pt-4'>
+				<ul className={!isLandingPage && 'flex space-x-16'}>
+					{showNavItems &&
+						navigation.map((item) => (
+							<li key={item.name} className='space-x-3 text-gray-50'>
+								<Link to={item.href}>{item.name}</Link>
+							</li>
+						))}
 				</ul>
 			</nav>
-			{!isLandingPage && <Dropdown />}
+			{showNavItems && <Dropdown />}
 		</div>
 	);
 }
