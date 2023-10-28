@@ -8,24 +8,22 @@ export default function HistoryOrderItem(props) {
                 <p>Restaurant: {props.restaurant_name}</p>
                 <p>Address: {props.address}</p>
                 <p>Menu List:</p>
-                <hr />
-                <table className='border-spacing-4'>
-                <tr>
-                    <th>Food Name</th>
-                    <th className='p-2'>Quantity</th>
-                    <th className='p-2'>Price</th>
-                </tr>
-            {props.foods.map((food)=>(
-                    <tr>
-                        <td>{food.name}</td>
-                        <td className='p-2'>{food.quantity}</td>
-                        <td className='p-2'>{food.price}</td>
-                    </tr>
+                <div className='border border-collapse border-spacing-4'>
+                <div className="grid grid-cols-3 border-b bg-gray-100 font-semibold">
+                   <div className="p-2">Food Name</div>
+                   <div className="p-2">Quantity</div>
+                   <div className="p-2">Price</div>
+                 </div>
+                 {props.foods.map((food)=>(
+                    <div className="grid grid-cols-3 border-b">
+                        <div className="p-2">{food.name}</div>
+                        <div className="p-2">{food.quantity}</div>
+                        <div className="p-2">{food.price}</div>
+                    </div>
                 
             ))}
-            </table>
+            </div>
          
-            <hr />
             </div>
             <div className='absolute bottom-0 right-0'>
                 <p>Original Price: {props.original_p}</p>

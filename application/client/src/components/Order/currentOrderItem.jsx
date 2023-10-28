@@ -2,30 +2,28 @@ import React from 'react';
 
 export default function CurrentOrderItem(props) {
     return (
-        <div className='border border-slate-600 relative w-72 h-80'>
+        <div className='border border-slate-600 relative w-80 h-80'>
             <p>Restaurant: {props.restaurant_name}</p>
             <p>Address: {props.address}</p>
             <p>Date: {props.date}</p>
             <p>Pick up by: {props.time}</p>
             <p>Status: {props.status}</p>
             <p>Menu List:</p>
-            <hr />
-            <table className='border-spacing-4'>
-                <tr>
-                    <th>Food Name</th>
-                    <th className='p-2'>Quantity</th>
-                    <th className='p-2 '>Price</th>
-                </tr>
-            {props.foods.map((food)=>(
-                    <tr>
-                        <td>{food.name}</td>
-                        <td className='p-2'>{food.quantity}</td>
-                        <td className='p-2'>{food.price}</td>
-                    </tr>
+            <div className='border border-collapse border-spacing-4'>
+                <div className="grid grid-cols-3 border-b bg-gray-100 font-semibold">
+                   <div className="p-2">Food Name</div>
+                   <div className="p-2">Quantity</div>
+                   <div className="p-2">Price</div>
+                 </div>
+                 {props.foods.map((food)=>(
+                    <div className="grid grid-cols-3 border-b">
+                        <div className="p-2">{food.name}</div>
+                        <div className="p-2">{food.quantity}</div>
+                        <div className="p-2">{food.price}</div>
+                    </div>
                 
             ))}
-            </table>
-            <hr />
+            </div>
             <div className='absolute right-0 bottom-0'>    
             <p>Total price: {props.price}</p>
             </div>
