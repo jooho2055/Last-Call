@@ -1,27 +1,37 @@
 import React, { useState } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { inputsForSignIn } from '../utils/formConfig';
 import FormInput from '../components/FormInput';
 
 export default function SignIn() {
+	const navigate = useNavigate();
 	const [inputValues, setInputValues] = useState({
 		username: '',
 		pwd: '',
 		loginas: 'customer',
 	});
+	const [user, setUser] = useState({
+	})
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		// console.log(inputValues);
-		const res = await fetch('/users/signin',{
+		const res = await fetch('http://13.52.182.209/users/signin',{
 			method: 'POST',
 			headers: {
 				"content-Type": 'application/json'
 			},
 			body: JSON.stringify(inputValues)		
-		}).then((res)=>(res.json())).then((res)=>{
-			console.log(res)
-			console.log(res.locals)
+		})
+		.then((res)=>(res.json())).then((res)=>{
+			
+			if(res.role === 'customers'){
+				navigate('/home')
+			}else if(res.role === 'restaurants'){
+				navigate('/restaurantprofile')
+			}else{
+				navigate('/signin')
+			}
 		})
 		// console.log(res.locals.passport)
 		

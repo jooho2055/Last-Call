@@ -10,7 +10,7 @@ export default function Dropdown() {
 	};
 	
 	const handleSignOut = async () => {
-		const res = await fetch("/users/signout",{
+		const res = await fetch("http://13.52.182.209/users/signout",{
 			method: 'GET',
 			headers: {
 				"content-Type": 'application/json'
