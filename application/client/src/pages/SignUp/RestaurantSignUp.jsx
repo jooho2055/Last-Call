@@ -87,10 +87,25 @@ export default function RestaurantSignUp() {
 		return true;
 	}
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
 		console.log(inputValues);
+		try{
+			const res = await fetch(`/users/signup/restaurant`,{
+			method: 'POST',
+			headers: {
+				"content-Type": 'application/json'
+			},
+			body: JSON.stringify(inputValues)
+			})
+		}catch(err){
+			console.log('err!!!!')
+			console.log(err)
+		}
 	};
+	// const handleSubmit = (e) => {
+	// 	e.preventDefault();
+	// };
 
 	const onChange = (e) => {
 		const { name, value } = e.target;
