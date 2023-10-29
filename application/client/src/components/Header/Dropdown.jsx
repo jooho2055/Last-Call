@@ -1,21 +1,31 @@
 import React, { useState } from 'react';
 import { AiOutlineUser } from 'react-icons/ai';
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { logout } from './../../redux/userActions';
 
 export default function Dropdown() {
 	const [isOpen, setIsOpen] = useState(false);
+	const user = useSelector((state) => state.user);
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
 
 	const toggleDropdown = () => {
 		setIsOpen(!isOpen);
 	};
 	
 	const handleSignOut = async () => {
-		const res = await fetch("http://13.52.182.209/users/signout",{
+		const res = await fetch("/users/signout",{
 			method: 'GET',
 			headers: {
 				"content-Type": 'application/json'
 			},
-		}).then((res)=>(res.json))
+		}).then((res)=>{
+			if(res.ok && user.isLoggedIn){
+				dispatch(logout());
+				navigate('/');
+			}
+		})
 		console.log(res)
 	}
 	return (

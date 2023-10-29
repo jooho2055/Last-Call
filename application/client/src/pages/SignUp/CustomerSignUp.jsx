@@ -77,7 +77,7 @@ export default function CustomerSignup() {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		try{
-			const res = await fetch(`http://13.52.182.209/users/signup/customer`,{
+			const res = await fetch(`/users/signup/customer`,{
 			method: 'POST',
 			headers: {
 				"content-Type": 'application/json'
@@ -85,8 +85,9 @@ export default function CustomerSignup() {
 			body: JSON.stringify(inputValues)
 			})
 			.then((res)=>{
+				console.log(res)
 				if(res.ok){
-					navigate('/login')
+					navigate('/signin')
 				}else{
 					console.log("fail to sign up")
 				}

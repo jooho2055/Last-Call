@@ -69,7 +69,7 @@ app.use(function(req,res,next){
       res.locals.isLoggedIn = true;
       res.locals.user = req.session.user;
     }else{
-      console.log("isNotLoggedIn")
+      console.log("is Not LoggedIn")
       res.locals.isLoggedIn = true;
     }
     next()

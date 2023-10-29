@@ -1,46 +1,50 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { inputsForSignIn } from '../utils/formConfig';
 import FormInput from '../components/FormInput';
+import { useDispatch } from 'react-redux';
+import { login } from '../redux/userActions';
+import { useSelector } from 'react-redux';
 
 export default function SignIn() {
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
+	const user = useSelector((state) => state.user);
+	useEffect(() => {
+		if(user.isLoggedIn){
+			if(user.role === 'restaurant'){
+				navigate('/restaurantprofile')
+			}else{
+				navigate("/home")
+			}
+		}
+	}, []);
 	const [inputValues, setInputValues] = useState({
 		username: '',
 		pwd: '',
 		loginas: 'customer',
 	});
-	const [user, setUser] = useState({
-		userId:'',
-		username:'',
-		email:'',
-		role:'',
-	})
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		// console.log(inputValues);
-		const res = await fetch('/users/signin',{
+		const res = await fetch('http://13.52.182.209/users/signin',{
 			method: 'POST',
 			headers: {
 				"content-Type": 'application/json'
 			},
 			body: JSON.stringify(inputValues)		
 		})
-		.then((res)=>(res.json())).then((res)=>{
-			setUser(res);
-			console.log(user);
-		}).then(()=>{
-			if(user.role === 'customers'){
-				navigate('/home')
-			}else if(user.role === 'restaurants'){
-				navigate('/restaurantprofile')
-			}else{
-				navigate('/signin')
-			}
-		})
-		// console.log(res.locals.passport)
-		
+		const data = await res.json()
+		dispatch(login(data));
+		if(data.role === 'customers'){
+			navigate('/home')
+		}else if(data.role === 'restaurants'){
+			navigate('/restaurantprofile')
+		}else{
+			console.log('fucku')
+		}
+
 	};
 
 	const onChange = (e) => {
