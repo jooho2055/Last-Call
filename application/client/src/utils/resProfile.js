@@ -88,7 +88,7 @@ export const inputForMenu = [
 		name: 'quantity',
 		type: 'number',
 		placeholder: 'Quantity',
-		errorMessage: 'Must be a number',
+		errorMessage: 'Must be a integer',
 		label:'Quantity',
 	},
 	{

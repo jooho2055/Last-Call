@@ -145,8 +145,8 @@ export default function RestaurantProfile() {
 						isValid = /^[A-Za-z0-9]{1,16}$/.test(value);
 					    break;
 					case 'quantity':
-						isValid = /^[0-9]*\.?[0-9]+$/.test(value) && parseFloat(value) > 0;
-                        break;
+						isValid = /^[1-9]\d*$/.test(value);
+						break;
 					case 'oprice':
 						isValid = /^[0-9]*\.?[0-9]+$/.test(value) && parseFloat(value) > 0;
                         break;
