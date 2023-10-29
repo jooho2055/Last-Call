@@ -19,7 +19,7 @@ export default function CurrentOrderItem(props) {
                     <div className="grid grid-cols-3 border-b">
                         <div className="p-2">{food.name}</div>
                         <div className="p-2">{food.quantity}</div>
-                        <div className="p-2">{food.price}</div>
+                        <div className="p-2">$ {food.price}</div>
                     </div>
                 
             ))}
