@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { inputsForSignIn } from '../utils/formConfig';
 import FormInput from '../components/FormInput';
 
@@ -10,9 +10,21 @@ export default function SignIn() {
 		loginas: 'customer',
 	});
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
-		console.log(inputValues);
+		// console.log(inputValues);
+		const res = await fetch('/users/signin',{
+			method: 'POST',
+			headers: {
+				"content-Type": 'application/json'
+			},
+			body: JSON.stringify(inputValues)		
+		}).then((res)=>(res.json())).then((res)=>{
+			console.log(res)
+			console.log(res.locals)
+		})
+		// console.log(res.locals.passport)
+		
 	};
 
 	const onChange = (e) => {

@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import FormInput from '../../components/FormInput';
 import { inputsForCustomer } from '../../utils/formConfig';
 
+
+
 export default function CustomerSignup() {
 	const [inputValues, setInputValues] = useState({
 		username: '',
@@ -69,10 +71,33 @@ export default function CustomerSignup() {
 		}
 		return true;
 	}
-
-	const handleSubmit = (e) => {
+	/**
+	 * const fetchRestaurants = (search = '') => {
+			fetch(`http://13.52.182.209/search?search=${search}`, {
+				method: 'GET',
+			})
+				.then((res) => res.json())
+				.then((data) => setRestList(data))
+				.catch((error) => console.error('Error:', error));
+		};
+	* @returns 
+	* 
+	*/
+	const handleSubmit = async (e) => {
 		e.preventDefault();
-		console.log(inputValues);
+		try{
+			const res = await fetch(`/users/signup/customer`,{
+			method: 'POST',
+			headers: {
+				"content-Type": 'application/json'
+			},
+			body: JSON.stringify(inputValues)
+			}).then(console.log(res))
+		
+		}catch(err){
+			console.log('err!!!!')
+			console.log(err)
+		}
 	};
 
 	const onChange = (e) => {
