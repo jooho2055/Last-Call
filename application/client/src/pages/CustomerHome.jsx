@@ -9,11 +9,19 @@ import RestaurantList from '../components/RestaurantList';
 import { useSelector } from 'react-redux';
 
 export default function CustomerHome() {
+	const user = useSelector((state)=>(state.user));
+	const navigate = useNavigate();
+
 	const [restList, setRestList] = useState([]);
 	const [searchValue, setSearchValue] = useState('');
-	const navigate = useNavigate();
 	
 	useEffect(() => {
+		if(!user.isLoggedIn){
+			navigate('/signin')
+		}
+		if(user.role === 'restaurants'){
+			navigate('/restaurantprofile')
+		}
 		fetchRestaurants();
 	}, []);
 
