@@ -11,12 +11,16 @@ export default function SignIn() {
 		loginas: 'customer',
 	});
 	const [user, setUser] = useState({
+		userId:'',
+		username:'',
+		email:'',
+		role:'',
 	})
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		// console.log(inputValues);
-		const res = await fetch('http://13.52.182.209/users/signin',{
+		const res = await fetch('/users/signin',{
 			method: 'POST',
 			headers: {
 				"content-Type": 'application/json'
@@ -24,10 +28,12 @@ export default function SignIn() {
 			body: JSON.stringify(inputValues)		
 		})
 		.then((res)=>(res.json())).then((res)=>{
-			
-			if(res.role === 'customers'){
+			setUser(res);
+			console.log(user);
+		}).then(()=>{
+			if(user.role === 'customers'){
 				navigate('/home')
-			}else if(res.role === 'restaurants'){
+			}else if(user.role === 'restaurants'){
 				navigate('/restaurantprofile')
 			}else{
 				navigate('/signin')
