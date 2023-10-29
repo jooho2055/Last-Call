@@ -6,12 +6,13 @@ import { test } from '../utils/formConfig';
 
 import SearchBox from '../components/SearchBox';
 import RestaurantList from '../components/RestaurantList';
+import { useSelector } from 'react-redux';
 
 export default function CustomerHome() {
 	const [restList, setRestList] = useState([]);
 	const [searchValue, setSearchValue] = useState('');
 	const navigate = useNavigate();
-
+	
 	useEffect(() => {
 		fetchRestaurants();
 	}, []);

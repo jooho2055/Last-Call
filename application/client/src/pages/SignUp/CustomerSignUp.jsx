@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import FormInput from '../../components/FormInput';
+import {useNavigate} from 'react-router-dom';
 import { inputsForCustomer } from '../../utils/formConfig';
 
 
 
 export default function CustomerSignup() {
+	const navigate = useNavigate();
 	const [inputValues, setInputValues] = useState({
 		username: '',
 		fname: '',
@@ -71,18 +73,7 @@ export default function CustomerSignup() {
 		}
 		return true;
 	}
-	/**
-	 * const fetchRestaurants = (search = '') => {
-			fetch(`http://13.52.182.209/search?search=${search}`, {
-				method: 'GET',
-			})
-				.then((res) => res.json())
-				.then((data) => setRestList(data))
-				.catch((error) => console.error('Error:', error));
-		};
-	* @returns 
-	* 
-	*/
+
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		try{
@@ -92,8 +83,15 @@ export default function CustomerSignup() {
 				"content-Type": 'application/json'
 			},
 			body: JSON.stringify(inputValues)
-			}).then(console.log(res))
-		
+			})
+			.then((res)=>{
+				console.log(res)
+				if(res.ok){
+					navigate('/signin')
+				}else{
+					console.log("fail to sign up")
+				}
+			})
 		}catch(err){
 			console.log('err!!!!')
 			console.log(err)

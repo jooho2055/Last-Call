@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
 import { AiOutlineUser } from 'react-icons/ai';
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { logout } from './../../redux/userActions';
 
 export default function Dropdown() {
 	const [isOpen, setIsOpen] = useState(false);
+	const user = useSelector((state) => state.user);
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
 
 	const toggleDropdown = () => {
 		setIsOpen(!isOpen);
@@ -15,7 +20,12 @@ export default function Dropdown() {
 			headers: {
 				"content-Type": 'application/json'
 			},
-		}).then((res)=>(res.json))
+		}).then((res)=>{
+			if(res.ok && user.isLoggedIn){
+				dispatch(logout());
+				navigate('/');
+			}
+		})
 		console.log(res)
 	}
 	return (

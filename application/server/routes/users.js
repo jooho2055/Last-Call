@@ -19,6 +19,7 @@ router.post('/signup/customer',async (req,res)=>{
             email, points, created_at, updated_at) VALUES(?,?,?,?,?,?,0,NOW(),NOW());`,
             [fname, lname, username, hasedPasswrod, phone, email]);
         console.log(result);
+
         return res.status(200).json({message: "welcome!"});
     }catch(err){
         // catch All errors
