@@ -6,15 +6,20 @@ const cookieParser = require('cookie-parser');
 const logger = require("morgan");
 const sessions = require('express-session');
 const mysqlStore = require('express-mysql-session')(sessions);
-const port = 5001;
-var db = require('./conf/database');
+// var db = require('./conf/database');
 const cors = require('cors');
+// passport authentication
+// const passport = require('passport');
+// const LocalStrategy = require('passport-local').Strategy;
+// const bcrypt = require('bcrypt');
+
+// handle cors error
 let corsOptions = {
   origin: ['http://localhost:3000', 'http://localhost:5001'],
   credentials: true
 }
-
 app.use(cors(corsOptions));
+
 const maxAge = 1000*60*60*24*7;
 
 const indexRouter = require('./routes/index');
@@ -36,8 +41,11 @@ app.use(express.static(path.join(__dirname, "../client/build")));
 
 app.use(cookieParser());
 
+
+
+
 app.use(sessions({
-  secret: "LastCAll!@#$^",
+  secret: process.env.SESSION_SECRET,
   store: sessionStore,
   resave: false,
   saveUninitialized: true,
@@ -48,27 +56,36 @@ app.use(sessions({
   }
 }));
 
+// passport init
+// app.use(passport.initialize());
+// add session into req
+// app.use(passport.session());
+
+
 app.use(function(req,res,next){
     console.log("This is session: ",req.session);
     if(req.session.user){
       console.log("is LoggedIn")
       res.locals.isLoggedIn = true;
-      res.locals.user = res.session.user;
+      res.locals.user = req.session.user;
+    }else{
+      console.log("isNotLoggedIn")
+      res.locals.isLoggedIn = true;
     }
     next()
 })
 
 app.use("/", indexRouter);
-// app.use("/users", usersRouter);
+app.use("/users", usersRouter);
 // app.use("/customer", customersRouter);
 // app.use("/restaurant", restaurantsRouter);
- 
+
 app.get('*', (res, req) =>{
     req.sendFile(path.join(__dirname, '../client/build/index.html'))
 })
 
 app.use((req,res,next) =>{
-    next(createError(404, `The route ${req.method} : ${req.url} does not exist.`));
+    next(console.log(`404, The route ${req.method} : ${req.url} does not exist.`));
 })
 
 /**
@@ -83,9 +100,6 @@ app.use(function(err, req, res, next){
   res.render("error");
 });
 
-
 app.listen(app.get("port"), () => {
-    console.log(app.get("port"), `app listening at ${port}`);
+    console.log(app.get("port"), `app listening at ${ process.env.PORT || port}`);
 });
-
-// module.exports = router;
