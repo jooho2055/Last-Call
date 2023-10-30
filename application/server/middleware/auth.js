@@ -21,7 +21,7 @@ module.exports = {
     },
 
     // check is my page
-    isMyProfile: function(req,res,next){
+    isMyPage: function(req,res,next){
         // get id from params
         var {id} = req.params;
         id = parseInt(id) // string to Int
