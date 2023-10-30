@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 const path = require("path");
 var db = require('../conf/database');
-const {isLoggedIn, isRestaurants, isMyProfile} = require('../middleware/auth')
+const {isLoggedIn, isRestaurants, isMyPage} = require('../middleware/auth')
 
 
 // This is vars for debug
@@ -77,7 +77,7 @@ const TEST_SET_MENU_WRONG4 = {
  * To get restaurants profile
  * @params hold restaurants id
  */
-router.get('/profile/:id(\\d+)', isLoggedIn, isRestaurants, isMyProfile, 
+router.get('/profile/:id(\\d+)', isLoggedIn, isRestaurants, isMyPage, 
     async function(req,res){
         const {id} = req.params;
         console.log(id)
