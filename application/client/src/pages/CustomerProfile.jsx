@@ -1,19 +1,12 @@
 import React, { useState } from 'react';
+import initialUserInfo from '../utils/userProfileData';
 import ProfileInput from '../components/ProfileInput';
 import { inputsUserProfile } from '../utils/cusProfile';
 
 
 export default function CustomerProfile() {
-    const [inputValues, setInputValues] = useState({
-		idea: '',
-		fname: '',
-		lname: '',
-		email: '',
-		pwd: '',
-		cpwd: '',
-		phone: '',
-        bio: '',
-	});
+    const storedUserProfile = JSON.parse(localStorage.getItem('userProfile')) || initialUserInfo;
+    const [inputValues, setInputValues] = useState(storedUserProfile);
     const [validity, setValidity] = useState({
 		idea: true,
 		fname: true,
@@ -82,6 +75,7 @@ export default function CustomerProfile() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        localStorage.setItem('userProfile', JSON.stringify(inputValues));
         console.log(inputValues);
     };
 
@@ -109,11 +103,13 @@ export default function CustomerProfile() {
                 <button className="bg-orange-300 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded-full" disabled={isSubmitDisabled}>
                     Save
                 </button>
-                <button type='button' className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full" onClick={toggleEditMode}>
-                    {editMode ? 'Cancel' : 'Edit'}
-                </button>
                 </div>
-            </form>
-    </div>
-  );
+                </form>
+            <div className="mt-4 flex justify-center">
+                <button className="text-black-500 underline  font-bold" onClick={toggleEditMode}>
+                    Edit
+                </button>
+            </div>
+        </div>
+    );
 }
