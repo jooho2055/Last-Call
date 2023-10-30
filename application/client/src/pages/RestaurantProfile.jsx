@@ -1,9 +1,7 @@
 import React,{useState} from 'react';
-import {inputForRestaurant, optionsForState, optionsForCuisine, inputForMenu} from '../utils/resProfile';
+import {inputForRestaurant, optionsForState, optionsForCuisine} from '../utils/resProfile';
 import FormInput from '../components/FormInput';
-import RestaurantMenu from '../components/RestaurantMenu';
 import Select from 'react-select';
-import { AiFillPlusSquare } from 'react-icons/ai';
 
 const testinput = 
 	{
@@ -17,30 +15,7 @@ const testinput =
 		zip: '90000',
 		state: 'CA',
 		cuisine: 'cafe',
-	  }
-const foodlist =[
-	{
-		fname: 'apple',
-		quantity: 2,
-		oprice: 3,
-		aprice: 2,
-	},
-	{
-		fname: 'banana',
-		quantity: 1,
-		oprice: 2,
-		aprice: 1,
-	},
-	{
-		fname: 'rice',
-		quantity: 3,
-		oprice: 15,
-		aprice: 10,
-	},
-]	  
-
-
-
+	  }  
 export default function RestaurantProfile() {
 	const [inputValues, setInputValues] = useState({
 		username: testinput.username,
@@ -69,26 +44,6 @@ export default function RestaurantProfile() {
 		state: true,
 		cuisine: true,
 	});
-
-	const [menuInput, setMenuInput] = useState({
-		fname: '',
-		quantity: '',
-		oprice:'',
-		aprice:'',
-	});
-
-	const [menuvalidity, setmenuValidity] = useState({
-		fail: true,
-		quantity: true,
-		oprice: true,
-		aprice: true,
-	});
-	const [isOpen, setIsOpen] = useState(false);
-
-	const formatShows = () =>{
-		setIsOpen(!isOpen);
-	};
-	
 	const isSubmitDisabled =
 			!Object.values(validity).every((isValid) => isValid) ||
 			!Object.values(inputValues).every((value) => value);
@@ -134,31 +89,6 @@ export default function RestaurantProfile() {
 	
 			setValidity({ ...validity, [name]: isValid });
 		};
-
-		const isMenuSubmitDisable =
-		    !Object.values(menuvalidity).every((isValid) => isValid) ||
-		    !Object.values(menuInput).every((value) => value);
-			const validateMenuInput = (name, value) => {
-				let isValid = true;
-				switch (name) {
-					case 'fname':
-						isValid = /^[A-Za-z0-9]{1,16}$/.test(value);
-					    break;
-					case 'quantity':
-						isValid = /^[1-9]\d*$/.test(value);
-						break;
-					case 'oprice':
-						isValid = /^[0-9]*\.?[0-9]+$/.test(value) && parseFloat(value) > 0;
-                        break;
-					case 'aprice':
-						isValid = /^[0-9]*\.?[0-9]+$/.test(value) && parseFloat(value) > 0;
-                        break;
-					default:
-						isValid=false;
-					
-				}
-				setmenuValidity({...menuvalidity, [name]: isValid});
-			}
 	
 		function checkpassword(pwd, cpwd) {
 			if (pwd && inputValues.cpwd) {
@@ -172,22 +102,12 @@ export default function RestaurantProfile() {
 			e.preventDefault();
 			console.log(inputValues);
 		};
-		const handleMenu = (e) =>{
-			e.preventDefault();
-			console.log(menuInput);
-		}
 	
 		const onChange = (e) => {
 			const { name, value } = e.target;
 			setInputValues({ ...inputValues, [e.target.name]: e.target.value });
 			validateInput(name, value);
 		};
-
-		const onMenuChange = (e) =>{
-			const { name, value } = e.target;
-			setMenuInput({...menuInput, [e.target.name]: e.target.value});
-			validateMenuInput(name, value);
-		}
 	
 		const handleState = (option) => {
 			setInputValues({ ...inputValues, state: option.value });
@@ -200,7 +120,6 @@ export default function RestaurantProfile() {
 
 	return (
 	<div className='min-h-full m-auto flex justify-center bg-white'>
-	<div className='min-h-full w-10/12 grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-1 grid-cols-2 gap-20 relative'>
 		<div className='w-96'>
 		<form onSubmit={handleSubmit}>
 		<h1>Restaurant profile</h1>
@@ -224,46 +143,5 @@ export default function RestaurantProfile() {
 		</button>
 		</form>
 		</div>
-		<div className='min-w-full'>
-          <p>Menu Manage</p>
-          <button
-            className="text-3xl mt-[0.85rem] mr-5"
-            onClick={formatShows} // Toggle the isOpen state when the button is clicked
-          >
-            <AiFillPlusSquare />
-          </button>
-          {isOpen && (
-            <button
-              onClick={formatShows}
-              className="fixed top-0 right-0 bottom-0 left-0 w-full h-full bg-black opacity-0 cursor-default"
-            ></button>
-          )}
-          {isOpen && (
-            <div className="absolute right-50 w-72 h-96 bg-gray-100">
-              <p>Test</p>
-              <form onSubmit={handleMenu}>
-                {inputForMenu.map((input) => (
-                  <FormInput
-                    key={input.id}
-                    {...input}
-                    value={menuInput[input.name]}
-                    onChange={onMenuChange}
-                    isValid={menuvalidity[input.name]}
-                  ></FormInput>
-                ))}
-				<button disabled={isMenuSubmitDisable}>
-					Submit
-				</button>
-              </form>
-            </div>
-          )}
-		  <div className='grid grid-cols-1 gap-4'>
-			{foodlist.map((food)=>(
-				<RestaurantMenu restarantmenuInfo={food}/>
-			))}
-
-		  </div>
-        </div>
-	</div>
 </div>	);
 }
