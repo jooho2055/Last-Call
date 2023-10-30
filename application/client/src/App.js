@@ -18,7 +18,7 @@ import Order from './pages/Order';
 import CustomerProfile from './pages/CustomerProfile';
 import RestaurantProfile from './pages/RestaurantProfile';
 import SearchDetail from './pages/SearchDetail';
-
+import Test from './pages/Test';
 const router = createBrowserRouter([
 	{
 		path: '/',
@@ -35,7 +35,8 @@ const router = createBrowserRouter([
 			{ path: '/order', element: <Order /> },
 			{ path: '/customerprofile', element: <CustomerProfile /> },
 			{ path: '/restaurantprofile', element: <RestaurantProfile /> },
-
+			{ path: '/restaurantprofile', element: <RestaurantProfile /> },
+			{ path: '/test', element: <Test/>},
 			{ path: '/AboutUs', element: <AboutUs /> },
 			{ path: '/AboutUs/Dorrie Shen', element: <AboutMeDorrie /> },
 			{ path: '/AboutUs/Gwangwoo Lee', element: <AboutMeGwangwoo /> },
