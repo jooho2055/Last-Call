@@ -25,6 +25,7 @@ router.get(`/search`, async(req, res)=>{
 /**
  * To get curreent order for customer
  * @params customerId
+ * @path /customers/order/current/:id(\\d+)
  */
 router.get(`/order/current/:id(\\d+)`, isLoggedIn, isCustomers, isMyPage,  async function(req, res){
     const {id} = req.params
@@ -44,6 +45,7 @@ router.get(`/order/current/:id(\\d+)`, isLoggedIn, isCustomers, isMyPage,  async
 /**
  * To get past order for customer
  * @params customerId
+ * @path customers//order/past/:id(\\d+)
  */
 router.get(`/order/past/:id(\\d+)`, isLoggedIn, isCustomers, isMyPage, async function(req,res){
     const {id} = req.params
@@ -61,35 +63,47 @@ router.get(`/order/past/:id(\\d+)`, isLoggedIn, isCustomers, isMyPage, async fun
 })
 
 /**
+ * To get list of cart
+ * @params customerId
+ * @path `/customers//order/cart/:id(\\d+)`
+ */
+    // router.get(`/order/cart/:id(\\d+)`, isLoggedIn, isCustomers, isMyPage, async function(req,res){
+
+    // })
+/**
  * To checkout cart and create order
  * @body holds menu and customer detail
+ * @path `/customers/order/cart/checkout`
  * order status: 0: current, 1: done, 2: cart, 3: declined
  */
-// router.post(`/order/checkout/cart`, isLoggedIn, isCustomers, async function(req, res){
+// router.post(`/order/cart/checkout`, isLoggedIn, isCustomers, async function(req, res){
 
 // })
 
 /**
  * To add menu in the cart
  * @body holds menu detail and customer detail
+ * @path `/customers//order/cart/add`
  */
-// router.post('/order/add/cart/menu', isLoggedIn, isCustomers, async function(req,res){
+// router.post('/order/cart/add', isLoggedIn, isCustomers, async function(req,res){
 
 // })
 
 /**
  * To delete one menu in the cart
  * @body holds menu detail and customer detail
+ * @path `/customers/order/cart/delete/menu`
  */
-// router.post(`/order/delete/cart/menu`, isLoggedIn, isCustomers, async function(req,res){
+// router.post(`/order/cart/delete/menu`, isLoggedIn, isCustomers, async function(req,res){
 
 // })
 
 /**
  * To delete all the menu in the cart
- * body holds customer detail
+ * @body holds customer detail
+ * @path `/customers/order/cart/delete`
  */
-// router.post('/order/delete/cart', isLoggedIn, isCustomers, async function(req,res){
+// router.post('/order/cart/delete', isLoggedIn, isCustomers, async function(req,res){
 
 // })
 

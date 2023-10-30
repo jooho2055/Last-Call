@@ -76,8 +76,9 @@ const TEST_SET_MENU_WRONG4 = {
 /**
  * To get restaurants profile
  * @params hold restaurants id
+ * @Path `/restaurants/profile/:id(\\d+)`
  */
-router.get('/profile/:id(\\d+)', isLoggedIn, isRestaurants, isMyPage, 
+router.get(`/profile/:id(\\d+)`, isLoggedIn, isRestaurants, isMyPage, 
     async function(req,res){
         const {id} = req.params;
         console.log(id)
@@ -94,12 +95,13 @@ router.get('/profile/:id(\\d+)', isLoggedIn, isRestaurants, isMyPage,
 
 /**
  *  To add new menu for restaurant 
- *  Body must hold restautrantId, price, orignalPrice, desc to
- *  This API works
+ *  @Body must hold restautrantId, price, orignalPrice, name 
+ *  @Options img, desc
+ *  @path `/restaurants/menu/add`
  */
-router.get('/menu/add', isLoggedIn, isRestaurants, async function(req,res){
-    const {restautrantId, price, orignalPrice, desc} = req.body
-    var { name, img } = req.body
+router.get(`/menu/add`, isLoggedIn, isRestaurants, async function(req,res){
+    const {restautrantId, price, orignalPrice, name} = req.body
+    var { desc, img } = req.body
     
     // TEST
     // var {restautrantId, price, orignalPrice, desc, name, img} = TESTMENU_CORRECT
@@ -133,11 +135,13 @@ router.get('/menu/add', isLoggedIn, isRestaurants, async function(req,res){
         return res.status(400).json({message: "fail to add menu"})
     }
 })
+
 /**
  * To get all the menus from restaurants
- * @params hold restaurants id
+ * @params hold restaurantsId
+ * @path `/restaurants/menu/list/:id(\\d+)`
  */
-router.get('/menu/list/:id(\\d+)', isLoggedIn, async function(req,res){
+router.get(`/menu/list/:id(\\d+)`, isLoggedIn, async function(req,res){
     const { id } = req.params
     try{
         var [ results, _ ] = await db.execute(`SELECT * FROM menus WHERE fk_menus_restaurant = ?;`, [id])
@@ -153,7 +157,8 @@ router.get('/menu/list/:id(\\d+)', isLoggedIn, async function(req,res){
 
 /**
  * To delete menu
- * body hold menu detail (which menu are you going to delete)
+ * @body hold restaurantId, menuId (which menu are you going to delete)
+ * @path `/restaurants/menu/delete`
  */
 router.post('/menu/delete', isLoggedIn, isRestaurants, async function(req,res){
     const {restaurantId, menuId} = req.body
@@ -197,6 +202,8 @@ router.post('/menu/delete', isLoggedIn, isRestaurants, async function(req,res){
 
 /**
  * To set up quantity for menu
+ * @body must holds restaurantId, menuId, quantity(to update)
+ * @path `/restaurants/menu/setqauntity`
  */
 router.post('/menu/setqauntity', isLoggedIn, isRestaurants, async function(req, res){
     const {restaurantId, menuId, quantity} = req.body
