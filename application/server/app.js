@@ -77,7 +77,7 @@ app.use(function(req,res,next){
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
-// app.use("/customers", customersRouter);
+app.use("/customers", customersRouter);
 app.use("/restaurants", restaurantsRouter);
 
 app.get('*', (res, req) =>{
