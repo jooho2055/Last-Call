@@ -1,4 +1,6 @@
+// here is all helper function for authentication
 module.exports = {
+    // check it is logged in
     isLoggedIn: function(req,res,next){
         if(req.session.user){
             next();
@@ -8,6 +10,7 @@ module.exports = {
         }
     },
 
+    // check is not logged in
     isNotLoggedIn: function(req,res,next){
         if(!req.session.user){
             next();
@@ -17,18 +20,40 @@ module.exports = {
         }
     },
 
+    // check is my page
     isMyProfile: function(req,res,next){
+        // get id from params
         var {id} = req.params;
-        if( id == res.session.user.userId){
-            next();
-        }else{
-            return res.status(400).json({message: "it's not your profile"})
+        id = parseInt(id) // string to Int
+        
+        // handle wrong access
+        if( id !== req.session.user.userId){
+            return res.status(400).json({message: "wrong access(It is not your page!)"})
         }
-    }
+
+        next()
+    },
+
+    // check user is customers
+    isCustomers: function(req,res,next){
+        if(req.session.user.role !== 'customers'){
+            return res.status(400).json({message: "It's not customers"})
+        }
+        next()
+    },
+
+    // check user is reataurnats
+    isRestaurants: function(req,res,next){
+        if(req.session.user.role !== 'restaurants'){
+            return res.status(400).json({message: "It's not restaurants"})
+        }
+        next()
+    } ,
+
 }
 
 /**
- * session auth
+ * This if for passport auth
  */
 // check logged in
 // exports.isLoggedIn = (req,res,next) => {

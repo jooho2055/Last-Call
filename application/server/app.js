@@ -69,7 +69,7 @@ app.use(function(req,res,next){
       res.locals.isLoggedIn = true;
       res.locals.user = req.session.user;
     }else{
-      console.log("is Not LoggedIn")
+      console.log("is Not Logged In")
       res.locals.isLoggedIn = true;
     }
     next()
@@ -77,8 +77,8 @@ app.use(function(req,res,next){
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
-// app.use("/customer", customersRouter);
-// app.use("/restaurant", restaurantsRouter);
+// app.use("/customers", customersRouter);
+app.use("/restaurants", restaurantsRouter);
 
 app.get('*', (res, req) =>{
     req.sendFile(path.join(__dirname, '../client/build/index.html'))
