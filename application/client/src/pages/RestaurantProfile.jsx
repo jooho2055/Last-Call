@@ -259,11 +259,7 @@ export default function RestaurantProfile() {
           )}
 		  <div className='grid grid-cols-1 gap-4'>
 			{foodlist.map((food)=>(
-				<RestaurantMenu 
-				fname={food.fname}
-				quantity={food.quantity}
-				oprice={food.oprice}
-				aprice={food.aprice}/>
+				<RestaurantMenu restarantmenuInfo={food}/>
 			))}
 
 		  </div>

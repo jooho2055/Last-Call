@@ -78,15 +78,7 @@ export default function Order() {
 			<h3>Current Order</h3>
 			<div className='grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 grid-cols-5 gap-4'>
 				{inputsForcurrenttest.map((input) => (
-					<CurrentOrderItem
-						restaurant_name={input.restaurant_name}
-						address={input.address}
-						foods={input.foods}
-						date={input.date}
-						price={input.price}
-						time={input.time}
-						status={input.status}
-					/>
+					<CurrentOrderItem currentorderInfo={input}/>
 				))}
 			</div>
 			<br />
@@ -95,15 +87,7 @@ export default function Order() {
 			<h3>Order History</h3>
 			<div className='grid sm:grid-cols-1 md:grid-cols-1 grid-cols-2 gap-9'>
 				{inputsForcurrenttest.map((input) => (
-					<HistoryOrderItem
-						restaurant_name={input.restaurant_name}
-						address={input.address}
-						foods={input.foods}
-						date={input.date}
-						original_p={input.original_p}
-						actual_p={input.actual_p}
-						time={input.time}
-					/>
+					<HistoryOrderItem historyOrderInfo={input}/>
 				))}
 			</div>
 		</div>
