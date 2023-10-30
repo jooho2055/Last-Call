@@ -42,9 +42,9 @@ export default function SignIn() {
 		}else if(data.role === 'restaurants'){
 			navigate('/restaurantprofile')
 		}else{
-			console.log('fucku')
+			console.log(data.message)
+			console.log("something wrong!")
 		}
-
 	};
 
 	const onChange = (e) => {
