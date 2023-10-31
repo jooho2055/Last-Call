@@ -1,6 +1,7 @@
 import React,{useEffect, useState} from 'react';
 import HistoryOrderItem from '../components/Order/HistoryOrderItem';
 import CurrentOrderItem from '../components/Order/currentOrderItem';
+import { useSelector } from 'react-redux';
 
 //This is the inputs for testing, will be move later
 const inputsForcurrenttest = [
@@ -74,20 +75,21 @@ const inputsForcurrenttest = [
 export default function Order() {
 	const [currentorderlist, setCurrentorder]=useState([]);
 	const [pastorderlist, setPastorder] = useState([]);
+	const customerId = useSelector((state)=>state.user.userId);
 	useEffect(()=>{
-		fetchcurrentorder();
-		fetchpastorder();
+		fetchcurrentorder(customerId);
+		fetchpastorder(customerId);
 	},[])
-	const fetchcurrentorder=()=>{
-		fetch('http://13.52.182.209/customers/order/current',{
+	const fetchcurrentorder=(customerId)=>{
+		fetch(`http://13.52.182.209/customers/order/current/${customerId}`,{
 			method: 'GET',
 		})
 		.then((res)=>res.json())
 		.then((data)=>setCurrentorder(data))
 		.then((error)=>console.error('Error', error));
 	}
-	const fetchpastorder=()=>{
-		fetch('http://13.52.182.209/customers//order/past',{
+	const fetchpastorder=(customerId)=>{
+		fetch(`http://13.52.182.209/customers//order/past/${customerId}`,{
 			method: 'GET',
 		})
 		.then((res)=>res.json())
