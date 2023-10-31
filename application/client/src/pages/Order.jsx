@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect, useState} from 'react';
 import HistoryOrderItem from '../components/Order/HistoryOrderItem';
 import CurrentOrderItem from '../components/Order/currentOrderItem';
 
@@ -22,7 +22,7 @@ const inputsForcurrenttest = [
 		price: '$5',
 		date: 'May, 23, 2023',
 		time: '9 pm',
-		status: 1,
+		status: 3,
 		original_p: '6',
 		actual_p: '5',
 	},
@@ -72,6 +72,28 @@ const inputsForcurrenttest = [
 	},
 ];
 export default function Order() {
+	const [currentorderlist, setCurrentorder]=useState([]);
+	const [pastorderlist, setPastorder] = useState([]);
+	useEffect(()=>{
+		fetchcurrentorder();
+		fetchpastorder();
+	},[])
+	const fetchcurrentorder=()=>{
+		fetch('http://13.52.182.209/customers/order/current',{
+			method: 'GET',
+		})
+		.then((res)=>res.json())
+		.then((data)=>setCurrentorder(data))
+		.then((error)=>console.error('Error', error));
+	}
+	const fetchpastorder=()=>{
+		fetch('http://13.52.182.209/customers//order/past',{
+			method: 'GET',
+		})
+		.then((res)=>res.json())
+		.then((data)=>setPastorder(data))
+		.then((error)=>console.error('Error', error));
+	}
 	return (
 		<div className='min-h-full m-auto flex flex-col justify-center items-center bg-white gap-4'>
 			<br />
