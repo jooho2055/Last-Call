@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import img from "../images/profiles/Leslie_perfil.png"
-import { Card as MenuCard, Image } from 'semantic-ui-react';
+import { Card as MenuCard, Image, Button, Icon } from 'semantic-ui-react';
 
 export default function MenuInfo({props}){
     // console.log(props)
@@ -23,6 +23,13 @@ export default function MenuInfo({props}){
                 <MenuCard.Description>Original Price: ${original_price}</MenuCard.Description>
                 <MenuCard.Description>Discounted Price: ${price}</MenuCard.Description>
                 <MenuCard.Description>{quantity}</MenuCard.Description>
+                <Button animated='vertical' className="w-20 h-20">
+                    <Button.Content hidden>Shop</Button.Content>
+                    <Button.Content visible>
+                        shop
+                        <Icon name='shop' />
+                    </Button.Content>
+                </Button>
             </MenuCard>
             {/* <img src={img}></img>
             <div>
