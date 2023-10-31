@@ -36,7 +36,7 @@ const router = createBrowserRouter([
 			{ path: '/customerprofile', element: <CustomerProfile /> },
 			{ path: '/restaurantprofile', element: <RestaurantProfile /> },
 			{ path: '/restaurantprofile', element: <RestaurantProfile /> },
-			{ path: '/test', element: <Test/>},
+			{ path: `/restaurant/:id`, element: <Test/>},
 			{ path: '/AboutUs', element: <AboutUs /> },
 			{ path: '/AboutUs/Dorrie Shen', element: <AboutMeDorrie /> },
 			{ path: '/AboutUs/Gwangwoo Lee', element: <AboutMeGwangwoo /> },

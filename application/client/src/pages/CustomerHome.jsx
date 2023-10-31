@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { test } from '../utils/formConfig';
 
 import SearchBox from '../components/SearchBox';
@@ -57,8 +57,11 @@ export default function CustomerHome() {
 				/>
 			</div>
 			<div className='grid grid-cols-3 auto-rows-[minmax(14rem,auto)] p-6 gap-6'>
-				{test.map((restaurant, index) => (
-					<RestaurantList key={index} restaurantInfo={restaurant} /> // must use restaurant unique id as key in the future
+				{restList.map((restaurant, index) => (
+					<Link to={`/restaurant/${restaurant.id}`}>
+						<RestaurantList key={restaurant.id} restaurantInfo={restaurant} /> 
+						{/* must use restaurant unique id as key in the future */}
+					</Link>
 				))}
 			</div>
 		</div>
