@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 
@@ -10,19 +10,18 @@ import RestaurantList from '../components/RestaurantList';
 import { useSelector } from 'react-redux';
 
 export default function CustomerHome() {
-
 	// const [restList, setRestList] = useState([]);
 	const [searchValue, setSearchValue] = useState('');
 	const navigate = useNavigate();
 
-	const user = useSelector((state)=>(state.user));
+	const user = useSelector((state) => state.user);
 
 	useEffect(() => {
-		if(!user.isLoggedIn){
-			navigate('/signin')
+		if (!user.isLoggedIn) {
+			navigate('/signin');
 		}
-		if(user.role === 'restaurants'){
-			navigate('/restaurantprofile')
+		if (user.role === 'restaurants') {
+			navigate('/restaurantprofile');
 		}
 	}, []);
 
@@ -34,7 +33,7 @@ export default function CustomerHome() {
 			console.error('Error fetching restaurants:', error);
 			throw error;
 		}
-
+	};
 	const {
 		isLoading,
 		error,
