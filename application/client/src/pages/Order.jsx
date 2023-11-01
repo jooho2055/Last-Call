@@ -73,29 +73,30 @@ const inputsForcurrenttest = [
 	},
 ];
 export default function Order() {
-	const [currentorderlist, setCurrentorder]=useState([]);
-	const [pastorderlist, setPastorder] = useState([]);
-	const customerId = useSelector((state)=>state.user.userId);
-	useEffect(()=>{
-		fetchcurrentorder(customerId);
-		fetchpastorder(customerId);
-	},[])
-	const fetchcurrentorder=(customerId)=>{
-		fetch(`http://13.52.182.209/customers/order/current/${customerId}`,{
-			method: 'GET',
-		})
-		.then((res)=>res.json())
-		.then((data)=>setCurrentorder(data))
-		.then((error)=>console.error('Error', error));
-	}
-	const fetchpastorder=(customerId)=>{
-		fetch(`http://13.52.182.209/customers//order/past/${customerId}`,{
-			method: 'GET',
-		})
-		.then((res)=>res.json())
-		.then((data)=>setPastorder(data))
-		.then((error)=>console.error('Error', error));
-	}
+//Comment: add '//' just in case it will show not found state in this branch
+//	const [currentorderlist, setCurrentorder]=useState([]);
+//	const [pastorderlist, setPastorder] = useState([]);
+//	const customerId = useSelector((state)=>state.user.userId);
+//	useEffect(()=>{
+//		fetchcurrentorder(customerId);
+//		fetchpastorder(customerId);
+//	},[])
+//	const fetchcurrentorder=(customerId)=>{
+//		fetch(`http://13.52.182.209/customers/order/current/${customerId}`,{
+//			method: 'GET',
+//		})
+//		.then((res)=>res.json())
+//		.then((data)=>setCurrentorder(data))
+//		.then((error)=>console.error('Error', error));
+//	}
+//	const fetchpastorder=(customerId)=>{
+//		fetch(`http://13.52.182.209/customers//order/past/${customerId}`,{
+//			method: 'GET',
+//		})
+//		.then((res)=>res.json())
+//		.then((data)=>setPastorder(data))
+//		.then((error)=>console.error('Error', error));
+//	}
 	return (
 		<div className='min-h-full m-auto flex flex-col justify-center items-center bg-white gap-4'>
 			<br />
