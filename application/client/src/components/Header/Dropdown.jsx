@@ -1,14 +1,33 @@
 import React, { useState } from 'react';
 import { AiOutlineUser } from 'react-icons/ai';
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { logout } from './../../redux/userActions';
 
 export default function Dropdown() {
 	const [isOpen, setIsOpen] = useState(false);
+	const user = useSelector((state) => state.user);
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
 
 	const toggleDropdown = () => {
 		setIsOpen(!isOpen);
 	};
-
+	
+	const handleSignOut = async () => {
+		const res = await fetch("http://13.52.182.209/users/signout",{
+			method: 'GET',
+			headers: {
+				"content-Type": 'application/json'
+			},
+		}).then((res)=>{
+			if(res.ok && user.isLoggedIn){
+				dispatch(logout());
+				navigate('/');
+			}
+		})
+		console.log(res)
+	}
 	return (
 		<div className='relative'>
 			<button className='text-3xl mt-[0.85rem] mr-5' onClick={toggleDropdown}>
@@ -29,15 +48,15 @@ export default function Dropdown() {
 					>
 						Profile
 					</Link>
-					<Link
+					<button
 						href='#'
 						className='block px-4 py-2 text-gray-800 hover:bg-orange-400 hover:text-white'
+						onClick = {handleSignOut}
 					>
 						Sign Out
-					</Link>
+					</button>
 				</div>
 			)}
 		</div>
 	);
-
 }

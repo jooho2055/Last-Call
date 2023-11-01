@@ -7,11 +7,24 @@ import { useQuery } from '@tanstack/react-query';
 
 import SearchBox from '../components/SearchBox';
 import RestaurantList from '../components/RestaurantList';
+import { useSelector } from 'react-redux';
 
 export default function CustomerHome() {
+
 	// const [restList, setRestList] = useState([]);
 	const [searchValue, setSearchValue] = useState('');
 	const navigate = useNavigate();
+
+	const user = useSelector((state)=>(state.user));
+
+	useEffect(() => {
+		if(!user.isLoggedIn){
+			navigate('/signin')
+		}
+		if(user.role === 'restaurants'){
+			navigate('/restaurantprofile')
+		}
+	}, []);
 
 	const fetchRestaurants = async () => {
 		try {
@@ -21,7 +34,6 @@ export default function CustomerHome() {
 			console.error('Error fetching restaurants:', error);
 			throw error;
 		}
-	};
 
 	const {
 		isLoading,
