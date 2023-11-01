@@ -8,7 +8,7 @@ export default function CustomerProfile() {
     const storedUserProfile = JSON.parse(localStorage.getItem('userProfile')) || initialUserInfo;
     const [inputValues, setInputValues] = useState(storedUserProfile);
     const [validity, setValidity] = useState({
-		idea: true,
+		username: true,
 		fname: true,
 		lname: true,
 		email: true,
@@ -17,15 +17,19 @@ export default function CustomerProfile() {
 		phone: true,
         bio: true,
 	});
+    const [formModified, setFormModified] = useState(false);
+    const [editMode, setEditMode] = useState(false);
+
     const isSubmitDisabled =
         !Object.values(validity).every((isValid) => isValid) ||
-        !Object.values(inputValues).every((value) => value);
+        !Object.values(inputValues).every((value) => value) ||
+        !formModified;
 
     const validateInput = (name, value) => {
         let isValid = true;
 
         switch (name) {
-            case 'idea':
+            case 'username':
                 isValid = /^[A-Za-z0-9]{5,16}$/.test(value);
                 break;
             case 'fname':
@@ -71,19 +75,24 @@ export default function CustomerProfile() {
         const { name, value } = event.target;
         setInputValues({ ...inputValues, [name]: value });
         validateInput(name, value);
+        setFormModified(true);
     };
 
     const handleSubmit = (event) => {
         event.preventDefault();
         localStorage.setItem('userProfile', JSON.stringify(inputValues));
         console.log(inputValues);
+        setFormModified(false);
     };
-
-    const [editMode, setEditMode] = useState(false);
 
     const toggleEditMode = () => {
         setEditMode(!editMode);
+        setFormModified(false);
     };
+
+    const saveButtonClass = formModified
+        ? 'bg-orange-400 hover-bg-orange-400 text-white font-bold py-2 px-4 rounded-full'
+        : 'bg-orange-200 text-white font-bold py-2 px-4 rounded-full';
 
   return (
     <div className='container mx-auto px-4 py-8'>
@@ -100,14 +109,14 @@ export default function CustomerProfile() {
                 />
                 ))}
                 <div className="mt-4 flex justify-center">
-                <button className="bg-orange-300 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded-full" disabled={isSubmitDisabled}>
+                <button className={saveButtonClass} disabled={isSubmitDisabled}>
                     Save
                 </button>
                 </div>
                 </form>
             <div className="mt-4 flex justify-center">
                 <button className="text-black-500 underline  font-bold" onClick={toggleEditMode}>
-                    Edit
+                    {editMode ? 'Cancel' : 'Edit'}
                 </button>
             </div>
         </div>
