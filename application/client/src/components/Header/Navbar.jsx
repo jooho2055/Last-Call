@@ -20,8 +20,11 @@ export default function Navbar() {
 	const isLandingPage = pathname === '/';
 	const isSignin = pathname === '/signin';
 	const isSignup = pathname === '/signup';
+	const isSignupCustomer = pathname === '/signup/customer';
+	const isSignupRestaurant = pathname === '/signup/restaurant';
 
-	const showNavItems = !isSignin && !isSignup && !isLandingPage;
+	const showNavItems =
+		!isSignin && !isSignup && !isLandingPage && !isSignupCustomer && !isSignupRestaurant;
 
 	return (
 		<div className='bg-stone-900 flex justify-between'>
