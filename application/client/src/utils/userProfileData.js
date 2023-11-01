@@ -1,6 +1,6 @@
 
 const initialUserInfo = {
-    username: 'SampleUser',
+    idea: 'SampleUser',
     fname: 'John',
     lname: 'Doe',
     email: 'johndoe@example.com',

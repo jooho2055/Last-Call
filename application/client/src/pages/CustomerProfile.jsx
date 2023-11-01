@@ -8,7 +8,7 @@ export default function CustomerProfile() {
     const storedUserProfile = JSON.parse(localStorage.getItem('userProfile')) || initialUserInfo;
     const [inputValues, setInputValues] = useState(storedUserProfile);
     const [validity, setValidity] = useState({
-		username: true,
+		idea: true,
 		fname: true,
 		lname: true,
 		email: true,
@@ -29,7 +29,7 @@ export default function CustomerProfile() {
         let isValid = true;
 
         switch (name) {
-            case 'username':
+            case 'idea':
                 isValid = /^[A-Za-z0-9]{5,16}$/.test(value);
                 break;
             case 'fname':
