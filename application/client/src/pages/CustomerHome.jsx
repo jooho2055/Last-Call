@@ -1,13 +1,14 @@
 import React from 'react';
 // import axios from 'axios';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { fetchRestaurants } from '../apis/get';
 import { useQuery } from '@tanstack/react-query';
 
 import SearchBox from '../components/SearchBox';
 import RestaurantList from '../components/RestaurantList';
+import { useSelector } from 'react-redux';
 
 export default function CustomerHome() {
 	// const [restList, setRestList] = useState([]);
@@ -51,6 +52,17 @@ export default function CustomerHome() {
 	// 	// Ensure to only refetch when the searchValue changes
 	// 	// enabled: searchValue !== '',
 	// });
+
+	const user = useSelector((state) => state.user);
+
+	useEffect(() => {
+		if (!user.isLoggedIn) {
+			navigate('/signin');
+		}
+		if (user.role === 'restaurants') {
+			navigate('/restaurantprofile');
+		}
+	}, []);
 
 	const {
 		isLoading,
