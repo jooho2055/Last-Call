@@ -18,6 +18,7 @@ import Order from './pages/Order';
 import CustomerProfile from './pages/CustomerProfile';
 import RestaurantProfile from './pages/RestaurantProfile';
 import SearchDetail from './pages/SearchDetail';
+import RestaurantMenutable from './pages/RestaurantMenutable';
 
 const router = createBrowserRouter([
 	{
@@ -35,6 +36,7 @@ const router = createBrowserRouter([
 			{ path: '/order', element: <Order /> },
 			{ path: '/customer/profile', element: <CustomerProfile /> },
 			{ path: '/restaurant/profile', element: <RestaurantProfile /> },
+			{ path: '/restaurant/menu', element:<RestaurantMenutable />},
 
 			{ path: '/AboutUs', element: <AboutUs /> },
 			{ path: '/AboutUs/Dorrie Shen', element: <AboutMeDorrie /> },
