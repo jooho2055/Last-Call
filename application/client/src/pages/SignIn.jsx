@@ -49,6 +49,7 @@ export default function SignIn() {
 
 	const onChange = (e) => {
 		setInputValues({ ...inputValues, [e.target.name]: e.target.value });
+		console.log(inputValues);
 	};
 
 	const handleCheckbox = (e) => {
