@@ -1,8 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
+// import axios from 'axios';
 import React, { useState } from 'react';
 import useDebounce from '../hooks/useDebounce';
 import SearchResult from './SearchResult';
+import { fetchSearchboxRestaurants } from '../apis/get';
 
 export default function Searchbox({ searchValue, onSubmit, onChange }) {
 	// const clicked = (event) => {
@@ -25,26 +26,31 @@ export default function Searchbox({ searchValue, onSubmit, onChange }) {
 	const [search, setSearch] = useState('');
 	const debouncedSearchTerm = useDebounce(search, 700);
 
-	const { isLoading, data: restaurants } = useQuery({
-		queryKey: ['restaurants', debouncedSearchTerm],
-		queryFn: async () => {
-			try {
-				console.log('fetching');
-				const response = await axios.get(`http://13.52.182.209/search?search=${search}`);
+	// const { isLoading, data: restaurants } = useQuery({
+	// 	queryKey: ['restaurants', debouncedSearchTerm],
+	// 	queryFn: async () => {
+	// 		try {
+	// 			console.log('fetching');
+	// 			const response = await axios.get(`http://13.52.182.209/search?search=${search}`);
 
-				const restName = response.data.map((restaurant) => restaurant.name);
-				// console.log(restName);
-				// console.log(response);
-				// console.log(response.data);
+	// 			const restName = response.data.map((restaurant) => restaurant.name);
+	// 			// console.log(restName);
+	// 			// console.log(response);
+	// 			// console.log(response.data);
 
-				return response.data;
-			} catch (error) {
-				console.error('Error fetching restaurants:', error);
-				throw error;
-			}
-		},
-		// Ensure to only refetch when the searchValue changes
-		// enabled: searchValue !== '',
+	// 			return response.data;
+	// 		} catch (error) {
+	// 			console.error('Error fetching restaurants:', error);
+	// 			throw error;
+	// 		}
+	// 	},
+	// 	// Ensure to only refetch when the searchValue changes
+	// 	// enabled: searchValue !== '',
+	// });
+
+	const { isLoading, data: searchedRestaurants } = useQuery({
+		queryKey: ['searchedRestaurants', debouncedSearchTerm],
+		queryFn: () => fetchSearchboxRestaurants(search),
 	});
 
 	const handleChange = (e) => {
@@ -65,7 +71,7 @@ export default function Searchbox({ searchValue, onSubmit, onChange }) {
 						placeholder='Search...'
 						onChange={handleChange}
 					/>
-					{search && <SearchResult isLoading={isLoading} data={restaurants} />}
+					{search && <SearchResult isLoading={isLoading} data={searchedRestaurants} />}
 				</form>
 			</div>
 		</div>
