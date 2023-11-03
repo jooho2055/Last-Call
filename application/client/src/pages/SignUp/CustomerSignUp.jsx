@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import FormInput from '../../components/FormInput';
+import {useNavigate} from 'react-router-dom';
 import { inputsForCustomer } from '../../utils/formConfig';
 
+
+
 export default function CustomerSignup() {
+	const navigate = useNavigate();
 	const [inputValues, setInputValues] = useState({
 		username: '',
 		fname: '',
@@ -70,9 +74,28 @@ export default function CustomerSignup() {
 		return true;
 	}
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
-		console.log(inputValues);
+		try{
+			const res = await fetch(`http://13.52.182.209/users/signup/customer`,{
+			method: 'POST',
+			headers: {
+				"content-Type": 'application/json'
+			},
+			body: JSON.stringify(inputValues)
+			})
+			.then((res)=>{
+				console.log(res)
+				if(res.ok){
+					navigate('/signin')
+				}else{
+					console.log("fail to sign up")
+				}
+			})
+		}catch(err){
+			console.log('err!!!!')
+			console.log(err)
+		}
 	};
 
 	const onChange = (e) => {

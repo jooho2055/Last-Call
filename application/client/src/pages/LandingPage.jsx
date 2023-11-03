@@ -1,7 +1,20 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 export default function LandingPage() {
+	const user = useSelector((state)=>(state.user))
+	const navigate = useNavigate();
+	useEffect(() => {
+		if(user.isLoggedIn){
+			console.log(user.role === 'restaurants')
+			if(user.role === 'restaurants'){
+				navigate('/restaurantprofile')
+			}else{
+				navigate("/home")
+			}
+		}
+	}, []);
 	return (
 		<div className='min-h-full m-auto bg-landingpagebg bg-cover bg-no-repeat bg-right-bottom flex text-gray-50'>
 			<section className='flex flex-col flex-1 items-center justify-center '>

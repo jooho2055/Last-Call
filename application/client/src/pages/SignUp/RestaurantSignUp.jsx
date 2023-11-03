@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { inputsForRestaurant, optionsForState, optionsForCuisine } from '../../utils/formConfig';
 import FormInput from '../../components/FormInput';
 import Select from 'react-select';
+import {useNavigate} from 'react-router-dom';
 
 export default function RestaurantSignUp() {
+	const navigate = useNavigate();
 	const [inputValues, setInputValues] = useState({
 		username: '',
 		pwd: '',
@@ -87,10 +89,33 @@ export default function RestaurantSignUp() {
 		return true;
 	}
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
 		console.log(inputValues);
+		try{
+			const res = await fetch(`http://13.52.182.209/users/signup/restaurant`,{
+			method: 'POST',
+			headers: {
+				"content-Type": 'application/json'
+			},
+			body: JSON.stringify(inputValues)
+			})
+			.then((res)=>{
+				console.log(res)
+				if(res.ok){
+					navigate('/signin')
+				}else{
+					console.log("fail to sign up")
+				}
+			})
+		}catch(err){
+			console.log('err!!!!')
+			console.log(err)
+		}
 	};
+	// const handleSubmit = (e) => {
+	// 	e.preventDefault();
+	// };
 
 	const onChange = (e) => {
 		const { name, value } = e.target;
