@@ -3,9 +3,9 @@ export const inputsUserProfile = [
 		id: 1,
 		name: 'idea',
 		type: 'text',
-		placeholder: 'Idea',
-		errorMessage: 'Idea must be 5-16 characters, no special characters!',
-		label: 'Idea',
+		placeholder: 'Username',
+		errorMessage: 'Username must be 5-16 characters, no special characters!',
+		label: 'Username',
 	},
 	{
 		id: 2,
