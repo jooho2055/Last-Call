@@ -1,5 +1,4 @@
 import React from 'react';
-// import axios from 'axios';
 
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -11,7 +10,6 @@ import RestaurantList from '../components/RestaurantList';
 import { useSelector } from 'react-redux';
 
 export default function CustomerHome() {
-	// const [restList, setRestList] = useState([]);
 	const [searchValue, setSearchValue] = useState('');
 	const navigate = useNavigate();
 
@@ -69,6 +67,7 @@ export default function CustomerHome() {
 		error,
 		data: restaurants,
 	} = useQuery({
+		// use query to fetch data from DB, the key is different from the key in search box
 		queryKey: ['restaurants'],
 		queryFn: fetchRestaurants,
 	});
@@ -80,18 +79,7 @@ export default function CustomerHome() {
 
 	const handleChange = (value) => {
 		setSearchValue(value);
-		// console.log(value);
 	};
-
-	// const handleChange = (e) => {
-	// 	setSearchValue(e.target.value);
-	// 	console.log(searchValue);
-	// };
-
-	// const handleSearchSubmit = (search) => {
-	// 	setSearchValue(search);
-	// 	fetchRestaurants(search);
-	// };
 
 	if (isLoading) return <p>Loading...</p>;
 	if (error) return <p>{error.message}</p>;
@@ -100,16 +88,15 @@ export default function CustomerHome() {
 		<div className='max-w-[110rem] m-auto mt-10'>
 			<div>
 				<SearchBox
-					// onSearchSubmit={handleSearchSubmit}
-					// setSearchValue={setSearchValue}
 					searchValue={searchValue}
 					onSubmit={handleSubmit}
 					onChange={handleChange}
 				/>
 			</div>
 			<div className='grid grid-cols-3 auto-rows-[minmax(14rem,auto)] p-7 gap-8'>
+				{/* Must use a restaurant unique id as a key in the future */}
 				{restaurants.map((restaurant, index) => (
-					<RestaurantList key={index} restaurantInfo={restaurant} /> // must use restaurant unique id as key in the future
+					<RestaurantList key={index} restaurantInfo={restaurant} />
 				))}
 			</div>
 		</div>

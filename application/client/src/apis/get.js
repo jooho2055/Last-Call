@@ -1,5 +1,10 @@
 import axios from 'axios';
 
+/**
+ * This is a function for fetching data about restaurants
+ * It will only show opened restaurants
+ * @returns An array that holds multiple objects
+ */
 export const fetchRestaurants = async () => {
 	try {
 		const response = await axios.get(`http://13.52.182.209/search`);
@@ -11,6 +16,12 @@ export const fetchRestaurants = async () => {
 	}
 };
 
+/**
+ * This is a function for fetching restaurants for a search box
+ * It will show both opened and closed restaurants
+ * @param search The value holds a input from a user
+ * @returns An array that holds multiple objects
+ */
 export const fetchSearchboxRestaurants = async (search) => {
 	try {
 		console.log('fetching');
