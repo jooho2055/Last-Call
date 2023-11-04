@@ -1,21 +1,27 @@
+import { useQuery } from '@tanstack/react-query';
+// import axios from 'axios';
 import React, { useState } from 'react';
+import useDebounce from '../hooks/useDebounce';
+import SearchResult from './SearchResult';
+import { fetchSearchboxRestaurants } from '../apis/get';
 
-export default function Searchbox({ setSearchValue, onSubmit }) {
-	// const clicked = (event) => {
-	// 	event.preventDefault();
-	// 	fetch(`http://13.52.182.209/search?search=${searchValue}`, {
-	// 		method: 'GET',
-	// 	})
-	// 		.then((res) => {
-	// 			return res.json();
-	// 		})
-	// 		.then((data) => setSearchValue(data))
-	// 		.catch((error) => {
-	// 			console.error('Error:', error);
-	// 		});
-	// };
+export default function Searchbox({ onSubmit, onChange }) {
+	const [search, setSearch] = useState('');
+	// Use custom hook for debounced search term
+	const debouncedSearchTerm = useDebounce(search, 700);
+
+	// QueryFn will pass 'search' as a parameter, must use arrow function
+	// The key is different from the key in Home page.
+	const { isLoading, data: searchedRestaurants } = useQuery({
+		queryKey: ['searchedRestaurants', debouncedSearchTerm],
+		queryFn: () => fetchSearchboxRestaurants(search),
+	});
+
 	const handleChange = (e) => {
-		setSearchValue(e.target.value);
+		const newSearch = e.target.value;
+		setSearch(newSearch);
+		onChange(newSearch);
+		// console.log(search);
 	};
 
 	return (
@@ -25,9 +31,11 @@ export default function Searchbox({ setSearchValue, onSubmit }) {
 					<input
 						className='border-gray-300 border rounded-lg py-1 px-3 w-96'
 						type='text'
+						value={search}
 						placeholder='Search...'
 						onChange={handleChange}
 					/>
+					{search && <SearchResult isLoading={isLoading} data={searchedRestaurants} />}
 				</form>
 			</div>
 		</div>
