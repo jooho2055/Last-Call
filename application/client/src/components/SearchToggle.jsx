@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function SearchResult({ isLoading, data }) {
+export default function SearchToggle({ isLoading, data }) {
 	return (
 		<div className='absolute w-96'>
 			<div className='relative flex flex-col px-4 py-2  w-full bg-gray-100 divide-y divide-gray-300'>

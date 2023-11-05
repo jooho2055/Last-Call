@@ -4,15 +4,14 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { fetchRestaurants } from '../apis/get';
 import { useQuery } from '@tanstack/react-query';
+import { useSelector } from 'react-redux';
 
 import SearchBox from '../components/SearchBox';
 import RestaurantList from '../components/RestaurantList';
-import { useSelector } from 'react-redux';
 
 export default function CustomerHome() {
 	const [searchValue, setSearchValue] = useState('');
 	const navigate = useNavigate();
-
 	const user = useSelector((state) => state.user);
 
 	useEffect(() => {
