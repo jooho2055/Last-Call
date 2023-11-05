@@ -1,7 +1,7 @@
-import React,{useEffect, useState} from 'react';
+// import React,{useEffect, useState} from 'react';
 import HistoryOrderItem from '../components/Order/HistoryOrderItem';
 import CurrentOrderItem from '../components/Order/currentOrderItem';
-import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 
 //This is the inputs for testing, will be move later
 const inputsForcurrenttest = [
@@ -73,37 +73,37 @@ const inputsForcurrenttest = [
 	},
 ];
 export default function Order() {
-//Comment: add '//' just in case it will show not found state in this branch
-//	const [currentorderlist, setCurrentorder]=useState([]);
-//	const [pastorderlist, setPastorder] = useState([]);
-//	const customerId = useSelector((state)=>state.user.userId);
-//	useEffect(()=>{
-//		fetchcurrentorder(customerId);
-//		fetchpastorder(customerId);
-//	},[])
-//	const fetchcurrentorder=(customerId)=>{
-//		fetch(`http://13.52.182.209/customers/order/current/${customerId}`,{
-//			method: 'GET',
-//		})
-//		.then((res)=>res.json())
-//		.then((data)=>setCurrentorder(data))
-//		.then((error)=>console.error('Error', error));
-//	}
-//	const fetchpastorder=(customerId)=>{
-//		fetch(`http://13.52.182.209/customers//order/past/${customerId}`,{
-//			method: 'GET',
-//		})
-//		.then((res)=>res.json())
-//		.then((data)=>setPastorder(data))
-//		.then((error)=>console.error('Error', error));
-//	}
+	//Comment: add '//' just in case it will show not found state in this branch
+	//	const [currentorderlist, setCurrentorder]=useState([]);
+	//	const [pastorderlist, setPastorder] = useState([]);
+	//	const customerId = useSelector((state)=>state.user.userId);
+	//	useEffect(()=>{
+	//		fetchcurrentorder(customerId);
+	//		fetchpastorder(customerId);
+	//	},[])
+	//	const fetchcurrentorder=(customerId)=>{
+	//		fetch(`http://13.52.182.209/customers/order/current/${customerId}`,{
+	//			method: 'GET',
+	//		})
+	//		.then((res)=>res.json())
+	//		.then((data)=>setCurrentorder(data))
+	//		.then((error)=>console.error('Error', error));
+	//	}
+	//	const fetchpastorder=(customerId)=>{
+	//		fetch(`http://13.52.182.209/customers//order/past/${customerId}`,{
+	//			method: 'GET',
+	//		})
+	//		.then((res)=>res.json())
+	//		.then((data)=>setPastorder(data))
+	//		.then((error)=>console.error('Error', error));
+	//	}
 	return (
 		<div className='min-h-full m-auto flex flex-col justify-center items-center bg-white gap-4'>
 			<br />
 			<h3>Current Order</h3>
 			<div className='grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 grid-cols-5 gap-4'>
 				{inputsForcurrenttest.map((input) => (
-					<CurrentOrderItem currentorderInfo={input}/>
+					<CurrentOrderItem currentorderInfo={input} />
 				))}
 			</div>
 			<br />
@@ -112,7 +112,7 @@ export default function Order() {
 			<h3>Order History</h3>
 			<div className='grid sm:grid-cols-1 md:grid-cols-1 grid-cols-2 gap-9'>
 				{inputsForcurrenttest.map((input) => (
-					<HistoryOrderItem historyOrderInfo={input}/>
+					<HistoryOrderItem historyOrderInfo={input} />
 				))}
 			</div>
 		</div>

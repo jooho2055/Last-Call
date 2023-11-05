@@ -15,6 +15,7 @@ export default function Searchbox({ onSubmit, onChange }) {
 	const { isLoading, data: searchedRestaurants } = useQuery({
 		queryKey: ['searchedRestaurants', debouncedSearchTerm],
 		queryFn: () => fetchSearchboxRestaurants(search),
+		enabled: !!search,
 	});
 
 	const handleChange = (e) => {
