@@ -24,7 +24,11 @@ export default function SearchDetail() {
 		if (user.role === 'restaurants') {
 			navigate('/restaurantprofile');
 		}
-	});
+		if (searchId && searchValue !== searchId) {
+			setSearchValue(searchId);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [searchId]);
 
 	const { data: searchedRestaurants } = useQuery({
 		queryKey: ['searchedRestaurants', searchId],
@@ -48,7 +52,7 @@ export default function SearchDetail() {
 	return (
 		<div className='max-w-[110rem] m-auto mt-10'>
 			<div>
-				<h1>Search Results</h1>
+				<h1>Search Results {searchValue}</h1>
 				<p>
 					Displaying results for the search query: <strong>"{searchId}"</strong>
 				</p>
