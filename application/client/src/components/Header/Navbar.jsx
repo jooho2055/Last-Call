@@ -27,15 +27,15 @@ export default function Navbar() {
 		!isSignin && !isSignup && !isLandingPage && !isSignupCustomer && !isSignupRestaurant;
 
 	return (
-		<div className='bg-stone-900 flex justify-between'>
+		<div className='bg-gray-100 flex justify-between'>
 			<Link to={'/'}>
-				<div className='py-4 text-2xl ml-5'>LAST CALL</div>
+				<div className='py-4 text-2xl ml-5 text-stone-900'>LAST CALL</div>
 			</Link>
 			<nav className='mr-24 pt-4'>
 				<ul className={!isLandingPage && 'flex space-x-16'}>
 					{showNavItems &&
 						navigation.map((item) => (
-							<li key={item.name} className='space-x-3 text-gray-50'>
+							<li key={item.name} className='space-x-3 text-stone-900'>
 								<Link to={item.href}>{item.name}</Link>
 							</li>
 						))}
