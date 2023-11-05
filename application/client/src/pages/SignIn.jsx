@@ -11,14 +11,14 @@ export default function SignIn() {
 	const dispatch = useDispatch();
 	const user = useSelector((state) => state.user);
 	useEffect(() => {
-		if(user.isLoggedIn){
-			if(user.role === 'restaurant'){
-				navigate('/restaurantprofile')
-			}else{
-				navigate("/home")
+		if (user.isLoggedIn) {
+			if (user.role === 'restaurant') {
+				navigate('/restaurantprofile');
+			} else {
+				navigate('/home');
 			}
 		}
-	}, []);
+	});
 	const [inputValues, setInputValues] = useState({
 		username: '',
 		pwd: '',
@@ -28,27 +28,28 @@ export default function SignIn() {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		// console.log(inputValues);
-		const res = await fetch('http://13.52.182.209/users/signin',{
+		const res = await fetch('http://13.52.182.209/users/signin', {
 			method: 'POST',
 			headers: {
-				"content-Type": 'application/json'
+				'content-Type': 'application/json',
 			},
-			body: JSON.stringify(inputValues)		
-		})
-		const data = await res.json()
+			body: JSON.stringify(inputValues),
+		});
+		const data = await res.json();
 		dispatch(login(data));
-		if(data.role === 'customers'){
-			navigate('/home')
-		}else if(data.role === 'restaurants'){
-			navigate('/restaurantprofile')
-		}else{
-			console.log(data.message)
-			console.log("something wrong!")
+		if (data.role === 'customers') {
+			navigate('/home');
+		} else if (data.role === 'restaurants') {
+			navigate('/restaurantprofile');
+		} else {
+			console.log(data.message);
+			console.log('something wrong!');
 		}
 	};
 
 	const onChange = (e) => {
 		setInputValues({ ...inputValues, [e.target.name]: e.target.value });
+		console.log(inputValues);
 	};
 
 	const handleCheckbox = (e) => {

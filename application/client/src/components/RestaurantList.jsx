@@ -11,7 +11,9 @@ export default function RestaurantList({ restaurantInfo }) {
 					<RestCard.Header>{name}</RestCard.Header>
 					<RestCard.Description>{cuisine}</RestCard.Description>
 					<RestCard.Description>{location}</RestCard.Description>
-					<RestCard.Description>{status > 0 ? 'open' : 'close'}</RestCard.Description>
+					<RestCard.Description>
+						{status === 'Open' ? 'open' : 'close'}
+					</RestCard.Description>
 				</RestCard.Content>
 			</RestCard>
 		</div>
