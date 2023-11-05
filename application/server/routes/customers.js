@@ -28,7 +28,7 @@ router.get(`/search`, async(req, res)=>{
  * @params customerId
  * @path /customers/order/current/:id(\\d+)
  */
-router.get(`/order/current/:id(\\d+)`, isLoggedIn, isCustomers, isMyPage,  async function(req, res){
+router.get(`/order/current/:id(\\d+)`, /*isLoggedIn, isCustomers, isMyPage,*/  async function(req, res){
     const {id} = req.params
     try{
         const [results, _ ] = await db.execute(`SELECT * FROM orders WHERE fk_orders_customer = ? AND status = 0;`,[id]);
@@ -48,7 +48,7 @@ router.get(`/order/current/:id(\\d+)`, isLoggedIn, isCustomers, isMyPage,  async
  * @params customerId
  * @path customers//order/past/:id(\\d+)
  */
-router.get(`/order/past/:id(\\d+)`, isLoggedIn, isCustomers, isMyPage, async function(req,res){
+router.get(`/order/past/:id(\\d+)`, /*isLoggedIn, isCustomers, isMyPage,*/ async function(req,res){
     const {id} = req.params
     try{
         const [results, _ ] = await db.execute(`SELECT * FROM orders WHERE fk_orders_customer = ? AND status = 1;`,[id]);
@@ -68,7 +68,7 @@ router.get(`/order/past/:id(\\d+)`, isLoggedIn, isCustomers, isMyPage, async fun
  * @params customerId
  * @path `/customers//order/cart/:id(\\d+)`
  */
-router.get(`/order/cart/:id(\\d+)`, isLoggedIn, isCustomers, isMyPage, async function(req,res){
+router.get(`/order/cart/:id(\\d+)`, /*isLoggedIn, isCustomers, isMyPage,*/ async function(req,res){
     const {id} = req.params
     try{
         var [results, _ ] = await db.execute(`SELECT * FROM orders WHERE fk_orders_customer = ? AND status = 2;`, [id])
@@ -89,7 +89,7 @@ router.get(`/order/cart/:id(\\d+)`, isLoggedIn, isCustomers, isMyPage, async fun
  * @path `/customers/order/cart/checkout`
  * order status: 0: current, 1: done, 2: cart, 3: declined
  */
-router.post(`/order/cart/checkout`, isLoggedIn, isCustomers, async function(req, res){
+router.post(`/order/cart/checkout`, /*isLoggedIn, isCustomers,*/ async function(req, res){
     const {customerId} = req.body
 
     if(req.session.user.userId !== customerId){
@@ -124,7 +124,7 @@ DEBUG_CART_ADD = {
  * @body holds menuId, customerId, restaurantId
  * @path `/customers//order/cart/add`
  */
-router.post('/order/cart/add', isLoggedIn, isCustomers, async function(req,res){
+router.post('/order/cart/add', /*isLoggedIn, isCustomers,*/ async function(req,res){
     const {customerId, menuId, restaurantId} = req.body
     // const {customerId, menuId, restaurantId} = DEBUG_CART_ADD;
     if(req.session.user.userId !== customerId){
@@ -161,7 +161,7 @@ DEBUG_CART_DELETE_MENU = {
  * @body holds menuId and customerId
  * @path `/customers/order/cart/delete/menu`
  */
-router.post(`/order/cart/delete/menu`, isLoggedIn, isCustomers, async function(req,res){
+router.post(`/order/cart/delete/menu`, /*isLoggedIn, isCustomers,*/ async function(req,res){
     const {menuId, customerId} = req.body
     // const {menuId, customerId} = DEBUG_CART_DELETE_MENU
     if(req.session.user.userId !== customerId){
@@ -196,7 +196,7 @@ DEBUG_CART_DELETE = {
  * @body holds customer detail
  * @path `/customers/order/cart/delete`
  */
-router.post('/order/cart/delete', isLoggedIn, isCustomers, async function(req,res){
+router.post('/order/cart/delete', /*isLoggedIn, isCustomers,*/ async function(req,res){
     const { customerId} = req.body
     // const {customerId} = DEBUG_CART_DELETE
     if(req.session.user.userId !== customerId){

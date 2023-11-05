@@ -78,7 +78,7 @@ const TEST_SET_MENU_WRONG4 = {
  * @params hold restaurants id
  * @Path `/restaurants/profile/:id(\\d+)`
  */
-router.get(`/profile/:id(\\d+)`, isLoggedIn, isRestaurants, isMyPage, 
+router.get(`/profile/:id(\\d+)`, /*isLoggedIn, isRestaurants, isMyPage,*/
     async function(req,res){
         const {id} = req.params;
         console.log(id)
@@ -99,7 +99,7 @@ router.get(`/profile/:id(\\d+)`, isLoggedIn, isRestaurants, isMyPage,
  *  @Options img, desc
  *  @path `/restaurants/menu/add`
  */
-router.get(`/menu/add`, isLoggedIn, isRestaurants, async function(req,res){
+router.get(`/menu/add`, /*isLoggedIn, isRestaurants,*/ async function(req,res){
     const {restautrantId, price, orignalPrice, name} = req.body
     var { desc, img } = req.body
     
@@ -141,7 +141,7 @@ router.get(`/menu/add`, isLoggedIn, isRestaurants, async function(req,res){
  * @params hold restaurantsId
  * @path `/restaurants/menu/list/:id(\\d+)`
  */
-router.get(`/menu/list/:id(\\d+)`, isLoggedIn, async function(req,res){
+router.get(`/menu/list/:id(\\d+)`, /*isLoggedIn,*/ async function(req,res){
     const { id } = req.params
     try{
         var [ results, _ ] = await db.execute(`SELECT * FROM menus WHERE fk_menus_restaurant = ?;`, [id])
@@ -160,7 +160,7 @@ router.get(`/menu/list/:id(\\d+)`, isLoggedIn, async function(req,res){
  * @body hold restaurantId, menuId (which menu are you going to delete)
  * @path `/restaurants/menu/delete`
  */
-router.post('/menu/delete', isLoggedIn, isRestaurants, async function(req,res){
+router.post('/menu/delete', /*isLoggedIn, isRestaurants,*/ async function(req,res){
     const {restaurantId, menuId} = req.body
     
     // FOR DEBUG
@@ -205,7 +205,7 @@ router.post('/menu/delete', isLoggedIn, isRestaurants, async function(req,res){
  * @body must holds restaurantId, menuId, quantity(to update)
  * @path `/restaurants/menu/setqauntity`
  */
-router.post('/menu/setqauntity', isLoggedIn, isRestaurants, async function(req, res){
+router.post('/menu/setqauntity', /*isLoggedIn, isRestaurants,*/ async function(req, res){
     const {restaurantId, menuId, quantity} = req.body
 
     //For DEBUG
