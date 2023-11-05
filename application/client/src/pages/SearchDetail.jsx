@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { useSelector } from 'react-redux';
 import { useQuery } from '@tanstack/react-query';
@@ -10,6 +10,7 @@ import RestaurantList from '../components/RestaurantList';
 
 export default function SearchDetail() {
 	const [searchValue, setSearchValue] = useState('');
+	const inputRef = useRef(null); // Create the ref
 
 	const { searchId } = useParams();
 	const navigate = useNavigate();
@@ -33,6 +34,10 @@ export default function SearchDetail() {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
+		// setSearchValue('');
+		if (inputRef.current) {
+			inputRef.current.blur(); // Remove focus from the input box
+		}
 		navigate(`/search/${searchValue}`);
 	};
 
@@ -53,6 +58,7 @@ export default function SearchDetail() {
 					searchValue={searchValue}
 					onSubmit={handleSubmit}
 					onChange={handleChange}
+					inputRef={inputRef}
 				/>
 			</div>
 			<div className='grid grid-cols-3 auto-rows-[minmax(14rem,auto)] p-7 gap-8'>
