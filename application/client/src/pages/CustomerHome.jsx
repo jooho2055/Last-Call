@@ -4,53 +4,14 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { fetchRestaurants } from '../apis/get';
 import { useQuery } from '@tanstack/react-query';
+import { useSelector } from 'react-redux';
 
 import SearchBox from '../components/SearchBox';
 import RestaurantList from '../components/RestaurantList';
-import { useSelector } from 'react-redux';
 
 export default function CustomerHome() {
 	const [searchValue, setSearchValue] = useState('');
 	const navigate = useNavigate();
-
-	// const fetchFunction = () => {
-	// 	console.log('Fetching restaurants with search:', searchValue);
-	// 	return fetchRestaurants(searchValue);
-	// };
-
-	// const fetchRestaurants = async () => {
-	// 	try {
-	// 		const response = await axios.get(`http://13.52.182.209/search?search=${searchValue}`);
-	// 		console.log('fetching....');
-	// 		return response.data;
-	// 	} catch (error) {
-	// 		console.error('Error fetching restaurants:', error);
-	// 		throw error;
-	// 	}
-	// };
-
-	// const {
-	// 	isLoading,
-	// 	error,
-	// 	data: restaurants,
-	// } = useQuery({
-	// 	queryKey: ['restaurants', searchValue],
-	// 	queryFn: async () => {
-	// 		try {
-	// 			console.log('fetching');
-	// 			const response = await axios.get(
-	// 				`http://13.52.182.209/search?search=${searchValue}`
-	// 			);
-	// 			return response.data;
-	// 		} catch (error) {
-	// 			console.error('Error fetching restaurants:', error);
-	// 			throw error;
-	// 		}
-	// 	},
-	// 	// Ensure to only refetch when the searchValue changes
-	// 	// enabled: searchValue !== '',
-	// });
-
 	const user = useSelector((state) => state.user);
 
 	useEffect(() => {
@@ -60,7 +21,7 @@ export default function CustomerHome() {
 		if (user.role === 'restaurants') {
 			navigate('/restaurantprofile');
 		}
-	}, []);
+	});
 
 	const {
 		isLoading,
