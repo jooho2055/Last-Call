@@ -10,8 +10,10 @@ import SearchBox from '../components/SearchBox';
 import RestaurantList from '../components/RestaurantList';
 
 export default function CustomerHome() {
+
 	const [searchValue, setSearchValue] = useState('');
 	const navigate = useNavigate();
+
 	const user = useSelector((state) => state.user);
 
 	useEffect(() => {
@@ -22,6 +24,7 @@ export default function CustomerHome() {
 			navigate('/restaurantprofile');
 		}
 	});
+
 
 	const {
 		isLoading,
