@@ -1,4 +1,10 @@
 require('dotenv').config();
+
+
+
+const port = process.env.PORT || 3000
+
+
 const express = require("express");
 const path = require("path");
 const app = express();
@@ -8,6 +14,7 @@ const sessions = require('express-session');
 const mysqlStore = require('express-mysql-session')(sessions);
 // var db = require('./conf/database');
 const cors = require('cors');
+
 // passport authentication
 // const passport = require('passport');
 // const LocalStrategy = require('passport-local').Strategy;
@@ -40,8 +47,6 @@ app.use(express.urlencoded({extended: false}))
 app.use(express.static(path.join(__dirname, "../client/build")));
 
 app.use(cookieParser());
-
-
 
 
 app.use(sessions({
