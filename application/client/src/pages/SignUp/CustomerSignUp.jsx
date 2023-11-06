@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import FormInput from '../../components/FormInput';
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { inputsForCustomer } from '../../utils/formConfig';
-
-
 
 export default function CustomerSignup() {
 	const navigate = useNavigate();
@@ -76,25 +74,24 @@ export default function CustomerSignup() {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		try{
-			const res = await fetch(`http://13.52.182.209/users/signup/customer`,{
-			method: 'POST',
-			headers: {
-				"content-Type": 'application/json'
-			},
-			body: JSON.stringify(inputValues)
-			})
-			.then((res)=>{
-				console.log(res)
-				if(res.ok){
-					navigate('/signin')
-				}else{
-					console.log("fail to sign up")
-				}
-			})
-		}catch(err){
-			console.log('err!!!!')
-			console.log(err)
+		try {
+			const response = await fetch(`http://13.52.182.209/users/signup/customer`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(inputValues),
+			});
+
+			console.log(response); // Now 'response' is used here
+			if (response.ok) {
+				navigate('/signin');
+			} else {
+				console.log('Failed to sign up');
+			}
+		} catch (err) {
+			console.log('Error!!!!');
+			console.log(err);
 		}
 	};
 

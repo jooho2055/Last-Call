@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { inputsForRestaurant, optionsForState, optionsForCuisine } from '../../utils/formConfig';
 import FormInput from '../../components/FormInput';
 import Select from 'react-select';
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export default function RestaurantSignUp() {
 	const navigate = useNavigate();
@@ -92,25 +92,25 @@ export default function RestaurantSignUp() {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		console.log(inputValues);
-		try{
-			const res = await fetch(`http://13.52.182.209/users/signup/restaurant`,{
-			method: 'POST',
-			headers: {
-				"content-Type": 'application/json'
-			},
-			body: JSON.stringify(inputValues)
-			})
-			.then((res)=>{
-				console.log(res)
-				if(res.ok){
-					navigate('/signin')
-				}else{
-					console.log("fail to sign up")
-				}
-			})
-		}catch(err){
-			console.log('err!!!!')
-			console.log(err)
+		try {
+			const response = await fetch(`http://13.52.182.209/users/signup/restaurant`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json', // Note the capitalization
+				},
+				body: JSON.stringify(inputValues),
+			});
+
+			// The response is now handled directly here without .then()
+			console.log(response);
+			if (response.ok) {
+				navigate('/signin');
+			} else {
+				console.log('Failed to sign up');
+			}
+		} catch (err) {
+			console.log('Error!!!!');
+			console.log(err);
 		}
 	};
 	// const handleSubmit = (e) => {
