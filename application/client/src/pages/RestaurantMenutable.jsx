@@ -1,31 +1,43 @@
-import React,{useState} from 'react';
+import React,{useState, useEffect} from 'react';
 import {inputForMenu} from '../utils/resProfile';
 import RestaurantMenu from '../components/RestaurantMenu';
 import { AiFillPlusSquare } from 'react-icons/ai';
 import FormInput from '../components/FormInput';
-
-const foodlist =[
-	{
-		fname: 'apple',
-		quantity: 2,
-		oprice: 3,
-		aprice: 2,
-	},
-	{
-		fname: 'banana',
-		quantity: 1,
-		oprice: 2,
-		aprice: 1,
-	},
-	{
-		fname: 'rice',
-		quantity: 3,
-		oprice: 15,
-		aprice: 10,
-	},
-]	
+import { useSelector } from 'react-redux';
+import axios from 'axios';
+import { useQuery, QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 
 export default function RestaurantMenutable(){
+    const navigate = useNavigate();
+    const user = useSelector((state) => state.user);
+    useEffect(() => {
+      if(user.isLoggedIn){
+        if(user.role === 'restaurant'){
+          navigate('/restaurantprofile')
+        }else{
+          navigate("/home")
+        }
+      }
+      else{
+        navigate('/signin');
+      }
+    }, []);
+
+  const getMenuTable = async () =>{
+      try{
+      const response = await axios.get(`http://13.52.182.209/restaurants/menu/list/${user.userId}`);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching current order:', error);
+      throw error;
+    }
+    }
+
+    const MenuList = useQuery({
+      queryKey: ["MenuLists"],
+      queryFn: getMenuTable,
+    })
     const [menuInput, setMenuInput] = useState({
 		fname: '',
 		quantity: '',
@@ -117,7 +129,7 @@ export default function RestaurantMenutable(){
       </div>
     )}
     <div className='grid grid-cols-1 gap-4'>
-      {foodlist.map((food)=>(
+      {MenuList.data?.map((food)=>(
           <RestaurantMenu restarantmenuInfo={food}/>
       ))}
 
