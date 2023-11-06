@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { fetchRestaurants } from '../apis/get';
 import { useQuery } from '@tanstack/react-query';
 import { useSelector } from 'react-redux';
@@ -10,7 +10,6 @@ import SearchBox from '../components/SearchBox';
 import RestaurantList from '../components/RestaurantList';
 
 export default function CustomerHome() {
-
 	const [searchValue, setSearchValue] = useState('');
 	const navigate = useNavigate();
 
@@ -24,7 +23,6 @@ export default function CustomerHome() {
 			navigate('/restaurantprofile');
 		}
 	});
-
 
 	const {
 		isLoading,
@@ -59,8 +57,10 @@ export default function CustomerHome() {
 			</div>
 			<div className='grid grid-cols-3 auto-rows-[minmax(14rem,auto)] p-7 gap-8'>
 				{/* Must use a restaurant unique id as a key in the future */}
-				{restaurants.map((restaurant, index) => (
-					<RestaurantList key={index} restaurantInfo={restaurant} />
+				{restaurants.map((restaurant) => (
+					<Link to={`/restaurant/${restaurant.id}`}>
+						<RestaurantList key={restaurant.id} restaurantInfo={restaurant} />
+					</Link>
 				))}
 			</div>
 		</div>
