@@ -24,14 +24,6 @@ export default function SearchDetail() {
 		if (user.role === 'restaurants') {
 			navigate('/restaurantprofile');
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	});
-
-	const { data: searchedRestaurants } = useQuery({
-		queryKey: ['searchedRestaurants', searchId],
-		queryFn: () => fetchSearchboxRestaurants(searchId),
-		enabled: !!searchId,
-		keepPreviousData: true,
 	});
 
 	useEffect(() => {
@@ -40,6 +32,13 @@ export default function SearchDetail() {
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [searchId]);
+
+	const { data: searchedRestaurants } = useQuery({
+		queryKey: ['searchedRestaurants', searchId],
+		queryFn: () => fetchSearchboxRestaurants(searchId),
+		enabled: !!searchId,
+		keepPreviousData: true,
+	});
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
