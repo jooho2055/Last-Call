@@ -222,4 +222,239 @@ router.post('/order/cart/delete', /*isLoggedIn, isCustomers,*/ async function(re
     }
 })
 
+
+
+
+  async function getUserProfile(customerId) {
+    try {
+      const [profile] = await db.query('SELECT * FROM customers WHERE id = ?', [customerId]);
+  
+      if (profile && profile.length > 0) {
+        return profile[0];
+      } else {
+        return null;
+      }
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
+  
+
+  async function updateCustomerBio(customerId, bio) {
+    try {
+      if (bio) {
+        const [result] = await db.query(
+          'UPDATE customers SET bio = ? WHERE id = ?;',
+          [bio, customerId]
+        );
+
+        if (result.affectedRows > 0) {
+          return { message: 'Bio updated successfully' };
+        } else {
+          return { error: 'Customer not found' };
+        }
+      } else {
+        return { error: 'Missing bio parameter' };
+      }
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
+
+
+  async function getCustomerIdByUsername(username) {
+    try {
+      const [customer] = await db.query(
+        'SELECT id FROM customers WHERE username = ?',
+        [username]
+      );
+  
+      if (customer && customer.length > 0) {
+        return customer[0].id;
+      } else {
+        return null; // Return null if the username is not found
+      }
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
+   
+// updateCustomerBio(1, 'lalala');
+  
+
+async function updateCustomerEmail(customerId, newEmail) {
+  try {
+    if (!newEmail) {
+      return { error: 'Missing new email parameter' };
+    }
+
+    // Check if another customer already has the new email
+    const [emailCheckResult] = await db.query(
+      'SELECT id FROM customers WHERE email = ? AND id <> ?',
+      [newEmail, customerId]
+    );
+
+    if (emailCheckResult.length > 0) {
+      return { error: 'Email is already in use by another customer' };
+    }
+
+    const [result] = await db.query(
+      'UPDATE customers SET email = ? WHERE id = ?',
+      [newEmail, customerId]
+    );
+
+    if (result.affectedRows > 0) {
+      return { message: 'Email updated successfully' };
+    } else {
+      return { error: 'Customer not found' };
+    }
+  } catch (error) {
+    console.error(error);
+    throw error; 
+  }
+}
+
+// updateCustomerEmail(1, "leslie@example.com")
+
+async function updateCustomerName(customerId, newName) {
+  try {
+
+    const [result] = await db.query(
+      'UPDATE customers SET firstname = ? WHERE id = ?',
+      [newName, customerId]
+    );
+
+    if (result.affectedRows > 0) {
+      return { message: 'Name updated successfully' };
+    } else {
+      return { error: 'Customer not found' };
+    }
+  } catch (error) {
+    console.error(error);
+    throw error; 
+  }
+}
+// updateCustomerName(1, "Lais")
+
+
+
+async function updateCustomerLastName(customerId, newLastName) {
+  try {
+    const [result] = await db.query(
+      'UPDATE customers SET lastname = ? WHERE id = ?',
+      [newLastName, customerId]
+    );
+
+    if (result.affectedRows > 0) {
+      return { message: 'Last name updated successfully' };
+    } else {
+      return { error: 'Customer not found' };
+    }
+  } catch (error) {
+    console.error(error);
+    throw error; 
+  }
+}
+
+// updateCustomerLastName(1, "a")
+
+async function updateCustomerPhoneNumber(customerId, phoneNumber) {
+  try {
+    const [result] = await db.query(
+      'UPDATE customers SET phone = ? WHERE id = ?',
+      [phoneNumber, customerId]
+    );
+
+    if (result.affectedRows > 0) {
+      return { message: 'Phone number updated successfully' };
+    } else {
+      return { error: 'Customer not found' };
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+async function updateCustomerProfileTimestamp(customerId) {
+  try {
+    const [result] = await db.query(
+      'UPDATE customers SET updated_at = NOW() WHERE id = ?',
+      [customerId]
+    );
+
+    if (result.affectedRows > 0) {
+      const updatedTime = new Date().toLocaleString(); // Get the updated timestamp
+
+      return { updated_at: updatedTime };
+    } else {
+      return { error: 'Customer not found' };
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+
+router.post('/edit', async (req, res) => {
+  const { username, email, bio, name, lastName, phoneNumber } = req.body;
+
+  try {
+    const customerId = await getCustomerIdByUsername(username);
+
+    if (customerId === null) {
+      res.status(400).json({ error: 'Customer not found' });
+      return;
+    }
+
+    // Fetch the user's profile data
+    const userProfile = await getUserProfile(customerId);
+
+    // Create an object to store the update data
+    const updateData = {};
+
+    // Compare incoming data 
+    if (email && email !== userProfile.email) {
+      const emailUpdateResult = await updateCustomerEmail(customerId, email);
+      updateData.email = emailUpdateResult;
+    }
+
+    if (bio && bio !== userProfile.bio) {
+      const bioUpdateResult = await updateCustomerBio(customerId, bio);
+      updateData.bio = bioUpdateResult;
+    }
+
+    if (name && name !== userProfile.name) {
+      const nameUpdateResult = await updateCustomerName(customerId, name);
+      updateData.name = nameUpdateResult;
+    }
+
+    if (lastName && lastName !== userProfile.lastName) {
+      const lastNameUpdateResult = await updateCustomerLastName(customerId, lastName);
+      updateData.lastName = lastNameUpdateResult;
+    }
+
+    if (phoneNumber && phoneNumber !== userProfile.phoneNumber) {
+      const phoneNumberUpdateResult = await updateCustomerPhoneNumber(customerId, phoneNumber);
+      updateData.phoneNumber = phoneNumberUpdateResult;
+    }
+
+    // Update the updated_at timestamp in the user's profile
+    const updateProfileResult = await updateCustomerProfileTimestamp(customerId);
+
+    // Merge the user profile data with the update results
+    const updatedUserProfile = { ...userProfile, ...updateData, ...updateProfileResult };
+
+    res.status(200).json(updatedUserProfile);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred' });
+  }
+});
+
+
 module.exports = router;
