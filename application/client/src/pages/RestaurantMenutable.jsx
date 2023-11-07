@@ -4,13 +4,14 @@ import RestaurantMenu from '../components/RestaurantMenu';
 import { AiFillPlusSquare } from 'react-icons/ai';
 import FormInput from '../components/FormInput';
 import { useSelector } from 'react-redux';
-import {getMenuTable} from '../apis/getresMenu';
-import { useQuery, QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import {getMenuTable, createNewMenu} from '../apis/getresMenu';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
 export default function RestaurantMenutable(){
     const navigate = useNavigate();
     const user = useSelector((state) => state.user);
+    const queryClient = useQueryClient();
     useEffect(() => {
       if(user.isLoggedIn){
         if(user.role === 'restaurant'){
@@ -22,11 +23,18 @@ export default function RestaurantMenutable(){
       else{
         navigate('/signin');
       }
-    }, []);
+    }, [navigate, user.isLoggedIn, user.role]);
 
     const MenuList = useQuery({
       queryKey: ["MenuLists"],
       queryFn: getMenuTable(user.userId),
+    })
+    const createMenuMutation = useMutation({
+      mutationFn: createNewMenu,
+      onSuccess: data =>{
+        queryClient.setQueryData(["posts", data.id], data)
+        queryClient.invalidateQueries(["posts"],{exact: true})
+      } 
     })
     
   const [menuInput, setMenuInput] = useState({
@@ -68,16 +76,23 @@ export default function RestaurantMenutable(){
 				}
 				setmenuValidity({...menuvalidity, [name]: isValid});
 			}
+    const onMenuChange = (e) =>{
+        const { name, value } = e.target;
+        setMenuInput({...menuInput, [e.target.name]: e.target.value});
+        validateMenuInput(name, value);
+    }
+
       const handleMenu = (e) =>{
                 e.preventDefault();
                 console.log(menuInput);
+                createMenuMutation.mutate({
+                  restautrantId: user.userId,
+                  originalPrice: menuInput.oprice,
+                  price: menuInput.aprice,
+                  name: menuInput.fname,
+                })
             }
 
-            const onMenuChange = (e) =>{
-                const { name, value } = e.target;
-                setMenuInput({...menuInput, [e.target.name]: e.target.value});
-                validateMenuInput(name, value);
-            }
     
   return(  
     <div className='min-h-full m-auto flex justify-center bg-white relative'>

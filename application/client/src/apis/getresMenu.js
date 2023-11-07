@@ -1,5 +1,9 @@
 import axios from 'axios';
-
+/**
+ * This is a function for fetching data about restaurant menu
+ * It will only show Menu for that restaurant of that id 
+ * @returns An array that holds multiple objects
+ */
 export const getMenuTable = async (id) =>{
     try{
     const response = await axios.get(`http://13.52.182.209/restaurants/menu/list/${id}`);
@@ -10,13 +14,18 @@ export const getMenuTable = async (id) =>{
   }
   }
 
-  export function createNewMenu({ name, originalPrice, price, restautrantId }) {
-    return axios
-    .post("http://13.52.182.209/restaurants/menu/add",{
-          name,
-          originalPrice,
-          price,
-          restautrantId,
-    })
-    .then(res=>res.data)
+  /**
+ * This is a function for fetching data about create new menu 
+ * It will post new menu data
+ * @returns An array that holds multiple objects
+ */
+  export async function createNewMenu({ name, originalPrice, price, restautrantId }) {
+    const res = await axios
+      .post("http://13.52.182.209/restaurants/menu/add", {
+        name,
+        originalPrice,
+        price,
+        restautrantId,
+      });
+    return res.data;
   }  

@@ -4,7 +4,7 @@ import HistoryOrderItem from '../components/Order/HistoryOrderItem';
 import CurrentOrderItem from '../components/Order/currentOrderItem';
 import { useSelector } from 'react-redux';
 import {getCurrentOrder, getPastOrder} from '../apis/getorder'
-import { useQuery, QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
 export default function Order() {
@@ -15,7 +15,7 @@ export default function Order() {
     if (!user.isLoggedIn) {
       navigate('/signin');
     }
-  }, []);
+  }, [navigate, user.isLoggedIn]);
 
 
   const currentItems = useQuery({
