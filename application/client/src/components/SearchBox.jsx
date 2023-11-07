@@ -7,17 +7,17 @@ import { fetchSearchboxRestaurants } from '../apis/get';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
-export default function Searchbox({ searchValue, onSubmit, onChange, inputRef }) {
+export default function SearchBox({ searchValue, onSubmit, onChange, inputRef }) {
 	// Use custom hook for debounced search term
 	const debouncedSearchTerm = useDebounce(searchValue, 700);
 	const [isInputFocused, setInputFocused] = useState(false);
 
 	// QueryFn will pass 'search' as a parameter, must use arrow function
 	// The key is different from the key in Home page.
-	const { isLoading, data: searchedRestaurants } = useQuery({
-		queryKey: ['searchedRestaurants', debouncedSearchTerm],
-		queryFn: () => fetchSearchboxRestaurants(searchValue),
-		enabled: !!searchValue,
+	const { isLoading, data: searchedSuggestions } = useQuery({
+		queryKey: ['searchedSuggestions', debouncedSearchTerm],
+		queryFn: () => fetchSearchboxRestaurants(debouncedSearchTerm),
+		enabled: !!debouncedSearchTerm && isInputFocused,
 	});
 
 	const handleChange = (e) => {
@@ -47,7 +47,7 @@ export default function Searchbox({ searchValue, onSubmit, onChange, inputRef })
 						onBlur={handleBlur}
 					/>
 					{searchValue && isInputFocused && (
-						<SearchToggle isLoading={isLoading} data={searchedRestaurants} />
+						<SearchToggle isLoading={isLoading} data={searchedSuggestions} />
 					)}
 				</form>
 			</div>
