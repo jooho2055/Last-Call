@@ -245,13 +245,11 @@ router.post('/order/cart/delete', /*isLoggedIn, isCustomers,*/ async function(re
     try {
       if (bio) {
         const [result] = await db.query(
-          'UPDATE customers SET bio = ?, updated_at = NOW() WHERE id = ?;',
+          'UPDATE customers SET bio = ? WHERE id = ?;',
           [bio, customerId]
         );
-  
+
         if (result.affectedRows > 0) {
-          const updatedTime = new Date().toLocaleString(); // Get the current timestamp
-  
           return { message: 'Bio updated successfully' };
         } else {
           return { error: 'Customer not found' };
@@ -261,9 +259,10 @@ router.post('/order/cart/delete', /*isLoggedIn, isCustomers,*/ async function(re
       }
     } catch (error) {
       console.error(error);
-      throw error; 
+      throw error;
     }
   }
+
 
   async function getCustomerIdByUsername(username) {
     try {
