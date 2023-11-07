@@ -4,7 +4,7 @@ import RestaurantMenu from '../components/RestaurantMenu';
 import { AiFillPlusSquare } from 'react-icons/ai';
 import FormInput from '../components/FormInput';
 import { useSelector } from 'react-redux';
-import axios from 'axios';
+import {getMenuTable} from '../apis/getresMenu';
 import { useQuery, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
@@ -24,30 +24,19 @@ export default function RestaurantMenutable(){
       }
     }, []);
 
-  const getMenuTable = async () =>{
-      try{
-      const response = await axios.get(`http://13.52.182.209/restaurants/menu/list/${user.userId}`);
-      return response.data;
-    } catch (error) {
-      console.error('Error fetching current order:', error);
-      throw error;
-    }
-    }
-
     const MenuList = useQuery({
       queryKey: ["MenuLists"],
-      queryFn: getMenuTable,
+      queryFn: getMenuTable(user.userId),
     })
-    const [menuInput, setMenuInput] = useState({
+    
+  const [menuInput, setMenuInput] = useState({
 		fname: '',
-		quantity: '',
 		oprice:'',
 		aprice:'',
 	});
 
 	const [menuvalidity, setmenuValidity] = useState({
-		fail: true,
-		quantity: true,
+		fname: true,
 		oprice: true,
 		aprice: true,
 	});
@@ -67,22 +56,19 @@ export default function RestaurantMenutable(){
 					case 'fname':
 						isValid = /^[A-Za-z0-9]{1,16}$/.test(value);
 					    break;
-					case 'quantity':
-						isValid = /^[1-9]\d*$/.test(value);
-						break;
 					case 'oprice':
 						isValid = /^[0-9]*\.?[0-9]+$/.test(value) && parseFloat(value) > 0;
-                        break;
+              break;
 					case 'aprice':
 						isValid = /^[0-9]*\.?[0-9]+$/.test(value) && parseFloat(value) > 0;
-                        break;
+              break;
 					default:
 						isValid=false;
 					
 				}
 				setmenuValidity({...menuvalidity, [name]: isValid});
 			}
-            const handleMenu = (e) =>{
+      const handleMenu = (e) =>{
                 e.preventDefault();
                 console.log(menuInput);
             }
