@@ -225,31 +225,6 @@ router.post('/order/cart/delete', /*isLoggedIn, isCustomers,*/ async function(re
 
 
 
-
-router.get('/getUserProfile', async (req, res) => {
-    const { username } = req.query;
-    try {
-      const customerId = await getCustomerIdByUsername(username);
-  
-      if (customerId === null) {
-        res.status(404).json({ error: 'User not found' });
-        return;
-      }
-  
-      //  information on the customer ID from the database
-      const userProfile = await getUserProfile(customerId);
-  
-      if (userProfile) {
-        res.status(200).json(userProfile);
-      } else {
-        res.status(404).json({ error: 'User profile not found' });
-      }
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'An error occurred' });
-    }
-  });
-  
   async function getUserProfile(customerId) {
     try {
       const [profile] = await db.query('SELECT * FROM customers WHERE id = ?', [customerId]);
@@ -311,43 +286,6 @@ router.get('/getUserProfile', async (req, res) => {
 // updateCustomerBio(1, 'lalala');
   
 
-router.post('/updateBio', async (req, res) => {
-  const { customerId, bio } = req.body;
-
-  try {
-    if (bio) {
-      const result = await updateCustomerBio(customerId, bio);
-      if (result.error) {
-        res.status(400).json(result); // Return error response if update fails
-      } else {
-        res.status(200).json(result); // Return success response if update is successful
-      }
-    } else {
-      res.status(400).json({ error: 'Missing bio parameter' });
-    }
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'An error occurred' });
-  }
-});
-
-
-router.post('/updateEmail', async (req, res) => {
-  const { customerId, newEmail } = req.body;
-
-  try {
-    const result = await updateCustomerEmail(customerId, newEmail);
-    if (result.error) {
-      res.status(400).json(result); // Return error response if update fails
-    } else {
-      res.status(200).json(result); // Return success response if update is successful
-    }
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'An error occurred' });
-  }
-});
-
 async function updateCustomerEmail(customerId, newEmail) {
   try {
     if (!newEmail) {
@@ -382,23 +320,6 @@ async function updateCustomerEmail(customerId, newEmail) {
 
 // updateCustomerEmail(1, "leslie@example.com")
 
-router.post('/updateName', async (req, res) => {
-  const { customerId, newName } = req.body;
-
-  try {
-    const nameUpdateResult = await updateCustomerName(customerId, newName);
-    if (nameUpdateResult.error) {
-      res.status(400).json(nameUpdateResult); // Return error response if update fails
-    } else {
-      res.status(200).json(nameUpdateResult); // Return success response if update is successful
-    }
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'An error occurred' });
-  }
-});
-
-
 async function updateCustomerName(customerId, newName) {
   try {
 
@@ -419,21 +340,6 @@ async function updateCustomerName(customerId, newName) {
 }
 // updateCustomerName(1, "Lais")
 
-router.post('/updateLastName', async (req, res) => {
-  const { customerId, newLastName } = req.body;
-
-  try {
-    const lastNameUpdateResult = await updateCustomerLastName(customerId, newLastName);
-    if (lastNameUpdateResult.error) {
-      res.status(400).json(lastNameUpdateResult); // Return error response if update fails
-    } else {
-      res.status(200).json(lastNameUpdateResult); // Return success response if update is successful
-    }
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'An error occurred' });
-  }
-});
 
 
 async function updateCustomerLastName(customerId, newLastName) {
@@ -456,7 +362,6 @@ async function updateCustomerLastName(customerId, newLastName) {
 
 // updateCustomerLastName(1, "a")
 
-
 async function updateCustomerPhoneNumber(customerId, phoneNumber) {
   try {
     const [result] = await db.query(
@@ -475,61 +380,29 @@ async function updateCustomerPhoneNumber(customerId, phoneNumber) {
   }
 }
 
-// router.post('/updatePhoneNumber', async (req, res) => {
-//   const { customerId, newPhoneNumber } = req.body;
-
-//   try {
-//     const phoneNumberUpdateResult = await updateCustomerPhoneNumber(customerId, newPhoneNumber);
-//     res.status(200).json(phoneNumberUpdateResult);
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: 'An error occurred' });
-//   }
-// });
-
-
-router.post('/updatePhoneNumber', async (req, res) => {
-  const { customerId, newPhoneNumber } = req.body;
-
+async function updateCustomerProfileTimestamp(customerId) {
   try {
-    const phoneNumberUpdateResult = await updateCustomerPhoneNumber(customerId, newPhoneNumber);
-    if (phoneNumberUpdateResult.error) {
-      res.status(400).json(phoneNumberUpdateResult); // Return error response if update fails
+    const [result] = await db.query(
+      'UPDATE customers SET updated_at = NOW() WHERE id = ?',
+      [customerId]
+    );
+
+    if (result.affectedRows > 0) {
+      const updatedTime = new Date().toLocaleString(); // Get the updated timestamp
+
+      return { updated_at: updatedTime };
     } else {
-      res.status(200).json(phoneNumberUpdateResult); // Return success response if update is successful
+      return { error: 'Customer not found' };
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'An error occurred' });
+    throw error;
   }
-});
+}
 
-// updateCustomerPhoneNumber(1, "4dddddd15415")
-
-// async function updateCustomerImage(customerId, newImagePath) {
-//   try {
-//     // Check if a new image path is provided, and if not, set it to null
-//     const imagePath = newImagePath || null;
-
-//     const [result] = await db.query(
-//       'UPDATE customers SET image_path = ? WHERE id = ?',
-//       [imagePath, customerId]
-//     );
-
-//     if (result.affectedRows > 0) {
-//       console.log('Image path updated successfully');
-//       console.log('Customer ID:', customerId);
-//       console.log('New Image Path:', imagePath);
-//     } else {
-//       console.log({ error: 'Customer not found' });
-//     }
-//   } catch (error) {
-//     console.error(error);
-//   }
-// }
 
 router.post('/edit', async (req, res) => {
-  const { username, email, bio, newEmail, newName, newLastName, newPhoneNumber } = req.body;
+  const { username, email, bio, name, lastName, phoneNumber } = req.body;
 
   try {
     const customerId = await getCustomerIdByUsername(username);
@@ -542,36 +415,40 @@ router.post('/edit', async (req, res) => {
     // Fetch the user's profile data
     const userProfile = await getUserProfile(customerId);
 
-    // Update the user's data based on the provided fields
-    const updateResults = {};
+    // Create an object to store the update data
+    const updateData = {};
 
-    if (email) {
-      const emailUpdateResult = await updateCustomerEmail(customerId, newEmail);
-      updateResults.email = emailUpdateResult;
+    // Compare incoming data 
+    if (email && email !== userProfile.email) {
+      const emailUpdateResult = await updateCustomerEmail(customerId, email);
+      updateData.email = emailUpdateResult;
     }
 
-    if (bio) {
+    if (bio && bio !== userProfile.bio) {
       const bioUpdateResult = await updateCustomerBio(customerId, bio);
-      updateResults.bio = bioUpdateResult;
+      updateData.bio = bioUpdateResult;
     }
 
-    if (newName) {
-      const nameUpdateResult = await updateCustomerName(customerId, newName);
-      updateResults.name = nameUpdateResult;
+    if (name && name !== userProfile.name) {
+      const nameUpdateResult = await updateCustomerName(customerId, name);
+      updateData.name = nameUpdateResult;
     }
 
-    if (newLastName) {
-      const lastNameUpdateResult = await updateCustomerLastName(customerId, newLastName);
-      updateResults.lastName = lastNameUpdateResult;
+    if (lastName && lastName !== userProfile.lastName) {
+      const lastNameUpdateResult = await updateCustomerLastName(customerId, lastName);
+      updateData.lastName = lastNameUpdateResult;
     }
 
-    if (newPhoneNumber) {
-      const phoneNumberUpdateResult = await updateCustomerPhoneNumber(customerId, newPhoneNumber);
-      updateResults.phoneNumber = phoneNumberUpdateResult;
+    if (phoneNumber && phoneNumber !== userProfile.phoneNumber) {
+      const phoneNumberUpdateResult = await updateCustomerPhoneNumber(customerId, phoneNumber);
+      updateData.phoneNumber = phoneNumberUpdateResult;
     }
+
+    // Update the updated_at timestamp in the user's profile
+    const updateProfileResult = await updateCustomerProfileTimestamp(customerId);
 
     // Merge the user profile data with the update results
-    const updatedUserProfile = { ...userProfile, ...updateResults };
+    const updatedUserProfile = { ...userProfile, ...updateData, ...updateProfileResult };
 
     res.status(200).json(updatedUserProfile);
   } catch (error) {
