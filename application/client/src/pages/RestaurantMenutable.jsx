@@ -9,10 +9,10 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
 export default function RestaurantMenutable(){
-    const navigate = useNavigate();
-    const user = useSelector((state) => state.user);
+    //const navigate = useNavigate();
+    //const user = useSelector((state) => state.user);
     const queryClient = useQueryClient();
-    useEffect(() => {
+    /* useEffect(() => {
       if(user.isLoggedIn){
         if(user.role === 'restaurant'){
           navigate('/restaurantprofile')
@@ -23,19 +23,19 @@ export default function RestaurantMenutable(){
       else{
         navigate('/signin');
       }
-    }, [navigate, user.isLoggedIn, user.role]);
-
+    }, [navigate, user.isLoggedIn, user.role]); */
+   const id = 1;
     const MenuList = useQuery({
       queryKey: ["MenuLists"],
-      queryFn: getMenuTable(user.userId),
+      queryFn: () => getMenuTable(id),
     })
     const createMenuMutation = useMutation({
       mutationFn: createNewMenu,
       onSuccess: data =>{
         queryClient.setQueryData(["posts", data.id], data)
         queryClient.invalidateQueries(["posts"],{exact: true})
-      } 
-    })
+      }, 
+    });
     
   const [menuInput, setMenuInput] = useState({
 		fname: '',
@@ -86,9 +86,9 @@ export default function RestaurantMenutable(){
                 e.preventDefault();
                 console.log(menuInput);
                 createMenuMutation.mutate({
-                  restautrantId: user.userId,
-                  originalPrice: menuInput.oprice,
+                  restaurantId: id,
                   price: menuInput.aprice,
+                  orignalPrice: menuInput.oprice,
                   name: menuInput.fname,
                 })
             }
@@ -112,7 +112,6 @@ export default function RestaurantMenutable(){
     )}
     {isOpen && (
       <div className="absolute right-50 w-72 h-96 bg-gray-100">
-        <p>Test</p>
         <form onSubmit={handleMenu}>
           {inputForMenu.map((input) => (
             <FormInput

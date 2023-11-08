@@ -6,6 +6,7 @@ import axios from 'axios';
  */
 export const getMenuTable = async (id) =>{
     try{
+    console.log('fetching');  
     const response = await axios.get(`http://13.52.182.209/restaurants/menu/list/${id}`);
     return response.data;
   } catch (error) {
@@ -19,13 +20,17 @@ export const getMenuTable = async (id) =>{
  * It will post new menu data
  * @returns An array that holds multiple objects
  */
-  export async function createNewMenu({ name, originalPrice, price, restautrantId }) {
-    const res = await axios
-      .post("http://13.52.182.209/restaurants/menu/add", {
+  export async function createNewMenu({ name, originalPrice, price, restaurantId }) {
+    try {
+      const response = await axios.post(`http://13.52.182.209/restaurants/menu/add`, {
         name,
-        originalPrice,
-        price,
-        restautrantId,
+        originalPrice, 
+        price, 
+        restaurantId,
       });
-    return res.data;
-  }  
+      return response.data;
+    } catch (error) {
+      console.error('Error creating new menu:', error);
+      throw error;
+    }
+  }
