@@ -50,3 +50,19 @@ export const fetchRestaurantAvailableMenu = async (restaurantId) => {
 		throw error;
 	}
 };
+
+/**
+ * This is a function for fetching a restaurant information
+ * @param restaurantId The restaurantId holds a restaurant's unique id
+ * @returns An object that holds restaurant's information
+ */
+export const fetchRestaurantInfo = async (restaurantId) => {
+	try {
+		console.log('fetching');
+		const response = await axios.get(`http://13.52.182.209/restaurants/info/${restaurantId}`);
+		return response.data;
+	} catch (error) {
+		console.error('Error fetching restaurants:', error);
+		throw error;
+	}
+};

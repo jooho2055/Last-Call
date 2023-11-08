@@ -58,8 +58,12 @@ export default function CustomerHome() {
 			<div className='grid grid-cols-3 auto-rows-[minmax(14rem,auto)] p-7 gap-8'>
 				{/* Must use a restaurant unique id as a key in the future */}
 				{restaurants.map((restaurant) => (
-					<Link to={`/restaurant/${restaurant.id}`}>
-						<RestaurantList key={restaurant.id} restaurantInfo={restaurant} />
+					<Link
+						to={`/restaurant/${restaurant.id}`}
+						className='flex justify-center items-center border border-stone-900 border-1 text-lg font-bold p-3'
+						key={restaurant.id}
+					>
+						<RestaurantList restaurantInfo={restaurant} />
 					</Link>
 				))}
 			</div>
