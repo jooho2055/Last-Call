@@ -4,14 +4,16 @@ import RestaurantMenu from '../components/RestaurantMenu';
 import { AiFillPlusSquare } from 'react-icons/ai';
 import FormInput from '../components/FormInput';
 import { useSelector } from 'react-redux';
-import axios from 'axios';
-import { useQuery, QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import {getMenuTable} from '../apis/get';
+import { createNewMenu } from '../apis/post';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
 export default function RestaurantMenutable(){
-    const navigate = useNavigate();
-    const user = useSelector((state) => state.user);
-    useEffect(() => {
+    //const navigate = useNavigate();
+    //const user = useSelector((state) => state.user);
+    const queryClient = useQueryClient();
+    /* useEffect(() => {
       if(user.isLoggedIn){
         if(user.role === 'restaurant'){
           navigate('/restaurantprofile')
@@ -22,32 +24,28 @@ export default function RestaurantMenutable(){
       else{
         navigate('/signin');
       }
-    }, []);
-
-  const getMenuTable = async () =>{
-      try{
-      const response = await axios.get(`http://13.52.182.209/restaurants/menu/list/${user.userId}`);
-      return response.data;
-    } catch (error) {
-      console.error('Error fetching current order:', error);
-      throw error;
-    }
-    }
-
+    }, [navigate, user.isLoggedIn, user.role]); */
+   const id = 1;
     const MenuList = useQuery({
       queryKey: ["MenuLists"],
-      queryFn: getMenuTable,
+      queryFn: () => getMenuTable(id),
     })
-    const [menuInput, setMenuInput] = useState({
+    const createMenuMutation = useMutation({
+      mutationFn: createNewMenu,
+      onSuccess: data =>{
+        queryClient.setQueryData(["posts", data.id], data)
+        queryClient.invalidateQueries(["posts"],{exact: true})
+      }, 
+    });
+    
+  const [menuInput, setMenuInput] = useState({
 		fname: '',
-		quantity: '',
 		oprice:'',
 		aprice:'',
 	});
 
 	const [menuvalidity, setmenuValidity] = useState({
-		fail: true,
-		quantity: true,
+		fname: true,
 		oprice: true,
 		aprice: true,
 	});
@@ -67,31 +65,37 @@ export default function RestaurantMenutable(){
 					case 'fname':
 						isValid = /^[A-Za-z0-9]{1,16}$/.test(value);
 					    break;
-					case 'quantity':
-						isValid = /^[1-9]\d*$/.test(value);
-						break;
 					case 'oprice':
 						isValid = /^[0-9]*\.?[0-9]+$/.test(value) && parseFloat(value) > 0;
-                        break;
+              break;
 					case 'aprice':
 						isValid = /^[0-9]*\.?[0-9]+$/.test(value) && parseFloat(value) > 0;
-                        break;
+              break;
 					default:
 						isValid=false;
 					
 				}
 				setmenuValidity({...menuvalidity, [name]: isValid});
 			}
-            const handleMenu = (e) =>{
+    const onMenuChange = (e) =>{
+        const { name, value } = e.target;
+        setMenuInput({...menuInput, [e.target.name]: e.target.value});
+        validateMenuInput(name, value);
+    }
+
+    //When I post error, it show "missing input", seems like there is no value save or possibly the name issue
+    //will figure out later
+      const handleMenu = (e) =>{
                 e.preventDefault();
                 console.log(menuInput);
+                createMenuMutation.mutate({
+                  restaurantId: id,
+                  price: menuInput.aprice,
+                  orignalPrice: menuInput.oprice,
+                  name: menuInput.fname,
+                })
             }
 
-            const onMenuChange = (e) =>{
-                const { name, value } = e.target;
-                setMenuInput({...menuInput, [e.target.name]: e.target.value});
-                validateMenuInput(name, value);
-            }
     
   return(  
     <div className='min-h-full m-auto flex justify-center bg-white relative'>
@@ -111,7 +115,6 @@ export default function RestaurantMenutable(){
     )}
     {isOpen && (
       <div className="absolute right-50 w-72 h-96 bg-gray-100">
-        <p>Test</p>
         <form onSubmit={handleMenu}>
           {inputForMenu.map((input) => (
             <FormInput
@@ -130,7 +133,7 @@ export default function RestaurantMenutable(){
     )}
     <div className='grid grid-cols-1 gap-4'>
       {MenuList.data?.map((food)=>(
-          <RestaurantMenu restarantmenuInfo={food}/>
+          <RestaurantMenu key={food.id} restarantmenuInfo={food}/>
       ))}
 
     </div>

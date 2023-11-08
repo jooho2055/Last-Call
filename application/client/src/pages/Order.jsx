@@ -3,8 +3,8 @@ import React, { useEffect } from 'react';
 import HistoryOrderItem from '../components/Order/HistoryOrderItem';
 import CurrentOrderItem from '../components/Order/currentOrderItem';
 import { useSelector } from 'react-redux';
-import axios from 'axios';
-import { useQuery, QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import {getCurrentOrder, getPastOrder} from '../apis/get';
+import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
 export default function Order() {
@@ -15,36 +15,17 @@ export default function Order() {
     if (!user.isLoggedIn) {
       navigate('/signin');
     }
-  }, []);
-  
-  const getCurrentOrder = async () => {
-    try {
-      const response = await axios.get(`http://13.52.182.209/customers/order/current/${user.userId}`);
-      return response.data;
-    } catch (error) {
-      console.error('Error fetching current order:', error);
-      throw error;
-    }
-  };
+  }, [navigate, user.isLoggedIn]);
 
-  const getPastOrder = async () => {
-    try {
-      const response = await axios.get(`http://13.52.182.209/customers/order/past/${user.userId}`);
-      return response.data;
-    } catch (error) {
-      console.error('Error fetching past order:', error);
-      throw error;
-    }
-  };
 
   const currentItems = useQuery({
     queryKey: ["currentItems"],
-    queryFn: getCurrentOrder,
+    queryFn: getCurrentOrder(user.userId),
   });
 
   const pastItems = useQuery({
     queryKey: ["pastItem"],
-    queryFn: getPastOrder,
+    queryFn: getPastOrder(user.userId),
   });
 
   return (
