@@ -117,12 +117,13 @@ router.get(`/profile/:id(\\d+)`, /*isLoggedIn, isRestaurants, isMyPage,*/
 
 /**
  *  To add new menu for restaurant 
+ *  @Post
  *  @Body must hold restautrantId, price, orignalPrice, name 
  *  @Options img, desc
  *  @path `/restaurants/menu/add`
  */
-router.get(`/menu/add`, /*isLoggedIn, isRestaurants,*/ async function(req,res){
-    const {restautrantId, price, orignalPrice, name} = req.body
+router.post(`/menu/add`, /*isLoggedIn, isRestaurants,*/ async function(req,res){
+    const {restaurantId, price, orignalPrice, name} = req.body
     var { desc, img } = req.body
     
     // TEST
@@ -131,14 +132,14 @@ router.get(`/menu/add`, /*isLoggedIn, isRestaurants,*/ async function(req,res){
     // console.log(restautrantId, price, orignalPrice, name, desc, img)
     
     // check correct body form
-    if(!(restautrantId && price && orignalPrice && name)){
+    if(!(restaurantId && price && orignalPrice && name)){
         return res.status(400).json({message: "missed inputs"})
     }
 
     // check working on same rest
-    if(restautrantId !== req.session.user.userId){
-        return res.status(400).json({message: "It is not your restaurants"})
-    }
+    // if(restaurantId !== req.session.user.userId){
+    //     return res.status(400).json({message: "It is not your restaurants"})
+    // }
 
     try{
         // handle default value
@@ -151,7 +152,7 @@ router.get(`/menu/add`, /*isLoggedIn, isRestaurants,*/ async function(req,res){
 
         // add menu
         var [ result, _ ] = await db.execute(`INSERT INTO menus (fk_menus_restaurant,price,original_price,
-            name,description,img_path) VALUES(?,?,?,?,?,?);`,[restautrantId,price,orignalPrice,name,desc,img])
+            name,description,img_path) VALUES(?,?,?,?,?,?);`,[restaurantId,price,orignalPrice,name,desc,img])
         return res.status(200).json({message:"new menu is added!"})
     }catch(err){
         return res.status(400).json({message: "fail to add menu"})
