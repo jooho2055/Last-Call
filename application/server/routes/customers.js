@@ -239,6 +239,30 @@ router.post('/order/cart/delete', /*isLoggedIn, isCustomers,*/ async function(re
       throw error;
     }
   }
+
+  router.get('/getUserProfile', async (req, res) => {
+    const { username } = req.query;
+    try {
+      const customerId = await getCustomerIdByUsername(username);
+  
+      if (customerId === null) {
+        res.status(404).json({ error: 'User not found' });
+        return;
+      }
+  
+      //  information on the customer ID from the database
+      const userProfile = await getUserProfile(customerId);
+  
+      if (userProfile) {
+        res.status(200).json(userProfile);
+      } else {
+        res.status(404).json({ error: 'User profile not found' });
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'An error occurred' });
+    }
+  });
   
 
   async function updateCustomerBio(customerId, bio) {
@@ -400,7 +424,7 @@ async function updateCustomerProfileTimestamp(customerId) {
 }
 
 
-router.post('/edit', async (req, res) => {
+router.post('/profile/edit', async (req, res) => { 
   const { username, email, bio, name, lastName, phoneNumber } = req.body;
 
   try {

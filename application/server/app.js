@@ -85,6 +85,7 @@ app.use("/users", usersRouter);
 app.use("/customers", customersRouter);
 app.use("/restaurants", restaurantsRouter);
 
+
 app.get('*', (res, req) =>{
     req.sendFile(path.join(__dirname, '../client/build/index.html'))
 })
@@ -108,3 +109,6 @@ app.use(function(err, req, res, next){
 app.listen(app.get("port"), () => {
     console.log(app.get("port"), `app listening at ${ process.env.PORT || port}`);
 });
+// app.listen(app.get("port"), '0.0.0.0', () => {
+//   console.log(app.get("port"), `app listening at http://13.52.182.209:${process.env.PORT || port}`);
+// });
