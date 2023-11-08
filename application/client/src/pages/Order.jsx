@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import HistoryOrderItem from '../components/Order/HistoryOrderItem';
 import CurrentOrderItem from '../components/Order/currentOrderItem';
 import { useSelector } from 'react-redux';
-import {getCurrentOrder, getPastOrder} from '../apis/getorder'
+import {getCurrentOrder, getPastOrder} from '../apis/get';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 

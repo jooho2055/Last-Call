@@ -4,7 +4,8 @@ import RestaurantMenu from '../components/RestaurantMenu';
 import { AiFillPlusSquare } from 'react-icons/ai';
 import FormInput from '../components/FormInput';
 import { useSelector } from 'react-redux';
-import {getMenuTable, createNewMenu} from '../apis/getresMenu';
+import {getMenuTable} from '../apis/get';
+import { createNewMenu } from '../apis/post';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
@@ -82,6 +83,8 @@ export default function RestaurantMenutable(){
         validateMenuInput(name, value);
     }
 
+    //When I post error, it show "missing input", seems like there is no value save or possibly the name issue
+    //will figure out later
       const handleMenu = (e) =>{
                 e.preventDefault();
                 console.log(menuInput);
@@ -130,7 +133,7 @@ export default function RestaurantMenutable(){
     )}
     <div className='grid grid-cols-1 gap-4'>
       {MenuList.data?.map((food)=>(
-          <RestaurantMenu restarantmenuInfo={food}/>
+          <RestaurantMenu key={food.id} restarantmenuInfo={food}/>
       ))}
 
     </div>
