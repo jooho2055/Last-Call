@@ -73,6 +73,28 @@ const TEST_SET_MENU_WRONG4 = {
     menuId:9999, 
     quantity:6
 }
+
+
+
+/**
+ * To get restaurants info
+ * @params hold restaurants id
+ * @Path `/restaurants/info/:id
+ */
+router.get(`/info/:id(\\d+)`,async(req,res) => {
+    const {id} = req.params;
+    console.log(id)
+        try{
+            var [result, _ ] = await db.execute(`SELECT * FROM restaurants WHERE id = ?`,[id]);
+            const restauranat = result[0]
+            return res.status(200).json(restauranat)
+        }catch(err){
+            console.log(err)
+            return res.status(400).json({message: "fail to bring your profile"})
+        }
+})
+
+
 /**
  * To get restaurants profile
  * @params hold restaurants id
