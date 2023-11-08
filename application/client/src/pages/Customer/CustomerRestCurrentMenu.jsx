@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
-import { fetchRestaurantAvailableMenu, fetchRestaurantInfo } from '../apis/get';
+import { fetchRestaurantAvailableMenu, fetchRestaurantInfo } from '../../apis/get';
 import { useLocation, useParams } from 'react-router-dom';
 
 export default function CustomerRestCurrentMenu() {

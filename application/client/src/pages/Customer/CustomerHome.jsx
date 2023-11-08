@@ -2,12 +2,12 @@ import React from 'react';
 
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { fetchRestaurants } from '../apis/get';
+import { fetchRestaurants } from '../../apis/get';
 import { useQuery } from '@tanstack/react-query';
 import { useSelector } from 'react-redux';
 
-import SearchBox from '../components/SearchBox';
-import RestaurantList from '../components/RestaurantList';
+import SearchBox from '../../components/SearchBox';
+import RestaurantList from '../../components/RestaurantList';
 
 export default function CustomerHome() {
 	const [searchValue, setSearchValue] = useState('');
