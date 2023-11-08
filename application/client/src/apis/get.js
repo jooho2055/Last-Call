@@ -77,3 +77,4 @@ export const getMenuTable = async (id) =>{
     throw error;
   }
   }
+

@@ -19,6 +19,7 @@ import CustomerProfile from './pages/CustomerProfile';
 import RestaurantProfile from './pages/RestaurantProfile';
 import SearchDetail from './pages/SearchDetail';
 import RestaurantMenutable from './pages/RestaurantMenutable';
+import CustomerRestCurrentMenu from './pages/CustomerRestCurrentMenu';
 
 const router = createBrowserRouter([
 	{
@@ -35,8 +36,9 @@ const router = createBrowserRouter([
 			{ path: '/search/:searchId', element: <SearchDetail /> },
 			{ path: '/order', element: <Order /> },
 			{ path: '/customer/profile', element: <CustomerProfile /> },
+			{ path: '/restaurant/:id', element: <CustomerRestCurrentMenu /> },
 			{ path: '/restaurant/profile', element: <RestaurantProfile /> },
-			{ path: '/restaurant/menu', element:<RestaurantMenutable />},
+			{ path: '/restaurant/menu', element: <RestaurantMenutable /> },
 
 			{ path: '/AboutUs', element: <AboutUs /> },
 			{ path: '/AboutUs/Dorrie Shen', element: <AboutMeDorrie /> },
