@@ -3,12 +3,12 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router-dom';
-import { fetchSearchboxRestaurants } from '../apis/get';
+import { fetchSearchboxRestaurants } from '../../apis/get';
 
-import Searchbox from '../components/SearchBox';
-import RestaurantList from '../components/RestaurantList';
+import Searchbox from '../../components/SearchBox';
+import RestaurantList from '../../components/RestaurantList';
 
-export default function SearchDetail() {
+export default function CustomerSearchDetail() {
 	const [searchValue, setSearchValue] = useState('');
 	const inputRef = useRef(null); // Create the ref
 

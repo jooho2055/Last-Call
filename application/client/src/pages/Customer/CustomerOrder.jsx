@@ -1,6 +1,6 @@
 // import React,{useEffect, useState} from 'react';
-import HistoryOrderItem from '../components/Order/HistoryOrderItem';
-import CurrentOrderItem from '../components/Order/currentOrderItem';
+import HistoryOrderItem from '../../components/Order/HistoryOrderItem';
+import CurrentOrderItem from '../../components/Order/currentOrderItem';
 // import { useSelector } from 'react-redux';
 
 //This is the inputs for testing, will be move later
@@ -72,7 +72,7 @@ const inputsForcurrenttest = [
 		actual_p: '5',
 	},
 ];
-export default function Order() {
+export default function CustomerOrder() {
 	//Comment: add '//' just in case it will show not found state in this branch
 	//	const [currentorderlist, setCurrentorder]=useState([]);
 	//	const [pastorderlist, setPastorder] = useState([]);
