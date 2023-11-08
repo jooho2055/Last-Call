@@ -3,20 +3,19 @@ import initialUserInfo from '../utils/userProfileData';
 import ProfileInput from '../components/ProfileInput';
 import { inputsUserProfile } from '../utils/cusProfile';
 
-
 export default function CustomerProfile() {
     const storedUserProfile = JSON.parse(localStorage.getItem('userProfile')) || initialUserInfo;
     const [inputValues, setInputValues] = useState(storedUserProfile);
     const [validity, setValidity] = useState({
-		idea: true,
-		fname: true,
-		lname: true,
-		email: true,
-		pwd: true,
-		cpwd: true,
-		phone: true,
+        username: true, // Rename 'idea' to 'username'
+        fname: true,
+        lname: true,
+        email: true,
+        pwd: true,
+        cpwd: true,
+        phone: true,
         bio: true,
-	});
+    });
     const [formModified, setFormModified] = useState(false);
     const [editMode, setEditMode] = useState(false);
 
@@ -29,7 +28,8 @@ export default function CustomerProfile() {
         let isValid = true;
 
         switch (name) {
-            case 'idea':
+            case 'username':
+                // Validation logic for the "username" field
                 isValid = /^[A-Za-z0-9]{5,16}$/.test(value);
                 break;
             case 'fname':
@@ -94,28 +94,28 @@ export default function CustomerProfile() {
         ? 'bg-orange-400 hover-bg-orange-400 text-white font-bold py-2 px-4 rounded-full'
         : 'bg-orange-200 text-white font-bold py-2 px-4 rounded-full';
 
-  return (
-    <div className='container mx-auto px-4 py-8'>
+    return (
+        <div className='container mx-auto px-4 py-8'>
             <form onSubmit={handleSubmit} className='bg-slate-100 p-8 rounded-lg shadow-md max-w-md mx-auto'>
-            <h1 className='text-xl mb-4 text-center font-semibold text-slate-950'>User Profile</h1>
-            {inputsUserProfile.map((input) => (
-                <ProfileInput
-                key={input.id}
-                {...input}
-                value={inputValues[input.name]}
-                onChange={handleChange}
-                isValid={validity[input.name]}
-                disabled={!editMode}
-                />
+                <h1 className='text-xl mb-4 text-center font-semibold text-slate-950'>User Profile</h1>
+                {inputsUserProfile.map((input) => (
+                    <ProfileInput
+                        key={input.id}
+                        {...input}
+                        value={input.name === 'username' ? inputValues.username : inputValues[input.name]}
+                        onChange={handleChange}
+                        isValid={validity[input.name]}
+                        disabled={input.name === 'username' || !editMode} // Disable the "username" field
+                    />
                 ))}
                 <div className="mt-4 flex justify-center">
-                <button className={saveButtonClass} disabled={isSubmitDisabled}>
-                    Save
-                </button>
+                    <button className={saveButtonClass} disabled={isSubmitDisabled}>
+                        Save
+                    </button>
                 </div>
-                </form>
+            </form>
             <div className="mt-4 flex justify-center">
-                <button className="text-black-500 underline  font-bold" onClick={toggleEditMode}>
+                <button className="text-black-500 underline font-bold" onClick={toggleEditMode}>
                     {editMode ? 'Cancel' : 'Edit'}
                 </button>
             </div>

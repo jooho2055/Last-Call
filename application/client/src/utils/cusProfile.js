@@ -1,7 +1,7 @@
 export const inputsUserProfile = [
 	{
 		id: 1,
-		name: 'idea',
+		name: 'username',
 		type: 'text',
 		placeholder: 'Username',
 		errorMessage: 'Username must be 5-16 characters, no special characters!',
