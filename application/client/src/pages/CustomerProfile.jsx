@@ -1,24 +1,44 @@
 import React, { useState } from 'react';
-import initialUserInfo from '../utils/userProfileData';
+import { useSelector, useDispatch } from 'react-redux';
+import axios from 'axios';
 import ProfileInput from '../components/ProfileInput';
 import { inputsUserProfile } from '../utils/cusProfile';
-
+import { userData} from '../redux/userActions2';
 
 export default function CustomerProfile() {
-    const storedUserProfile = JSON.parse(localStorage.getItem('userProfile')) || initialUserInfo;
-    const [inputValues, setInputValues] = useState(storedUserProfile);
+    const dispatch = useDispatch();
+    const username = user.username;
+    const user = useSelector((state) => state.user);
+    const [userProfileData, setUserProfileData] = useState(user);
+    const [inputValues, setInputValues] = useState(userProfileData);
     const [validity, setValidity] = useState({
-		idea: true,
-		fname: true,
-		lname: true,
-		email: true,
-		pwd: true,
-		cpwd: true,
-		phone: true,
+        idea: true,
+        fname: true,
+        lname: true,
+        email: true,
+        pwd: true,
+        cpwd: true,
+        phone: true,
         bio: true,
 	});
     const [formModified, setFormModified] = useState(false);
     const [editMode, setEditMode] = useState(false);
+
+    useEffect(() => {
+        if(user.username){
+        const backendURL = 'http://13.52.182.209/customers/getUserProfile/username';
+        axios
+            .get(`${backendURL}/customers/getUserProfile/username=${user.username}`)
+            .then(response => {
+                const data = response.data;
+                setUserProfileData(data);
+                setInputValues(data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }   
+    }, [user.username]);
 
     const isSubmitDisabled =
         !Object.values(validity).every((isValid) => isValid) ||

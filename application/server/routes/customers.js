@@ -22,12 +22,6 @@ router.get(`/search`, async(req, res)=>{
         res.status(400);
     }
 });
-
-/**
- * To get curreent order for customer
- * @params customerId
- * @path /customers/order/current/:id(\\d+)
- */
 router.get(`/order/current/:id(\\d+)`, isLoggedIn, isCustomers, isMyPage,  async function(req, res){
     const {id} = req.params
     try{
@@ -42,12 +36,6 @@ router.get(`/order/current/:id(\\d+)`, isLoggedIn, isCustomers, isMyPage,  async
         return res.status(400).json({message: "fail to get current order"})
     }
 })
-
-/**
- * To get past order for customer
- * @params customerId
- * @path customers//order/past/:id(\\d+)
- */
 router.get(`/order/past/:id(\\d+)`, isLoggedIn, isCustomers, isMyPage, async function(req,res){
     const {id} = req.params
     try{
@@ -62,12 +50,6 @@ router.get(`/order/past/:id(\\d+)`, isLoggedIn, isCustomers, isMyPage, async fun
         return res.status(400).json({message: "fail to get current order"})
     }
 })
-
-/**
- * To get list of cart
- * @params customerId
- * @path `/customers//order/cart/:id(\\d+)`
- */
 router.get(`/order/cart/:id(\\d+)`, isLoggedIn, isCustomers, isMyPage, async function(req,res){
     const {id} = req.params
     try{
@@ -82,13 +64,6 @@ router.get(`/order/cart/:id(\\d+)`, isLoggedIn, isCustomers, isMyPage, async fun
         return res.status(400).json({message: "fail to get cart"})
     }
 })
-
-/**
- * To checkout cart and create order
- * @body holds customerId
- * @path `/customers/order/cart/checkout`
- * order status: 0: current, 1: done, 2: cart, 3: declined
- */
 router.post(`/order/cart/checkout`, isLoggedIn, isCustomers, async function(req, res){
     const {customerId} = req.body
 
@@ -118,12 +93,6 @@ DEBUG_CART_ADD = {
   menuId:8, 
   restaurantId:11
 }
-
-/**
- * To add menu in the cart
- * @body holds menuId, customerId, restaurantId
- * @path `/customers//order/cart/add`
- */
 router.post('/order/cart/add', isLoggedIn, isCustomers, async function(req,res){
     const {customerId, menuId, restaurantId} = req.body
     // const {customerId, menuId, restaurantId} = DEBUG_CART_ADD;
@@ -156,11 +125,6 @@ DEBUG_CART_DELETE_MENU = {
   menuId:8, 
   restaurantId:99
 }
-/**
- * To delete one menu in the cart
- * @body holds menuId and customerId
- * @path `/customers/order/cart/delete/menu`
- */
 router.post(`/order/cart/delete/menu`, isLoggedIn, isCustomers, async function(req,res){
     const {menuId, customerId} = req.body
     // const {menuId, customerId} = DEBUG_CART_DELETE_MENU
@@ -191,11 +155,6 @@ router.post(`/order/cart/delete/menu`, isLoggedIn, isCustomers, async function(r
 DEBUG_CART_DELETE = {
   customerId: 1
 }
-/**
- * To delete all the menu in the cart
- * @body holds customer detail
- * @path `/customers/order/cart/delete`
- */
 router.post('/order/cart/delete', isLoggedIn, isCustomers, async function(req,res){
     const { customerId} = req.body
     // const {customerId} = DEBUG_CART_DELETE
