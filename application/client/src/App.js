@@ -4,22 +4,23 @@ import LandingPage from './pages/LandingPage';
 import SignIn from './pages/SignIn';
 import NotFound from './pages/NotFound';
 import AboutUs from './pages/AboutUs';
-import CustomerHome from './pages/CustomerHome';
+import CustomerHome from './pages/Customer/CustomerHome';
+import SignUpChoice from './pages/SignUp/SignUpChoice';
+import CustomerSignUp from './pages/SignUp/CustomerSignUp';
+import RestaurantSignUp from './pages/SignUp/RestaurantSignUp';
+import CustomerOrder from './pages/Customer/CustomerOrder';
+import CustomerProfile from './pages/Customer/CustomerProfile';
+import RestaurantProfile from './pages/Restaurant/RestaurantProfile';
+import CustomerSearchDetail from './pages/Customer/CustomerSearchDetail';
+import RestaurantMenutable from './pages/Restaurant/RestaurantMenutable';
+import CustomerRestCurrentMenu from './pages/Customer/CustomerRestCurrentMenu';
+
 import AboutMeJooho from './pages/TeamMembers/AboutMeJooho';
 import AboutMeDorrie from './pages/TeamMembers/AboutMeDorrie';
 import AboutMeGwangwoo from './pages/TeamMembers/AboutMeGwangwoo';
 import AboutMeVedang from './pages/TeamMembers/AboutMeVedang';
 import AboutMeLeslie from './pages/TeamMembers/AboutMeLeslie';
 import AboutMeLuis from './pages/TeamMembers/AboutMeLuis';
-import SignUpChoice from './pages/SignUp/SignUpChoice';
-import CustomerSignUp from './pages/SignUp/CustomerSignUp';
-import RestaurantSignUp from './pages/SignUp/RestaurantSignUp';
-import Order from './pages/Order';
-import CustomerProfile from './pages/CustomerProfile';
-import RestaurantProfile from './pages/RestaurantProfile';
-import SearchDetail from './pages/SearchDetail';
-import RestaurantMenutable from './pages/RestaurantMenutable';
-import CustomerRestCurrentMenu from './pages/CustomerRestCurrentMenu';
 
 const router = createBrowserRouter([
 	{
@@ -33,8 +34,8 @@ const router = createBrowserRouter([
 			{ path: '/signup/customer', element: <CustomerSignUp /> },
 			{ path: '/signup/restaurant', element: <RestaurantSignUp /> },
 			{ path: '/home', element: <CustomerHome /> },
-			{ path: '/search/:searchId', element: <SearchDetail /> },
-			{ path: '/order', element: <Order /> },
+			{ path: '/search/:searchId', element: <CustomerSearchDetail /> },
+			{ path: '/order', element: <CustomerOrder /> },
 			{ path: '/customer/profile', element: <CustomerProfile /> },
 			{ path: '/restaurant/:id', element: <CustomerRestCurrentMenu /> },
 			{ path: '/restaurant/profile', element: <RestaurantProfile /> },

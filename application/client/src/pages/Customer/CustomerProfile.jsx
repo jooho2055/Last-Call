@@ -1,9 +1,18 @@
 import React, { useState } from 'react';
-import initialUserInfo from '../utils/userProfileData';
-import ProfileInput from '../components/ProfileInput';
-import { inputsUserProfile } from '../utils/cusProfile';
+import ProfileInput from '../../components/ProfileInput';
+import { inputsUserProfile } from '../../utils/cusProfile';
 
 export default function CustomerProfile() {
+	const initialUserInfo = {
+		idea: 'SampleUser',
+		fname: 'John',
+		lname: 'Doe',
+		email: 'johndoe@example.com',
+		pwd: 'Password123!',
+		cpwd: 'Password123!',
+		phone: '1234567890',
+		bio: 'This is a sample biography.',
+	};
 	const storedUserProfile = JSON.parse(localStorage.getItem('userProfile')) || initialUserInfo;
 	const [inputValues, setInputValues] = useState(storedUserProfile);
 	const [validity, setValidity] = useState({
