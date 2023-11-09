@@ -24,6 +24,9 @@ export default function CustomerSearchDetail() {
 		if (user.role === 'restaurants') {
 			navigate('/restaurantprofile');
 		}
+	});
+
+	useEffect(() => {
 		if (searchId && searchValue !== searchId) {
 			setSearchValue(searchId);
 		}
@@ -34,6 +37,7 @@ export default function CustomerSearchDetail() {
 		queryKey: ['searchedRestaurants', searchId],
 		queryFn: () => fetchSearchboxRestaurants(searchId),
 		enabled: !!searchId,
+		keepPreviousData: true,
 	});
 
 	const handleSubmit = (e) => {
