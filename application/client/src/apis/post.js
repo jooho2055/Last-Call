@@ -18,3 +18,17 @@ import axios from 'axios';
       throw error;
     }
   }
+
+  export async function Delete({restaurantId, menuId}){
+    console.log("deteling");
+    try {
+    const res = await axios.post(`http://13.52.182.209/restaurants/menu/delete`, {
+        restaurantId,
+        menuId,
+      });
+      return res.data;
+    }catch (error) {
+      console.error('Error creating new menu:', error);
+      throw error;
+    }
+  }

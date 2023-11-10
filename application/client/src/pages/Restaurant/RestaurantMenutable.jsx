@@ -25,7 +25,7 @@ export default function RestaurantMenutable() {
         navigate('/signin');
       }
     }, [navigate, user.isLoggedIn, user.role]); */
-    const id = '1';
+    const id = 1;
     const MenuList = useQuery({
       queryKey: ["MenuLists"],
       queryFn: () => getMenuTable(id),
@@ -97,10 +97,10 @@ export default function RestaurantMenutable() {
 				'Content-Type': 'application/json',
 			  },
 			  body: JSON.stringify({
-				restautrantId: id,
-				price: menuInput.aprice,
-				originalPrice: menuInput.oprice,
-				name: menuInput.fname,
+				restautrantId: 1,
+				price: 10,
+				originalPrice: 16,
+				name: 'Pizza',
 			  }),
 			});
 	  
@@ -139,7 +139,6 @@ export default function RestaurantMenutable() {
 				)}
 				{isOpen && (
 					<div className='absolute right-50 w-72 h-96 bg-gray-100'>
-						<p>Test</p>
 						<form onSubmit={handleMenu}>
 							{inputForMenu.map((input) => (
 								<FormInput
