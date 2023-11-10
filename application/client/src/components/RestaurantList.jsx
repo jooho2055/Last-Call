@@ -6,11 +6,11 @@ export default function RestaurantList({ restaurantInfo }) {
 
 	return (
 		<RestCard className='w-full'>
-			<RestCard.Content className='text-lg flex flex-col justify-between mt-2 ml-1 mr-1'>
+			<RestCard.Content className='text-lg flex flex-col justify-between mt-2 ml-2 mr-2'>
 				<div className='font-bold'>
 					<RestCard.Header>{name}</RestCard.Header>
 				</div>
-				<div className='flex justify-between text-base'>
+				<div className='flex justify-between text-base mb-2'>
 					<RestCard.Description>{cuisine}</RestCard.Description>
 					<RestCard.Description>{status}</RestCard.Description>
 				</div>

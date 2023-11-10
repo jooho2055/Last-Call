@@ -56,7 +56,7 @@ export default function CustomerHome() {
 				{restaurants.map((restaurant) => (
 					<Link
 						to={`/restaurant/${restaurant.id}`}
-						className='flex flex-col justify-center items-center text-lg'
+						className='flex flex-col justify-center items-center text-lg rounded-xl shadow-md'
 						key={restaurant.id}
 					>
 						<img src={sampleFood} alt='sample Food' className='rounded-xl' />
