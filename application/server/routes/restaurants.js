@@ -3,13 +3,13 @@ var router = express.Router();
 const path = require("path");
 var db = require('../conf/database');
 const {isLoggedIn, isRestaurants, isMyPage} = require('../middleware/auth')
-
+const bcrypt = require('bcrypt');
 
 // This is vars for debug
 const TESTMENU_CORRECT = {
     restautrantId: 11,
     price: 10,
-    orignalPrice: 16,
+    originalPrice: 16,
     name: "pasta"
 }
 
@@ -93,6 +93,25 @@ router.get(`/info/:id(\\d+)`,async(req,res) => {
             return res.status(400).json({message: "fail to bring your profile"})
         }
 })
+/**
+ * To update rest's profile
+ * @Method PUT
+ * @body 
+ * @Path /restaurants/profile/update
+ */
+router.put(`/profile/update`, async(req, res) =>{
+    let {id, username, password, email, phone, restName, street, city, zipcode, state, cuisine} = req.body;
+
+    try{
+        const [rows, _ ] = await db.execute(`SELECT * FROM restaurants WHERE id = ?`,[id]);
+    
+        const user = rows[0];
+    
+        var hashedPasswrod = await bcrypt.hash(pwd,1);
+        
+        var [results, _ ] = await db.execute(`UPDATE restaurants SET username = ? AND password = ? AND email = ? AND phone = ? AND restName = ? `)
+    }
+})
 
 
 /**
@@ -123,7 +142,7 @@ router.get(`/profile/:id(\\d+)`, /*isLoggedIn, isRestaurants, isMyPage,*/
  *  @path `/restaurants/menu/add`
  */
 router.post(`/menu/add`, /*isLoggedIn, isRestaurants,*/ async function(req,res){
-    const {restaurantId, price, orignalPrice, name} = req.body
+    const {restaurantId, price, originalPrice, name} = req.body
     var { desc, img } = req.body
     
     // TEST
