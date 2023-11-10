@@ -49,13 +49,8 @@ export default function CustomerHome() {
 
 	return (
 		<div className='max-w-[110rem] m-auto mt-10'>
-			<div>
-				<SearchBox
-					searchValue={searchValue}
-					onSubmit={handleSubmit}
-					onChange={handleChange}
-				/>
-			</div>
+			<SearchBox searchValue={searchValue} onSubmit={handleSubmit} onChange={handleChange} />
+
 			<div className='grid grid-cols-3 auto-rows-[minmax(14rem,auto)] p-7 gap-8'>
 				{/* Must use a restaurant unique id as a key in the future */}
 				{restaurants.map((restaurant) => (
