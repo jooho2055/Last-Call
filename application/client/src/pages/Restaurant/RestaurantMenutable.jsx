@@ -25,7 +25,7 @@ export default function RestaurantMenutable() {
         navigate('/signin');
       }
     }, [navigate, user.isLoggedIn, user.role]); */
-   const id = 1;
+    const id = '1';
     const MenuList = useQuery({
       queryKey: ["MenuLists"],
       queryFn: () => getMenuTable(id),
@@ -82,17 +82,45 @@ export default function RestaurantMenutable() {
 
     //When I post error, it show "missing input", seems like there is no value save or possibly the name issue
     //will figure out later
-      const handleMenu = (e) =>{
-                e.preventDefault();
-                console.log(menuInput);
-                createMenuMutation.mutate({
-                  restaurantId: id,
-                  price: menuInput.aprice,
-                  orignalPrice: menuInput.oprice,
-                  name: menuInput.fname,
-                })
-            }
-
+	const handleMenu = async (e) => {
+		e.preventDefault();
+		console.log('Request Body:', {
+			restautrantId: id,
+			price: menuInput.aprice,
+			originalPrice: menuInput.oprice,
+			name: menuInput.fname,
+		  });
+		  try {
+			const response = await fetch('http://13.52.182.209/restaurants/menu/add', {
+			  method: 'POST',
+			  headers: {
+				'Content-Type': 'application/json',
+			  },
+			  body: JSON.stringify({
+				restautrantId: id,
+				price: menuInput.aprice,
+				originalPrice: menuInput.oprice,
+				name: menuInput.fname,
+			  }),
+			});
+	  
+			if (response.ok) {
+			  // Menu added successfully
+			  console.log('Menu added successfully');
+			  setMenuInput({
+				fname: '',
+				oprice: '',
+				aprice: '',
+			  });
+			  queryClient.invalidateQueries(['MenuLists']);
+			} else {
+			  console.error('Failed to add menu');
+			}
+		  } catch (error) {
+			console.error('An error occurred:', error);
+		  }
+	  };
+	  
 	return (
 		<div className='min-h-full m-auto flex justify-center bg-white relative'>
 			<div className='absolute top-0 left-50'>
