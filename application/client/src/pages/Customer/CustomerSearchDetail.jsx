@@ -70,7 +70,7 @@ export default function CustomerSearchDetail() {
 					inputRef={inputRef}
 				/>
 			</div>
-			<div className='grid grid-cols-3 auto-rows-[minmax(12rem,auto)] px-32 pt-12 gap-7'>
+			<div className='grid grid-cols-3 auto-rows-[minmax(12rem,auto)] px-32 pt-12 gap-7 md:grid-cols-2 sm:grid-cols-1'>
 				{/* Must use a restaurant unique id as a key in the future */}
 				{searchedRestaurants?.map((restaurant, index) => (
 					<Link
