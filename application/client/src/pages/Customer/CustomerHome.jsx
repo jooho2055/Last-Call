@@ -6,6 +6,7 @@ import { fetchRestaurants } from '../../apis/get';
 import { useQuery } from '@tanstack/react-query';
 import { useSelector } from 'react-redux';
 
+import sampleFood from '../../images/samplefood.png';
 import SearchBox from '../../components/SearchBox';
 import RestaurantList from '../../components/RestaurantList';
 
@@ -60,9 +61,10 @@ export default function CustomerHome() {
 				{restaurants.map((restaurant) => (
 					<Link
 						to={`/restaurant/${restaurant.id}`}
-						className='flex justify-center items-center border border-stone-900 border-1 text-lg font-bold p-3'
+						className='flex flex-col justify-center items-center border border-stone-900 border-1 text-lg font-bold p-3'
 						key={restaurant.id}
 					>
+						<img src={sampleFood} alt='sample Food' />
 						<RestaurantList restaurantInfo={restaurant} />
 					</Link>
 				))}
