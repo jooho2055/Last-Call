@@ -5,15 +5,16 @@ export default function RestaurantList({ restaurantInfo }) {
 	const { name, location, cuisine, status } = restaurantInfo;
 
 	return (
-		<div>
-			<RestCard>
-				<RestCard.Content>
+		<RestCard className='w-full'>
+			<RestCard.Content className='text-lg flex flex-col justify-between mt-2 ml-1 mr-1'>
+				<div className='font-bold'>
 					<RestCard.Header>{name}</RestCard.Header>
+				</div>
+				<div className='flex justify-between text-base'>
 					<RestCard.Description>{cuisine}</RestCard.Description>
-					<RestCard.Description>{location}</RestCard.Description>
 					<RestCard.Description>{status}</RestCard.Description>
-				</RestCard.Content>
-			</RestCard>
-		</div>
+				</div>
+			</RestCard.Content>
+		</RestCard>
 	);
 }

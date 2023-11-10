@@ -48,18 +48,18 @@ export default function CustomerHome() {
 	if (error) return <p>{error.message}</p>;
 
 	return (
-		<div className='max-w-[110rem] m-auto mt-10'>
+		<div className='max-w-[90rem] m-auto mt-10'>
 			<SearchBox searchValue={searchValue} onSubmit={handleSubmit} onChange={handleChange} />
 
-			<div className='grid grid-cols-3 auto-rows-[minmax(14rem,auto)] p-7 gap-8'>
+			<div className='grid grid-cols-3 auto-rows-[minmax(12rem,auto)] px-32 pt-12 gap-7'>
 				{/* Must use a restaurant unique id as a key in the future */}
 				{restaurants.map((restaurant) => (
 					<Link
 						to={`/restaurant/${restaurant.id}`}
-						className='flex flex-col justify-center items-center border border-stone-900 border-1 text-lg font-bold p-3'
+						className='flex flex-col justify-center items-center  text-lg'
 						key={restaurant.id}
 					>
-						<img src={sampleFood} alt='sample Food' />
+						<img src={sampleFood} alt='sample Food' className='rounded-xl' />
 						<RestaurantList restaurantInfo={restaurant} />
 					</Link>
 				))}

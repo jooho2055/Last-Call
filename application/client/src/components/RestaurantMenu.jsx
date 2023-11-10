@@ -4,6 +4,7 @@ import sampleFood from '../images/samplefood.png';
 export default function RestaurantMenu({ restarantmenuInfo }) {
 	const { name, description, img_path, quantity, original_price, price } = restarantmenuInfo;
 	return (
+		// lists of menu
 		<li className='border-gray-800 border-2 flex justify-between max-w-[110rem] m-auto mt-10 p-5'>
 			<div className='border-x-teal-700 min-w-min w-full border-2 flex'>
 				<img src={sampleFood} className='mr-12' alt='sample img' />
@@ -15,6 +16,7 @@ export default function RestaurantMenu({ restarantmenuInfo }) {
 					<div>{price}</div>
 				</div>
 			</div>
+			{/* a button component will be used */}
 			<button className='mr-12'>Add Cart</button>
 		</li>
 	);
