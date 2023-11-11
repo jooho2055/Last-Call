@@ -6,7 +6,12 @@ var db = require('../conf/database');
 const { isLoggedIn, isNotLoggedIn } = require('../middleware/auth');
 const cors = require('cors')
 
-router.use(cors())
+let corsOptions = {
+    origin: ['http://localhost:3000', 'http://localhost:5001'],
+    credentials: true
+  }
+  
+router.use(cors(corsOptions))
 
 // for customer sign up
 router.post('/signup/customer',async (req,res)=>{

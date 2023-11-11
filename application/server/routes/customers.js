@@ -5,7 +5,13 @@ const cors = require('cors')
 const path = require("path");
 const {isLoggedIn, isCustomers, isMyPage} = require('../middleware/auth')
 
-router.use(cors())
+let corsOptions = {
+  origin: ['http://localhost:3000', 'http://localhost:5001'],
+  credentials: true
+}
+
+router.use(cors(corsOptions))
+
 router.get(`/search`, async(req, res)=>{
     const query = `SELECT * FROM restaurants `;
     const {search} = req.query;

@@ -6,7 +6,12 @@ const {isLoggedIn, isRestaurants, isMyPage} = require('../middleware/auth')
 const bcrypt = require('bcrypt');
 const cors = require('cors')
 
-router.use(cors())
+let corsOptions = {
+    origin: ['http://localhost:3000', 'http://localhost:5001'],
+    credentials: true
+  }
+  
+router.use(cors(corsOptions))
 
 
 // This is vars for debug
