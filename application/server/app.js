@@ -1,10 +1,5 @@
 require('dotenv').config();
 
-
-
-const port = process.env.PORT || 3000
-
-
 const express = require("express");
 const path = require("path");
 const app = express();
@@ -106,5 +101,5 @@ app.use(function(err, req, res, next){
 });
 
 app.listen(app.get("port"), () => {
-    console.log(app.get("port"), `app listening at ${ process.env.PORT || port}`);
+    console.log(app.get("port"), `app listening at ${ process.env.PORT }`);
 });

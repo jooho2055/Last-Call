@@ -4,6 +4,9 @@ const path = require("path");
 const bcrypt = require('bcrypt');
 var db = require('../conf/database');
 const { isLoggedIn, isNotLoggedIn } = require('../middleware/auth');
+const cors = require('cors')
+
+router.use(cors())
 
 // for customer sign up
 router.post('/signup/customer',async (req,res)=>{

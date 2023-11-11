@@ -1,10 +1,11 @@
 var express = require('express');
 var router = express.Router();
 var db = require('../conf/database');
+const cors = require('cors')
 const path = require("path");
 const {isLoggedIn, isCustomers, isMyPage} = require('../middleware/auth')
 
-
+router.use(cors())
 router.get(`/search`, async(req, res)=>{
     const query = `SELECT * FROM restaurants `;
     const {search} = req.query;
