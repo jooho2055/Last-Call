@@ -34,7 +34,7 @@ export default function Navbar() {
 					<img src={lastcall} alt='Last Call logo' />
 				</div>
 			</Link>
-			<nav className='mr-36 pt-[1.35rem] font-bold'>
+			<nav className='mr-36 pt-[1.35rem]'>
 				<ul className={!isLandingPage && 'flex space-x-16'}>
 					{showNavItems &&
 						navigation.map((item) => (

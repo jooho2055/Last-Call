@@ -19,6 +19,7 @@ code {
 }
 
 #root {
+	font-family: 'Inter', sans-serif;
 	display: flex;
 	flex-direction: column;
 	width: 100vw;
