@@ -3,6 +3,7 @@ require('dotenv').config();
 const express = require("express");
 const path = require("path");
 const app = express();
+
 const cookieParser = require('cookie-parser');
 const logger = require("morgan");
 const sessions = require('express-session');
@@ -28,7 +29,6 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const customersRouter = require('./routes/customers');
 const restaurantsRouter = require('./routes/restaurants');
-
 
 
 app.set("port", process.env.PORT || port);
