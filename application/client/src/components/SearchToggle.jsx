@@ -44,7 +44,6 @@ export default function SearchToggle({ isLoading, data }) {
 							onMouseDown={(e) => {
 								// Prevent default to stop the input from losing focus
 								e.preventDefault();
-								// Handle the selection here (e.g., navigate or set state)
 							}}
 							// className={`text-stone-900 ${
 							// 	index === focusedIndex ? 'bg-gray-300' : ''

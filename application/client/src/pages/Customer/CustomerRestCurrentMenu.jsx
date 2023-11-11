@@ -36,10 +36,10 @@ export default function CustomerRestCurrentMenu() {
 	}
 
 	return (
-		<div className='text-center'>
+		<div className='max-w-[80rem] m-auto mt-10'>
 			<div>This is {restaurantInfo.name} current menu page (customer view)</div>
 
-			<ul className='m-10'>
+			<ul className='grid grid-cols-2 gap-8 px-12 pt-10 lg:grid-cols-1'>
 				{restaurantMenu?.map((item) => (
 					<RestaurantMenu restarantmenuInfo={item} />
 				))}
