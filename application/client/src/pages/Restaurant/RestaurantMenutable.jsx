@@ -84,41 +84,16 @@ export default function RestaurantMenutable() {
     //will figure out later
 	const handleMenu = async (e) => {
 		e.preventDefault();
-		console.log('Request Body:', {
-			restautrantId: id,
-			price: menuInput.aprice,
-			originalPrice: menuInput.oprice,
-			name: menuInput.fname,
-		  });
-		  try {
-			const response = await fetch('http://13.52.182.209/restaurants/menu/add', {
-			  method: 'POST',
-			  headers: {
-				'Content-Type': 'application/json',
-			  },
-			  body: JSON.stringify({
-				restautrantId: 1,
-				price: 10,
-				originalPrice: 16,
-				name: 'Pizza',
-			  }),
+		try {
+		  createMenuMutation.mutate({
+				restaurantId: 1,
+				price: parseFloat(menuInput.aprice),
+				originalPrice: parseFloat(menuInput.oprice),
+				name: menuInput.fname,
 			});
-	  
-			if (response.ok) {
-			  // Menu added successfully
-			  console.log('Menu added successfully');
-			  setMenuInput({
-				fname: '',
-				oprice: '',
-				aprice: '',
-			  });
-			  queryClient.invalidateQueries(['MenuLists']);
-			} else {
-			  console.error('Failed to add menu');
-			}
-		  } catch (error) {
-			console.error('An error occurred:', error);
-		  }
+		} catch (error) {
+		  console.error('An error occurred:', error);
+		}
 	  };
 	  
 	return (

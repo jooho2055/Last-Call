@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 export default function FormInput(props) {
-	const { label, errorMessage, onChange, id, isValid, ...inputProps } = props;
+	const { label, errorMessage, onChange, id, name, isValid, ...inputProps } = props;
 	const [hasFocusLeft, setHasFocusLeft] = useState(false);
 
 	const handleBlur = (e) => {
@@ -18,10 +18,12 @@ export default function FormInput(props) {
 			</label>
 			<input
 				id={id}
+				name={name}
 				{...inputProps}
 				onChange={onChange}
 				onFocus={handleFocus}
 				onBlur={handleBlur}
+				aria-invalid={!isValid}
 				className='border border-gray-400 rounded-lg p-2 mt-1 mb-1 ml-0 mr-0'
 			/>
 			{hasFocusLeft && !isValid && (

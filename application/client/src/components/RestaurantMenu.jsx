@@ -19,9 +19,9 @@ export default function RestaurantMenu({restarantmenuInfo}) {
         e.preventDefault();
         console.log('Delete button clicked');
        createMenuMutation.mutate({
-         restaurantId: fk_menus_restaurant,
-         menuId: id,
-       })
+            restaurantId: fk_menus_restaurant,
+            menuId: id,
+        })
     }
     return (
         <div className='w-[800px]'>
