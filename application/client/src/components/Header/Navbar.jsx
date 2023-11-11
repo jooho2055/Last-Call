@@ -1,6 +1,7 @@
 // import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import Dropdown from './Dropdown';
+import lastcall from '../../images/lastcall.png';
 
 const navigation = [
 	{ name: 'Home', href: '/home', current: true },
@@ -27,11 +28,13 @@ export default function Navbar() {
 		!isSignin && !isSignup && !isLandingPage && !isSignupCustomer && !isSignupRestaurant;
 
 	return (
-		<div className='bg-gray-100 flex justify-between'>
+		<div className='bg-gray-100 flex justify-between h-[4.5rem]'>
 			<Link to={'/'}>
-				<div className='py-4 text-2xl ml-5 text-stone-900'>LAST CALL</div>
+				<div className='mt-[1.35rem] ml-7 w-40 h-14'>
+					<img src={lastcall} alt='Last Call logo' />
+				</div>
 			</Link>
-			<nav className='mr-24 pt-4'>
+			<nav className='mr-36 pt-[1.35rem] font-bold'>
 				<ul className={!isLandingPage && 'flex space-x-16'}>
 					{showNavItems &&
 						navigation.map((item) => (

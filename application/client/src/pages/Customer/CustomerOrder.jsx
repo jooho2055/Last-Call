@@ -98,7 +98,7 @@ export default function CustomerOrder() {
 	//		.then((error)=>console.error('Error', error));
 	//	}
 	return (
-		<div className='min-h-full m-auto flex flex-col justify-center items-center bg-white gap-4'>
+		<div className='min-h-full m-auto flex flex-col justify-center items-center gap-4'>
 			<br />
 			<h3>Current Order</h3>
 			<div className='grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 grid-cols-5 gap-4'>
