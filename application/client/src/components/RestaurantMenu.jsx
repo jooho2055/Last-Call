@@ -1,25 +1,53 @@
 import React from 'react';
+import sampleFood from '../images/samplefood.png';
+import { BsCartCheck } from 'react-icons/bs';
 
-export default function RestaurantMenu({restarantmenuInfo}) {
-    const {name, original_price, price} = restarantmenuInfo;
-    return (
-        <div className='w-[600px]'>
-        <div className='border border-collapse border-spacing-4'>
-            <div className="grid grid-cols-5 border-b bg-gray-100 font-semibold">
-                   <div className="p-2">Food Name</div>
-                   <div className="p-2">Original Price</div>
-                   <div className="p-2">Actual Price</div>
-            </div>
-            <div className="grid grid-cols-5 border-b">
-                        <div className="p-2">{name}</div>
-                        <div className="p-2">$ {original_price}</div>
-                        <div className="p-2">$ {price}</div>
-                        <div className="p-2"><button>Delete</button></div>
-            </div>
+export default function RestaurantMenu({ restarantmenuInfo }) {
+	const { name, description, img_path, quantity, original_price, price } = restarantmenuInfo;
+	return (
+		// lists of menu
+		<li className=' flex justify-between rounded-xl shadow-md'>
+			<div className=' w-full flex'>
+				<img
+					src={sampleFood}
+					className='max-w-[16rem] max-h-40 rounded-s-xl pr-2'
+					alt='sample img'
+				/>
+				<div className='flex flex-col justify-between'>
+					<div className='flex-1'>
+						<div className='flex justify-between'>
+							<span className='text-lg font-bold pl-1 pt-1'>{name}</span>
+							<span className='text-sm pt-2 pr-3'>
+								Remaining Count: <strong>{quantity}</strong>
+							</span>
+						</div>
 
-         </div> 
-         </div>  
+						<div className='text-sm text-gray-500 pl-1 pt-1'>
+							The food is made by chicken asdfasdf asdfasdf asdfasdf
+						</div>
+					</div>
+					<div className='pb-1 pl-1'>
+						<div className='flex justify-between text-sm'>
+							<span>Original Price: </span>
+							<span className='pr-5 line-through'>${original_price}</span>
+						</div>
+						<div className='flex justify-between text-sm'>
+							<span>Discounted Price: </span>
+							<span className='pr-5 font-bold text-orange-700'> ${price}</span>
+						</div>
+					</div>
+				</div>
+			</div>
 
-    );
+			<div className='pl-3'>
+				{/* a button component will be used */}
+				<BsCartCheck
+					className='text-3xl mt-[3.75rem] mr-2'
+					onClick={(e) => {
+						console.log('hello');
+					}}
+				/>
+			</div>
+		</li>
+	);
 }
-

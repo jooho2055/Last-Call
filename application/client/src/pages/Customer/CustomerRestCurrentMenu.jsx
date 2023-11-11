@@ -2,10 +2,10 @@ import { useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import { fetchRestaurantAvailableMenu, fetchRestaurantInfo } from '../../apis/get';
 import { useLocation, useParams } from 'react-router-dom';
+import RestaurantMenu from '../../components/RestaurantMenu';
 
 export default function CustomerRestCurrentMenu() {
 	const { id } = useParams();
-	const [menus, setMenus] = useState([]);
 
 	const {
 		isLoading: isMenuLoading,
@@ -36,14 +36,14 @@ export default function CustomerRestCurrentMenu() {
 	}
 
 	return (
-		<div>
+		<div className='max-w-[80rem] m-auto mt-10'>
 			<div>This is {restaurantInfo.name} current menu page (customer view)</div>
-			<div>{id}</div>
-			<div>
+
+			<ul className='grid grid-cols-2 gap-8 px-12 pt-10 lg:grid-cols-1'>
 				{restaurantMenu?.map((item) => (
-					<div>{item.name}</div>
+					<RestaurantMenu restarantmenuInfo={item} />
 				))}
-			</div>
+			</ul>
 		</div>
 	);
 }
