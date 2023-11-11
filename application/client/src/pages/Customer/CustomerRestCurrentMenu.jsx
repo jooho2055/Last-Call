@@ -44,6 +44,7 @@ export default function CustomerRestCurrentMenu() {
 					<RestaurantMenu restarantmenuInfo={item} />
 				))}
 			</ul>
+			<br />
 		</div>
 	);
 }
