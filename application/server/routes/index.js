@@ -2,14 +2,14 @@ var express = require('express');
 var router = express.Router();
 var db = require('../conf/database');
 const path = require("path");
-const cors = require('cors')
+// const cors = require('cors')
 
-let corsOptions = {
-    origin: ['http://localhost:3000', 'http://localhost:5001'],
-    credentials: true
-  }
+// let corsOptions = {
+//     origin: ['http://localhost:3000', 'http://localhost:5001'],
+//     credentials: true
+//   }
   
-router.use(cors(corsOptions))
+// router.use(cors(corsOptions))
 
 router.get("/", function(req, res){
     res.sendFile(path.join(__dirname, "/../../client/build/index.html"));
