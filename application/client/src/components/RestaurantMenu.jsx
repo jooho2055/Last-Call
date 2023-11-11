@@ -15,7 +15,7 @@ export default function RestaurantMenu({ restarantmenuInfo }) {
 				/>
 				<div className='flex flex-col justify-between'>
 					<div className='flex-1'>
-						<div className='flex justify-between sx:flex-col'>
+						<div className='flex justify-between sm:flex-col'>
 							<span className='text-lg font-bold pl-1 pt-1'>{name}</span>
 							<span className='text-sm pt-2 pr-3 pl-1'>
 								Remaining Count: <strong>{quantity}</strong>

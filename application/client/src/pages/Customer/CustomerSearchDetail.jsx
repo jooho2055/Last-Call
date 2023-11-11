@@ -83,6 +83,7 @@ export default function CustomerSearchDetail() {
 					</Link>
 				))}
 			</div>
+			<br></br>
 		</div>
 	);
 }
