@@ -1,6 +1,6 @@
 import React from 'react';
 import sampleFood from '../images/samplefood.png';
-import { BsCartCheck } from 'react-icons/bs';
+import { BsCartPlus } from 'react-icons/bs';
 
 export default function RestaurantMenu({ restarantmenuInfo }) {
 	const { name, description, img_path, quantity, original_price, price } = restarantmenuInfo;
@@ -40,13 +40,9 @@ export default function RestaurantMenu({ restarantmenuInfo }) {
 			</div>
 
 			<div className='pl-3'>
-				{/* a button component will be used */}
-				<BsCartCheck
-					className='text-3xl mt-[3.75rem] mr-2'
-					onClick={(e) => {
-						console.log('hello');
-					}}
-				/>
+				<button>
+					<BsCartPlus className='text-3xl mt-[3.75rem] mr-2' />
+				</button>
 			</div>
 		</li>
 	);

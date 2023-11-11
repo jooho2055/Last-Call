@@ -35,10 +35,10 @@ export default function Navbar() {
 				</div>
 			</Link>
 			<nav className='mr-36 pt-[1.35rem]'>
-				<ul className={!isLandingPage && 'flex space-x-16'}>
+				<ul className={!isLandingPage ? 'flex space-x-16' : ''}>
 					{showNavItems &&
 						navigation.map((item) => (
-							<li key={item.name} className='space-x-3 text-stone-900'>
+							<li key={item.name} className='space-x-3 text-stone-900 font-medium'>
 								<Link to={item.href}>{item.name}</Link>
 							</li>
 						))}
