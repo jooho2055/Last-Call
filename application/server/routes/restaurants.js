@@ -4,6 +4,10 @@ const path = require("path");
 var db = require('../conf/database');
 const {isLoggedIn, isRestaurants, isMyPage} = require('../middleware/auth')
 const bcrypt = require('bcrypt');
+const cors = require('cors')
+
+router.use(cors())
+
 
 // This is vars for debug
 const TESTMENU_CORRECT = {
@@ -99,19 +103,19 @@ router.get(`/info/:id(\\d+)`,async(req,res) => {
  * @body 
  * @Path /restaurants/profile/update
  */
-router.put(`/profile/update`, async(req, res) =>{
-    let {id, username, password, email, phone, restName, street, city, zipcode, state, cuisine} = req.body;
+// router.put(`/profile/update`, async(req, res) =>{
+//     let {id, username, password, email, phone, restName, street, city, zipcode, state, cuisine} = req.body;
 
-    try{
-        const [rows, _ ] = await db.execute(`SELECT * FROM restaurants WHERE id = ?`,[id]);
+//     try{
+//         const [rows, _ ] = await db.execute(`SELECT * FROM restaurants WHERE id = ?`,[id]);
     
-        const user = rows[0];
+//         const user = rows[0];
     
-        var hashedPasswrod = await bcrypt.hash(pwd,1);
+//         var hashedPasswrod = await bcrypt.hash(pwd,1);
         
-        var [results, _ ] = await db.execute(`UPDATE restaurants SET username = ? AND password = ? AND email = ? AND phone = ? AND restName = ? `)
-    }
-})
+//         var [results, _ ] = await db.execute(`UPDATE restaurants SET username = ? AND password = ? AND email = ? AND phone = ? AND restName = ? `)
+//     }
+// })
 
 
 /**

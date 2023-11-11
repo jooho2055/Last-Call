@@ -2,6 +2,9 @@ var express = require('express');
 var router = express.Router();
 var db = require('../conf/database');
 const path = require("path");
+const cors = require('cors')
+
+router.use(cors())
 
 router.get("/", function(req, res){
     res.sendFile(path.join(__dirname, "/../../client/build/index.html"));
