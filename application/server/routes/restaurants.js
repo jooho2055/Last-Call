@@ -179,7 +179,7 @@ router.post('/menu/add', /*isLoggedIn, isRestaurants,*/ async (req,res)=>{
         // }
 
         // add menu
-        var [ result, _ ] = await db.execute(`(fk_menus_restaurant,price,original_price,name,description,img_path) VALUES(?,?,?,?, NULL, NULL);`,[restaurantId,price,orignalPrice,name])
+        var [ result, _ ] = await db.execute(`INSERT INTO menus (fk_menus_restaurant,price,original_price,name,description,img_path) VALUES(?,?,?,?, NULL, NULL);`,[restaurantId,price,orignalPrice,name])
         // if(result && result.affectedRows !== 1){
         //     return res.status(400).json({meesage: 'fail to login'})
         // }
