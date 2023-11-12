@@ -2,13 +2,14 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import { useSelector } from 'react-redux';
 import { useQuery } from '@tanstack/react-query';
-import { useNavigate, useParams } from 'react-router-dom';
-import { fetchSearchboxRestaurants } from '../apis/get';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { fetchSearchboxRestaurants } from '../../apis/get';
+import sampleFood from '../../images/samplefood.png';
 
-import Searchbox from '../components/SearchBox';
-import RestaurantList from '../components/RestaurantList';
+import Searchbox from '../../components/SearchBox';
+import RestaurantList from '../../components/RestaurantList';
 
-export default function SearchDetail() {
+export default function CustomerSearchDetail() {
 	const [searchValue, setSearchValue] = useState('');
 	const inputRef = useRef(null); // Create the ref
 
@@ -24,6 +25,9 @@ export default function SearchDetail() {
 		if (user.role === 'restaurants') {
 			navigate('/restaurantprofile');
 		}
+	});
+
+	useEffect(() => {
 		if (searchId && searchValue !== searchId) {
 			setSearchValue(searchId);
 		}
@@ -34,6 +38,7 @@ export default function SearchDetail() {
 		queryKey: ['searchedRestaurants', searchId],
 		queryFn: () => fetchSearchboxRestaurants(searchId),
 		enabled: !!searchId,
+		keepPreviousData: true,
 	});
 
 	const handleSubmit = (e) => {
@@ -50,7 +55,7 @@ export default function SearchDetail() {
 	};
 
 	return (
-		<div className='max-w-[110rem] m-auto mt-10'>
+		<div className='max-w-[90rem] m-auto mt-10'>
 			<div>
 				<h1>Search Results {searchValue}</h1>
 				<p>
@@ -65,12 +70,20 @@ export default function SearchDetail() {
 					inputRef={inputRef}
 				/>
 			</div>
-			<div className='grid grid-cols-3 auto-rows-[minmax(14rem,auto)] p-7 gap-8'>
+			<div className='grid grid-cols-3 auto-rows-[minmax(12rem,auto)] px-32 pt-12 gap-7 md:grid-cols-2 sm:grid-cols-1'>
 				{/* Must use a restaurant unique id as a key in the future */}
 				{searchedRestaurants?.map((restaurant, index) => (
-					<RestaurantList key={index} restaurantInfo={restaurant} />
+					<Link
+						to={`/restaurant/${restaurant.id}`}
+						className='flex flex-col justify-center items-center text-lg rounded-xl shadow-md'
+						key={restaurant.id}
+					>
+						<img src={sampleFood} alt='sample Food' className='rounded-xl' />
+						<RestaurantList key={index} restaurantInfo={restaurant} />
+					</Link>
 				))}
 			</div>
+			<br></br>
 		</div>
 	);
 }

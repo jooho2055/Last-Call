@@ -19,9 +19,17 @@ code {
 }
 
 #root {
+	font-family: 'Inter', sans-serif;
 	display: flex;
 	flex-direction: column;
 	width: 100vw;
 	height: 100vh;
 	overflow-x: hidden;
+}
+
+img {
+	-webkit-user-drag: none;
+	-khtml-user-drag: none;
+	-moz-user-drag: none;
+	-o-user-drag: none;
 }
