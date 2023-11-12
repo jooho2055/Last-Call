@@ -150,9 +150,9 @@ router.get(`/profile/:id(\\d+)`, /*isLoggedIn, isRestaurants, isMyPage,*/
  *  @Options img, desc
  *  @path `/restaurants/menu/add`
  */
-router.post(`/menu/add`, /*isLoggedIn, isRestaurants,*/ async function(req,res){
-    const {restaurantId, price, originalPrice, name} = req.body
-    var { desc, img } = req.body
+router.post('/menu/add', /*isLoggedIn, isRestaurants,*/ async (req,res)=>{
+    var {restaurantId, price, originalPrice, name} = req.body
+    // var { desc, img } = req.body
     
     // TEST
     // var {restautrantId, price, orignalPrice, desc, name, img} = TESTMENU_CORRECT
@@ -160,7 +160,7 @@ router.post(`/menu/add`, /*isLoggedIn, isRestaurants,*/ async function(req,res){
     // console.log(restautrantId, price, orignalPrice, name, desc, img)
     
     // check correct body form
-    if(!(restaurantId && price && orignalPrice && name)){
+    if(!(restaurantId && price && originalPrice && name)){
         return res.status(400).json({message: "missed inputs"})
     }
 
@@ -171,16 +171,19 @@ router.post(`/menu/add`, /*isLoggedIn, isRestaurants,*/ async function(req,res){
 
     try{
         // handle default value
-        if(!desc){
-            desc = null
-        }
-        if(!img){
-            img = null
-        }
+        // if(!desc){
+        //     desc = null
+        // }
+        // if(!img){
+        //     img = null
+        // }
 
         // add menu
         var [ result, _ ] = await db.execute(`INSERT INTO menus (fk_menus_restaurant,price,original_price,
-            name,description,img_path) VALUES(?,?,?,?,?,?);`,[restaurantId,price,orignalPrice,name,desc,img])
+            name) VALUES(?,?,?,?);`,[restaurantId,price,orignalPrice,name])
+        // if(result && result.affectedRows !== 1){
+        //     return res.status(400).json({meesage: 'fail to login'})
+        // }
         return res.status(200).json({message:"new menu is added!"})
     }catch(err){
         return res.status(400).json({message: "fail to add menu"})
