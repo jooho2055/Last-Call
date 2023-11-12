@@ -1,16 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var db = require('../conf/database');
-// const cors = require('cors')
 const path = require("path");
 const {isLoggedIn, isCustomers, isMyPage} = require('../middleware/auth')
-
-// let corsOptions = {
-//   origin: ['http://localhost:3000', 'http://localhost:5001'],
-//   credentials: true
-// }
-
-// router.use(cors(corsOptions))
 
 router.get(`/search`, async(req, res)=>{
     const query = `SELECT * FROM restaurants `;
@@ -33,7 +25,8 @@ router.get(`/search`, async(req, res)=>{
 /**
  * To get curreent order for customer
  * @params customerId
- * @path /customers/order/current/:id(\\d+)
+ * @path '/customers/order/current/:id(\\d+)'
+ * @method get
  */
 router.get(`/order/current/:id(\\d+)`, /*isLoggedIn, isCustomers, isMyPage,*/  async function(req, res){
     const {id} = req.params
@@ -54,6 +47,7 @@ router.get(`/order/current/:id(\\d+)`, /*isLoggedIn, isCustomers, isMyPage,*/  a
  * To get past order for customer
  * @params customerId
  * @path customers//order/past/:id(\\d+)
+ * @method get
  */
 router.get(`/order/past/:id(\\d+)`, /*isLoggedIn, isCustomers, isMyPage,*/ async function(req,res){
     const {id} = req.params
@@ -134,9 +128,9 @@ DEBUG_CART_ADD = {
 router.post('/order/cart/add', /*isLoggedIn, isCustomers,*/ async function(req,res){
     const {customerId, menuId, restaurantId} = req.body
     // const {customerId, menuId, restaurantId} = DEBUG_CART_ADD;
-    if(req.session.user.userId !== customerId){
-        return res.status(400).json({message: "wrong access!"})
-    }
+    // if(req.session.user.userId !== customerId){
+    //     return res.status(400).json({message: "wrong access!"})
+    // }
 
     try{
         var [result, _ ] = await db.execute(`SELECT * FROM menus WHERE id = ?;`,[menuId])

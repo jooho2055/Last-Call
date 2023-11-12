@@ -4,15 +4,6 @@ const path = require("path");
 var db = require('../conf/database');
 const {isLoggedIn, isRestaurants, isMyPage} = require('../middleware/auth')
 const bcrypt = require('bcrypt');
-// const cors = require('cors')
-
-// let corsOptions = {
-//     origin: ['http://localhost:3000', 'http://localhost:5001'],
-//     credentials: true
-//   }
-  
-// router.use(cors(corsOptions))
-
 
 // This is vars for debug
 const TESTMENU_CORRECT = {
@@ -151,8 +142,8 @@ router.get(`/profile/:id(\\d+)`, /*isLoggedIn, isRestaurants, isMyPage,*/
  *  @path `/restaurants/menu/add`
  */
 router.post('/menu/add', /*isLoggedIn, isRestaurants,*/ async (req,res)=>{
-    var {restaurantId, price, originalPrice, name} = req.body
-    // var { desc, img } = req.body
+    const {restaurantId, price, originalPrice, name} = req.body
+    let { desc, img } = req.body
     
     // TEST
     // var {restautrantId, price, orignalPrice, desc, name, img} = TESTMENU_CORRECT
@@ -160,7 +151,7 @@ router.post('/menu/add', /*isLoggedIn, isRestaurants,*/ async (req,res)=>{
     // console.log(restautrantId, price, orignalPrice, name, desc, img)
     
     // check correct body form
-    if(!(restaurantId && price && originalPrice && name)){
+    if(!restaurantId || !price || !originalPrice || !name){
         return res.status(400).json({message: "missed inputs"})
     }
 
@@ -171,18 +162,19 @@ router.post('/menu/add', /*isLoggedIn, isRestaurants,*/ async (req,res)=>{
 
     try{
         // handle default value
-        // if(!desc){
-        //     desc = null
-        // }
-        // if(!img){
-        //     img = null
-        // }
+        if(!desc){
+            desc = null
+        }
+        if(!img){
+            img = null
+        }
 
         // add menu
-        var [ result, _ ] = await db.execute(`INSERT INTO menus (fk_menus_restaurant,price,original_price,name,description,img_path) VALUES(?,?,?,?, NULL, NULL);`,[restaurantId,price,orignalPrice,name])
-        // if(result && result.affectedRows !== 1){
-        //     return res.status(400).json({meesage: 'fail to login'})
-        // }
+        var [ result, _ ] = await db.execute(`INSERT INTO menus (fk_menus_restaurant,price,original_price,
+            name,description,img_path) VALUES(?,?,?,?,?,?);`,[restaurantId,price,originalPrice,name,desc,img])
+        if(result && result.affectedRows !== 1){
+            return res.status(400).json({meesage: 'fail to login'})
+        }
         return res.status(200).json({message:"new menu is added!"})
     }catch(err){
         return res.status(400).json({message: "fail to add menu"})
@@ -204,7 +196,7 @@ router.get(`/menu/list/:id(\\d+)`, /*isLoggedIn,*/ async function(req,res){
         return res.status(200).json(results)
     }catch(err){
         console.log(err)
-        return res.status(400).json({message: err})
+        return res.status(400).json({message: err, err:err.message})
     }
 })
 
@@ -222,9 +214,9 @@ router.post('/menu/delete', /*isLoggedIn, isRestaurants,*/ async function(req,re
     // console.log(restaurantId, menuId)
     
     // check working on same rest
-    if(req.session.user.userId !== restaurantId){
-        return res.status(400).json({message: "It's not your restaurant"})
-    }
+    // if(req.session.user.userId !== restaurantId){
+    //     return res.status(400).json({message: "It's not your restaurant"})
+    // }
 
     try{
         // get menu from database
@@ -249,12 +241,13 @@ router.post('/menu/delete', /*isLoggedIn, isRestaurants,*/ async function(req,re
         return res.status(200).json({message: "menu is deleted!"})
     }catch(err){
         console.log(err)
-        return res.status(400).json({message: "fail to delete menu"})
+        return res.status(400).json({message: "fail to delete menu", err:err.message})
     }
 })
 
 /**
  * To set up quantity for menu
+ * @method: post
  * @body must holds restaurantId, menuId, quantity(to update)
  * @path `/restaurants/menu/setqauntity`
  */
@@ -270,9 +263,9 @@ router.post('/menu/setqauntity', /*isLoggedIn, isRestaurants,*/ async function(r
     // console.log(restaurantId, menuId, quantity)
 
     // check working on same rest
-    if(req.session.user.userId !== restaurantId){
-        return res.status(400).json({message: "It's not your restaurant"})
-    }
+    // if(req.session.user.userId !== restaurantId){
+    //     return res.status(400).json({message: "It's not your restaurant"})
+    // }
 
     try{
          // get menu from database
