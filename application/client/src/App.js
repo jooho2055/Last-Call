@@ -9,6 +9,7 @@ import SignUpChoice from './pages/SignUp/SignUpChoice';
 import CustomerSignUp from './pages/SignUp/CustomerSignUp';
 import RestaurantSignUp from './pages/SignUp/RestaurantSignUp';
 import CustomerOrder from './pages/Customer/CustomerOrder';
+import CustomerCart from './pages/Customer/CustomerCart';
 import CustomerProfile from './pages/Customer/CustomerProfile';
 import RestaurantProfile from './pages/Restaurant/RestaurantProfile';
 import CustomerSearchDetail from './pages/Customer/CustomerSearchDetail';
@@ -36,6 +37,7 @@ const router = createBrowserRouter([
 			{ path: '/home', element: <CustomerHome /> },
 			{ path: '/search/:searchId', element: <CustomerSearchDetail /> },
 			{ path: '/order', element: <CustomerOrder /> },
+			{ path: '/cart', element: <CustomerCart /> },
 			{ path: '/customer/profile', element: <CustomerProfile /> },
 			{ path: '/restaurant/:id', element: <CustomerRestCurrentMenu /> },
 			{ path: '/restaurant/profile', element: <RestaurantProfile /> },
