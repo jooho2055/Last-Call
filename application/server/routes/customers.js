@@ -25,7 +25,8 @@ router.get(`/search`, async(req, res)=>{
 /**
  * To get curreent order for customer
  * @params customerId
- * @path /customers/order/current/:id(\\d+)
+ * @path '/customers/order/current/:id(\\d+)'
+ * @method get
  */
 router.get(`/order/current/:id(\\d+)`, /*isLoggedIn, isCustomers, isMyPage,*/  async function(req, res){
     const {id} = req.params
@@ -46,6 +47,7 @@ router.get(`/order/current/:id(\\d+)`, /*isLoggedIn, isCustomers, isMyPage,*/  a
  * To get past order for customer
  * @params customerId
  * @path customers//order/past/:id(\\d+)
+ * @method get
  */
 router.get(`/order/past/:id(\\d+)`, /*isLoggedIn, isCustomers, isMyPage,*/ async function(req,res){
     const {id} = req.params
