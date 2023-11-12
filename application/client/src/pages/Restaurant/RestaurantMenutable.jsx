@@ -42,11 +42,13 @@ export default function RestaurantMenutable() {
 		fname: '',
 		oprice:'',
 		aprice:'',
+		description: '',
 	});
 	const [menuvalidity, setmenuValidity] = useState({
 		fname: true,
 		oprice: true,
 		aprice: true,
+		description: true,
 	});
     const [isOpen, setIsOpen] = useState(false);
 	const formatShows = () =>{
@@ -64,10 +66,13 @@ export default function RestaurantMenutable() {
 					    break;
 					case 'oprice':
 						isValid = /^[0-9]*\.?[0-9]+$/.test(value) && parseFloat(value) > 0;
-              break;
+                        break;
 					case 'aprice':
 						isValid = /^[0-9]*\.?[0-9]+$/.test(value) && parseFloat(value) > 0;
-              break;
+                        break;
+					case 'description':
+						isValid = /[A-Za-z]/.test(value);
+						break;
 					default:
 						isValid=false;
 					
@@ -90,6 +95,7 @@ export default function RestaurantMenutable() {
 				price: parseFloat(menuInput.aprice),
 				originalPrice: parseFloat(menuInput.oprice),
 				name: menuInput.fname,
+				desc: menuInput.description,
 			});
 		} catch (error) {
 		  console.error('An error occurred:', error);
@@ -113,7 +119,7 @@ export default function RestaurantMenutable() {
 					></button>
 				)}
 				{isOpen && (
-					<div className='absolute right-50 w-72 h-96 bg-gray-100'>
+					<div className='absolute right-50 w-72 h-96 bg-gray-100 flex flex-col justify-center items-center'>
 						<form onSubmit={handleMenu}>
 							{inputForMenu.map((input) => (
 								<FormInput
@@ -124,10 +130,13 @@ export default function RestaurantMenutable() {
 									isValid={menuvalidity[input.name]}
 								></FormInput>
 							))}
+							 <div className="flex justify-center">
 							<button disabled={isMenuSubmitDisable}>Submit</button>
+						    </div>
 						</form>
 					</div>
 				)}
+				
 				<div className='grid grid-cols-1 gap-4'>
 					{MenuList.data?.map((food) => (
 						<RestaurantMenu key={food.id} restarantmenuInfo={food}/>

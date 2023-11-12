@@ -26,9 +26,10 @@ import axios from 'axios';
         restaurantId,
         menuId,
       });
-      return res.data;
-    }catch (error) {
-      console.error('Error creating new menu:', error);
-      throw error;
-    }
+    console.log('Delete Response:', res.data); 
+    return res.data;
+  } catch (error) {
+    console.error('Error deleting menu:', error);
+    throw error;
+  }
   }
