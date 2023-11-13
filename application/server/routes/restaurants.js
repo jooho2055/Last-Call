@@ -191,7 +191,7 @@ router.post('/menu/add', /*isLoggedIn, isRestaurants,*/ async (req,res)=>{
 router.get(`/menu/list/:id(\\d+)`, /*isLoggedIn,*/ async function(req,res){
     const { id } = req.params
     try{
-        var [ results, _ ] = await db.execute(`SELECT * FROM menus WHERE fk_menus_restaurant = ?;`, [id])
+        var [ results, _ ] = await db.execute(`SELECT * FROM menus WHERE restaurant_id = ?;`, [id])
         if(results < 1){
             return res.status(400).json({message: "menu haven't added yet"})
         }
@@ -238,7 +238,7 @@ router.post('/menu/delete', /*isLoggedIn, isRestaurants,*/ async function(req,re
             return res.status(400).json({message: "This menu is not in your restaurant"})
 
         // delete menu
-        var [ result, _ ] = await db.execute(`DELETE FROM menus WHERE id = ? AND fk_menus_restaurant = ?;`,
+        var [ result, _ ] = await db.execute(`DELETE FROM menus WHERE id = ? AND restaurant_id = ?;`,
         [menuId, restaurantId])
         
         return res.status(200).json({message: "menu is deleted!"})
