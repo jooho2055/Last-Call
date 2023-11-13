@@ -5,14 +5,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import { logout } from './../../redux/userActions';
 
 export default function Dropdown() {
-	const [isOpen, setIsOpen] = useState(false);
+	const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 	const user = useSelector((state) => state.user);
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
-
 	const toggleDropdown = () => {
-		setIsOpen(!isOpen);
-	};
+		setIsDropdownOpen(!isDropdownOpen);
+	  };
 
 	const handleSignOut = async () => {
 		const res = await fetch('http://13.52.182.209/users/signout', {
@@ -33,14 +32,14 @@ export default function Dropdown() {
 			<button className='text-3xl mt-[0.85rem] mr-5 text-stone-900' onClick={toggleDropdown}>
 				<AiOutlineUser />
 			</button>
-			{isOpen && (
+			{isDropdownOpen && (
 				<button
 					onClick={toggleDropdown}
 					className='fixed top-0 right-0 bottom-0 left-0 w-full h-full bg-black opacity-0 cursor-default'
 				></button>
 			)}
-			{isOpen && (
-				<div className='absolute right-0 mt-2 py-2 w-48 bg-gray-100 rounded-lg shadow-xl'>
+			{isDropdownOpen && (
+				<div className='absolute right-0 mt-2 py-2 w-48 bg-gray-100 rounded-lg shadow-xl z-10'>
 					<Link
 						to='/customer/profile'
 						href='#'

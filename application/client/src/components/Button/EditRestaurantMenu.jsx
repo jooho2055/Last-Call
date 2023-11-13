@@ -49,7 +49,7 @@ export default function Edit({ initialData }) {
   };
 
   useEffect(() => {
-    setIsOpen(false); // Set isOpen to false when the component mounts
+    setIsOpen(false); 
   }, []);
 
   const formatShows = () =>{
@@ -58,33 +58,37 @@ export default function Edit({ initialData }) {
 
   return (
     <div>
-       <div className='text-xl'>
+      {!isOpen &&(
+       <div className='text-xl mt-[3.75rem]'>
           <button onClick={formatShows}>Edit</button>
-        </div>  
-        {isOpen && (
-		<button onClick={formatShows}
-			className='fixed top-0 right-0 bottom-0 left-0 w-full h-full bg-black opacity-0 cursor-default'>      
-        </button>
-				)}
-      {isOpen && (
-        
-        <div className='w-[250px] h-[350px] bg-gray-100 rounded-md flex flex-col justify-center items-center'>
-          <form>
-            {inputForMenu.map((input) => (
-              <FormInput
-                key={input.id}
-                {...input}
-                value={editFormData[input.name]}
-                onChange={onMenuChange}
-                isValid={menuvalidity[input.name]}
-              ></FormInput>
-            ))}
-            <div className='flex justify-center'>
-              <button disabled={isMenuSubmitDisable}>Save</button>
-            </div>
-          </form>
-        </div>
-      )}
+        </div> 
+      )} 
+{isOpen && (
+  <button
+    onClick={formatShows}
+    className={`fixed top-0 right-0 bottom-0 left-0 w-full h-full bg-black opacity-0 cursor-default`}
+  ></button>
+)}
+
+{isOpen && (
+  <div className='w-[250px] h-[350px] bg-gray-100 rounded-md flex flex-col justify-center items-center'>
+    <form>
+      {inputForMenu.map((input) => (
+        <FormInput
+          key={input.id}
+          {...input}
+          value={editFormData[input.name]}
+          onChange={onMenuChange}
+          isValid={menuvalidity[input.name]}
+        ></FormInput>
+      ))}
+      <div className='flex justify-center'>
+        <button disabled={isMenuSubmitDisable}>Save</button>
+      </div>
+    </form>
+  </div>
+)}
+
     </div>
   );
 }

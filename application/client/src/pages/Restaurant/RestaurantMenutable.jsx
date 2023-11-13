@@ -1,6 +1,6 @@
 import React,{useState, useEffect} from 'react';
 import {inputForMenu} from '../../utils/resProfile';
-import RestaurantMenu from '../../components/RestaurantMenu';
+import RestaurantMenuSetting from '../../components/RestaurantMenuSetting';
 import { AiFillPlusSquare } from 'react-icons/ai';
 import FormInput from '../../components/FormInput';
 import { useSelector } from 'react-redux';
@@ -50,9 +50,10 @@ export default function RestaurantMenutable() {
 		aprice: true,
 		description: true,
 	});
-    const [isOpen, setIsOpen] = useState(false);
-	const formatShows = () =>{
-		setIsOpen(!isOpen);
+	const [isFormOpen, setIsFormOpen] = useState(false);
+
+	const FromShows = () => {
+	  setIsFormOpen(!isFormOpen);
 	};
     
     const isMenuSubmitDisable =
@@ -62,7 +63,7 @@ export default function RestaurantMenutable() {
 				let isValid = true;
 				switch (name) {
 					case 'fname':
-						isValid = /^[A-Za-z0-9]{1,16}$/.test(value);
+						isValid = /^[A-Za-z0-9\s]{1,16}$/.test(value);
 					    break;
 					case 'oprice':
 						isValid = /^[0-9]*\.?[0-9]+$/.test(value) && parseFloat(value) > 0;
@@ -85,8 +86,6 @@ export default function RestaurantMenutable() {
         validateMenuInput(name, value);
     }
 
-    //When I post error, it show "missing input", seems like there is no value save or possibly the name issue
-    //will figure out later
 	const handleMenu = async (e) => {
 		e.preventDefault();
 		try {
@@ -108,17 +107,18 @@ export default function RestaurantMenutable() {
 				<p>Menu Manage</p>
 				<button
 					className='text-3xl mt-[0.85rem] mr-5'
-					onClick={formatShows} >
+					onClick={FromShows} 
+				>
 					<AiFillPlusSquare />
 				</button>
-				{isOpen && (
+				{isFormOpen && (
 					<button
-						onClick={formatShows}
+						onClick={FromShows}
 						className='fixed top-0 right-0 bottom-0 left-0 w-full h-full bg-black opacity-0 cursor-default'
 					></button>
 				)}
-				{isOpen && (
-					<div className='absolute right-50 w-72 h-96 bg-gray-100 flex flex-col justify-center items-center rounded-xl'>
+				{isFormOpen && (
+					<div className='absolute right-50 w-72 h-96 bg-gray-100 flex flex-col justify-center items-center'>
 						<form onSubmit={handleMenu}>
 							{inputForMenu.map((input) => (
 								<FormInput
@@ -129,16 +129,13 @@ export default function RestaurantMenutable() {
 									isValid={menuvalidity[input.name]}
 								></FormInput>
 							))}
-							 <div className="flex justify-center">
 							<button disabled={isMenuSubmitDisable}>Submit</button>
-						    </div>
 						</form>
 					</div>
 				)}
-				
 				<div className='grid grid-cols-1 gap-4'>
 					{MenuList.data?.map((food) => (
-						<RestaurantMenu key={food.id} restarantmenuInfo={food}/>
+						<RestaurantMenuSetting key={food.id} restarantmenuInfo={food}/>
 					))}
 				</div>
 			</div>
