@@ -107,8 +107,7 @@ export default function RestaurantMenutable() {
 				<p>Menu Manage</p>
 				<button
 					className='text-3xl mt-[0.85rem] mr-5'
-					onClick={FromShows} 
-				>
+					onClick={FromShows} >
 					<AiFillPlusSquare />
 				</button>
 				{isFormOpen && (

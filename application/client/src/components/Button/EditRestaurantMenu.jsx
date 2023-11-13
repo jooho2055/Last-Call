@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import FormInput from '../FormInput';
 import { inputForMenu } from '../../utils/resProfile';
+import { AiTwotoneEdit } from 'react-icons/ai';
 
 export default function Edit({ initialData }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -59,8 +60,8 @@ export default function Edit({ initialData }) {
   return (
     <div>
       {!isOpen &&(
-       <div className='text-xl mt-[3.75rem]'>
-          <button onClick={formatShows}>Edit</button>
+       <div className='text-3xl mt-[3.75rem]'>
+          <button onClick={formatShows}><AiTwotoneEdit/></button>
         </div> 
       )} 
 {isOpen && (
