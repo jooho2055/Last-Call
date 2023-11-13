@@ -5,7 +5,6 @@ const path = require("path");
 const {isLoggedIn, isCustomers, isMyPage} = require('../middleware/auth')
 
 router.get(`/search`, async(req, res)=>{
-    const query = `SELECT * FROM restaurants `;
     const {search} = req.query;
     console.log(search)
     try{
@@ -23,7 +22,7 @@ router.get(`/search`, async(req, res)=>{
 });
 
 /**
- * To get curreent order for customer
+ * To get curreent order menus list for customer
  * @params customerId
  * @path '/customers/order/current/:id(\\d+)'
  * @method get
@@ -31,9 +30,9 @@ router.get(`/search`, async(req, res)=>{
 router.get(`/order/current/:id(\\d+)`, /*isLoggedIn, isCustomers, isMyPage,*/  async function(req, res){
     const {id} = req.params
     try{
-        const [results, _ ] = await db.execute(`SELECT * FROM orders WHERE fk_orders_customer = ? AND status = 0;`,[id]);
+        const [results, _ ] = await db.execute(`SELECT * FROM orders WHERE customer_id = ? AND status = 0;`,[id]);
         if(results.length < 1){
-          return res.status(400).json({message: "no results"})
+          return res.status(400).json({message: "no current orders"})
         }
         console.log(results)
         return res.status(200).json(results)
@@ -44,7 +43,7 @@ router.get(`/order/current/:id(\\d+)`, /*isLoggedIn, isCustomers, isMyPage,*/  a
 })
 
 /**
- * To get past order for customer
+ * To get past order menus list for customer
  * @params customerId
  * @path customers//order/past/:id(\\d+)
  * @method get
@@ -52,12 +51,22 @@ router.get(`/order/current/:id(\\d+)`, /*isLoggedIn, isCustomers, isMyPage,*/  a
 router.get(`/order/past/:id(\\d+)`, /*isLoggedIn, isCustomers, isMyPage,*/ async function(req,res){
     const {id} = req.params
     try{
-        const [results, _ ] = await db.execute(`SELECT * FROM orders WHERE fk_orders_customer = ? AND status = 1;`,[id]);
+        const [results, _ ] = await db.execute(`SELECT * FROM invoices WHERE customer_id = ? ORDER BY created_at DESC;`,[id]);
         if(results.length < 1){
             return res.status(400).json({message: "no results"})
         }
-        console.log(results)
-        return res.status(200).json(results)
+        let orderHistory = []
+        const orderHis = results.map(async (res,count)=>{
+            const [orders, _ ] = await db.execute(`SELECT * FROM orders WHERE invoice_id = ? AND status != 0;`, [res.id])
+            if(orders.length>1){
+              orderHistory.push(orders);
+            }
+        })
+        await Promise.all(orderHis)
+        
+        // console.log(orderHistory.length)
+
+        return res.status(200).json({orders: orderHistory})
     }catch(err){
        console.log(err)
         return res.status(400).json({message: "fail to get current order"})
@@ -68,11 +77,12 @@ router.get(`/order/past/:id(\\d+)`, /*isLoggedIn, isCustomers, isMyPage,*/ async
  * To get list of cart
  * @params customerId
  * @path `/customers//order/cart/:id(\\d+)`
+ * @method get
  */
 router.get(`/order/cart/:id(\\d+)`, /*isLoggedIn, isCustomers, isMyPage,*/ async function(req,res){
     const {id} = req.params
     try{
-        var [results, _ ] = await db.execute(`SELECT * FROM orders WHERE fk_orders_customer = ? AND status = 2;`, [id])
+        var [results, _ ] = await db.execute(`SELECT * FROM carts WHERE customer_id = ?;`, [id])
         if(results.length < 1){
             return res.status(400).json({message: "cart is empty"})
         }
@@ -84,100 +94,146 @@ router.get(`/order/cart/:id(\\d+)`, /*isLoggedIn, isCustomers, isMyPage,*/ async
     }
 })
 
+
+
+
+/// need to rewrite
+
+
+
+
 /**
  * To checkout cart and create order
  * @body holds customerId
  * @path `/customers/order/cart/checkout`
- * order status: 0: current, 1: done, 2: cart, 3: declined
+ * @method post
+ * order status: 0: current, 1: done, 2: declined
  */
 router.post(`/order/cart/checkout`, /*isLoggedIn, isCustomers,*/ async function(req, res){
     const {customerId} = req.body
-
-    if(req.session.user.userId !== customerId){
-        return res.status(400).json({message: "wrong access!"})
-    }
-
-    try{
-        var [items, _ ] = await db.execute(`SELECT * FROM orders WHERE fk_orders_customer = ? AND status = 2;`, [customerId])
-        if(items.length < 1){
-            return res.status(400).json({message: "cart is empty"})
-        }
-        items.map(async function(item){
-            var [result, _ ] = await db.execute(`UPDATE orders SET status=0 WHERE id = ?;`,[item.id])
-            console.log(result)
-        })
-        return res.status(200).json({message: "thank you"})
-    }catch(err){
-        console.log(err)
-        return res.status(400).json({message: "fail to get cart"})
-    }
-
-})
-
-DEBUG_CART_ADD = {
-  customerId:1, 
-  menuId:8, 
-  restaurantId:11
-}
-
-/**
- * To add menu in the cart
- * @body holds menuId, customerId, restaurantId
- * @path `/customers//order/cart/add`
- */
-router.post('/order/cart/add', /*isLoggedIn, isCustomers,*/ async function(req,res){
-    const {customerId, menuId, restaurantId} = req.body
-    // const {customerId, menuId, restaurantId} = DEBUG_CART_ADD;
+    // const customerId = 1;
     // if(req.session.user.userId !== customerId){
     //     return res.status(400).json({message: "wrong access!"})
     // }
 
     try{
-        var [result, _ ] = await db.execute(`SELECT * FROM menus WHERE id = ?;`,[menuId])
-        if(result.length < 1){
-            return res.status(400).json({message: "menu does not exist"})
-        }
-        var menu = result[0]
-        if(menu.fk_menus_restaurant !== restaurantId){
-            return res.status(400).json({message: "error rest don't match with menu"})
-        }
-        var [result, _ ] = await db.execute(`INSERT INTO orders (fk_orders_menu,fk_orders_customer) VALUES(?,?);`,
-        [menuId, customerId])
-        console.log(result)
+        const [carts, _ ] = await db.execute(`SELECT * FROM carts WHERE customer_id = ?;`, [customerId])
+        let flag = true;
+        let errMes = [];
+        let price = 0;
+        const getMenu = carts.map(async (item,i)=>{
+          const [quantity, _ ] = await db.execute(`SELECT name, quantity, price FROM menus WHERE id = ?;`,[item.menu_id])
+          // console.log("cart q: ", carts[i].quantity, " menu q:", quantity[0].quantity, " ", quantity[0].name)
+          if(quantity[0].quantity < carts[i].quantity){
+            flag = false;
+            errMes.push(`Cannot order ${quantity[0].name} more than ${quantity[0].quantity}`)
+          }
+          price += (carts[i].quantity * quantity[0].price)
+        })
+        await Promise.all(getMenu);
 
-        return res.status(200).json({message: "new item is added!"})
+        if(!flag){
+          return res.status(400).json({message: errMes})
+        }
+        
+        const [newInvoice] = await db.execute(`INSERT INTO invoices(customer_id, created_at, price) VALUES(?,NOW(),?);`,[customerId,price]);
+        console.log(newInvoice)
+        const invoice_id = newInvoice.insertId;
+        console.log(invoice_id)
+
+        const moveCart = carts.map(async (item,i)=>{
+          console.log(item.menu_id,item.customerId,invoice_id,item.quantity)
+          const [addOrder] = await db.execute(`INSERT INTO orders(created_at, status, menu_id, customer_id, invoice_id, quantity) VALUES(NOW(), 0, ?,?,?,?);`,[item.menu_id,customerId,invoice_id,item.quantity])
+          const [deleteCart] = await db.execute(`DELETE FROM carts WHERE id = ?;`,[item.id])
+          console.log(deleteCart)
+        })
+        await Promise.all(moveCart)
+        // var [items, _ ] = await db.execute(`SELECT * FROM orders WHERE fk_orders_customer = ? AND status = 2;`, [customerId])
+        // if(items.length < 1){
+        //     return res.status(400).json({message: "cart is empty"})
+        // }
+        // items.map(async function(item){
+        //     var [result, _ ] = await db.execute(`UPDATE orders SET status=0 WHERE id = ?;`,[item.id])
+        //     console.log(result)
+        // })
+        return res.status(200).json({message: "items are checked out"})
     }catch(err){
         console.log(err)
-        return res.status(400).json({message: "fail to get cart"})
+        return res.status(400).json({message: "fail to checkout"})
+    }
+})
+
+DEBUG_CART_ADD = {
+  customerId:1, 
+  menuId:1, 
+  restaurantId:1,
+  quantity:3
+}
+
+/**
+ * To add menu in the cart
+ * @body holds menuId, customerId, restaurantId, quantity
+ * @path `/customers//order/cart/add`
+ * @method post
+ */
+router.post('/order/cart/add', /*isLoggedIn, isCustomers,*/ async function(req,res){
+    const {customerId, menuId, restaurantId, quantity} = req.body
+    // const {customerId, menuId, restaurantId, quantity} = DEBUG_CART_ADD;
+    // if(req.session.user.userId !== customerId){
+    //     return res.status(400).json({message: "wrong access!"})
+    // }
+
+    try{
+        let [menu, _ ] = await db.execute(`SELECT * FROM menus WHERE id = ? AND restaurant_id = ?;`,[menuId,restaurantId])
+        if(menu.length < 1){
+            return res.status(400).json({message: "menu does not exist"})
+        }
+        menu = menu[0]
+        console.log(menuId, customerId,quantity)
+        let [cart] = await db.execute(`SELECT * FROM carts WHERE customer_id = ? AND menu_id = ?;`,[customerId,menuId]);
+        let result = []
+        if(cart.length> 0){
+          result = await db.execute(`UPDATE carts SET quantity = ? WHERE id = ?;`,[cart[0].quantity+quantity, cart[0].id])
+        }else{
+          result = await db.execute(`INSERT INTO carts (menu_id,customer_id,quantity) VALUES(?,?,?);`,
+          [menuId, customerId,quantity])
+        }
+        console.log(result)
+        return res.status(200).json({message: "new item is added!", item: result})
+    }catch(err){
+        console.log(err)
+        return res.status(400).json({message: "fail to add item into cart"})
     }
 })
 
 DEBUG_CART_DELETE_MENU = {
   customerId:1, 
-  menuId:8, 
-  restaurantId:99
+  menuId:1, 
+  restaurantId:1
 }
 /**
  * To delete one menu in the cart
  * @body holds menuId and customerId
  * @path `/customers/order/cart/delete/menu`
+ * @method post
  */
 router.post(`/order/cart/delete/menu`, /*isLoggedIn, isCustomers,*/ async function(req,res){
     const {menuId, customerId} = req.body
     // const {menuId, customerId} = DEBUG_CART_DELETE_MENU
-    if(req.session.user.userId !== customerId){
-        return res.status(400).json({message: "wrong access!"})
-    }
+    
+    // if(req.session.user.userId !== customerId){
+    //     return res.status(400).json({message: "wrong access!"})
+    // }
 
     try{
-        var [item, _ ] = await db.execute(`SELECT * FROM orders WHERE fk_orders_menu = ? AND fk_orders_customer = ? AND status = 2;`, 
+        var [item, _ ] = await db.execute(`SELECT * FROM carts WHERE menu_id = ? AND customer_id = ?;`, 
         [menuId, customerId]);
         
         if( item.length < 1){
           return res.status(400).json({message: "item does not exist"})
         }
 
-        var [result, _ ] = await db.execute(`DELETE FROM orders WHERE fk_orders_menu = ? AND fk_orders_customer = ? AND status = 2;`,
+        var [result, _ ] = await db.execute(`DELETE FROM carts WHERE menu_id = ? AND customer_id = ?;`,
         [menuId, customerId])
         console.log(result)
 
@@ -196,25 +252,26 @@ DEBUG_CART_DELETE = {
  * To delete all the menu in the cart
  * @body holds customer detail
  * @path `/customers/order/cart/delete`
+ * @method post
  */
 router.post('/order/cart/delete', /*isLoggedIn, isCustomers,*/ async function(req,res){
     const { customerId} = req.body
     // const {customerId} = DEBUG_CART_DELETE
-    if(req.session.user.userId !== customerId){
-        return res.status(400).json({message: "wrong access!"})
-    }
+
+    // if(req.session.user.userId !== customerId){
+    //     return res.status(400).json({message: "wrong access!"})
+    // }
 
     try{
-        var [items , _ ] = await db.execute(`SELECT * FROM orders WHERE fk_orders_customer = ? AND status = 2;`, 
+        let [items] = await db.execute(`SELECT * FROM carts WHERE customer_id = ?;`, 
         [customerId]);
 
         if( items.length < 1){
             return res.status(400).json({message: "item does not exist"})
         }
         
-        var [result, _ ] = await db.execute(`DELETE FROM orders WHERE fk_orders_customer = ? AND status = 2;`,
+        let [result] = await db.execute(`DELETE FROM carts WHERE customer_id = ?;`,
         [customerId])
-        console.log(result)
 
         return res.status(200).json({message: "cart is deleted"})
     }catch(err){

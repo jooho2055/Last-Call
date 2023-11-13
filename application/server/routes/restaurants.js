@@ -140,6 +140,7 @@ router.get(`/profile/:id(\\d+)`, /*isLoggedIn, isRestaurants, isMyPage,*/
  *  @Body must hold restautrantId, price, orignalPrice, name 
  *  @Options img, desc
  *  @path `/restaurants/menu/add`
+ *  @method post
  */
 router.post('/menu/add', /*isLoggedIn, isRestaurants,*/ async (req,res)=>{
     const {restaurantId, price, originalPrice, name} = req.body
@@ -185,6 +186,7 @@ router.post('/menu/add', /*isLoggedIn, isRestaurants,*/ async (req,res)=>{
  * To get all the menus from restaurants
  * @params hold restaurantsId
  * @path `/restaurants/menu/list/:id(\\d+)`
+ * @method getMenu
  */
 router.get(`/menu/list/:id(\\d+)`, /*isLoggedIn,*/ async function(req,res){
     const { id } = req.params
@@ -204,6 +206,7 @@ router.get(`/menu/list/:id(\\d+)`, /*isLoggedIn,*/ async function(req,res){
  * To delete menu
  * @body hold restaurantId, menuId (which menu are you going to delete)
  * @path `/restaurants/menu/delete`
+ * @method post
  */
 router.post('/menu/delete', /*isLoggedIn, isRestaurants,*/ async function(req,res){
     const {restaurantId, menuId} = req.body
@@ -295,6 +298,20 @@ router.post('/menu/setqauntity', /*isLoggedIn, isRestaurants,*/ async function(r
     }catch(err){
         console.log(err)
         return res.status(400).json({message: "fail to update"})
+    }
+
+})
+
+router.get(`/order/current/:id(\\d+)`, /*isLoggedIn, isRestaurants,*/ async function(req,res){
+    const {id} = req.params;
+    try{
+        const [orders, _ ] = await db.execute(`SELECT * from orders LEFT JOIN menus ON orders.menu_id = menus.id WHERE menus.restaurant_id = ? AND orders.status = 0 ORDER BY created_at;`,[id]);
+        console.log(orders)
+
+        return res.status(200).json(orders)
+
+    }catch(err){
+        return res.status(400).json({err:err.meesage})
     }
 
 })
