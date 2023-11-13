@@ -171,7 +171,7 @@ router.post('/menu/add', /*isLoggedIn, isRestaurants,*/ async (req,res)=>{
         }
 
         // add menu
-        var [ result, _ ] = await db.execute(`INSERT INTO menus (fk_menus_restaurant,price,original_price,
+        var [ result, _ ] = await db.execute(`INSERT INTO menus (restaurant_id,price,original_price,
             name,description,img_path) VALUES(?,?,?,?,?,?);`,[restaurantId,price,originalPrice,name,desc,img])
         if(result && result.affectedRows !== 1){
             return res.status(400).json({meesage: 'fail to login'})
