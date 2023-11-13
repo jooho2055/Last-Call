@@ -67,7 +67,8 @@ export default function Edit({ initialData }) {
         </button>
 				)}
       {isOpen && (
-        <div>
+        
+        <div className='w-[250px] h-[350px] bg-gray-100 rounded-md flex flex-col justify-center items-center'>
           <form>
             {inputForMenu.map((input) => (
               <FormInput
@@ -79,7 +80,7 @@ export default function Edit({ initialData }) {
               ></FormInput>
             ))}
             <div className='flex justify-center'>
-              <button disabled={isMenuSubmitDisable}>Submit</button>
+              <button disabled={isMenuSubmitDisable}>Save</button>
             </div>
           </form>
         </div>

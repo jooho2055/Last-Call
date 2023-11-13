@@ -21,10 +21,14 @@ export default function RestaurantMenu({restarantmenuInfo}) {
     const handleDetele = async(e)=>{
         e.preventDefault();
         console.log('Delete button clicked');
+      try{ 
        createMenuMutation.mutate({
             restaurantId: fk_menus_restaurant,
             menuId: id,
         })
+      }catch (error) {
+        console.error('An error occurred:', error);
+      }
     }
     return (
       // lists of menu

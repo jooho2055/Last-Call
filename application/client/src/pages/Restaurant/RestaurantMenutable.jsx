@@ -108,8 +108,7 @@ export default function RestaurantMenutable() {
 				<p>Menu Manage</p>
 				<button
 					className='text-3xl mt-[0.85rem] mr-5'
-					onClick={formatShows} 
-				>
+					onClick={formatShows} >
 					<AiFillPlusSquare />
 				</button>
 				{isOpen && (
@@ -119,7 +118,7 @@ export default function RestaurantMenutable() {
 					></button>
 				)}
 				{isOpen && (
-					<div className='absolute right-50 w-72 h-96 bg-gray-100 flex flex-col justify-center items-center'>
+					<div className='absolute right-50 w-72 h-96 bg-gray-100 flex flex-col justify-center items-center rounded-xl'>
 						<form onSubmit={handleMenu}>
 							{inputForMenu.map((input) => (
 								<FormInput

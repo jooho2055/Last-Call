@@ -25,6 +25,9 @@ import axios from 'axios';
     const res = await axios.post(`http://13.52.182.209/restaurants/menu/delete`, {
         restaurantId,
         menuId,
+      },{
+          mode: 'no-cors',
+        
       });
     console.log('Delete Response:', res.data); 
     return res.data;
