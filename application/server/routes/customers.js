@@ -3,6 +3,31 @@ var router = express.Router();
 var db = require('../conf/database');
 const path = require("path");
 const {isLoggedIn, isCustomers, isMyPage} = require('../middleware/auth')
+const multer = require('multer')
+const fs = require('fs')
+
+const customerStorage = multer.diskStorage({
+  destination: function (req, file, cb) {
+      try{
+          fs.readdirSync('src');
+      }catch(err){
+          console.log(err)
+          fs.mkdirSync('src')
+      }
+      try{
+          fs.readdirSync('src/customers')
+      }catch(err){
+          console.log(err)
+          fs.mkdirSync('src/customers')
+      }
+    cb(null, 'src/customers/') // Ensure this directory exists
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
+  }
+});
+
+
 
 router.get(`/search`, async(req, res)=>{
     const {search} = req.query;
