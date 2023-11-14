@@ -1,55 +1,73 @@
-import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useSelector, useDispatch } from 'react-redux';
+import {SET_USER_DATA} from '../redux/userActions2';
 import ProfileInput from '../components/ProfileInput';
 import { inputsUserProfile } from '../utils/cusProfile';
-import { userData} from '../redux/userActions2';
+
+
+
 
 export default function CustomerProfile() {
-    const dispatch = useDispatch();
-    const username = user.username;
+    const [inputValues, setInputValues] = useState({
+        username: null,
+        fname: null,
+        lname: null,
+        email: null,
+        pwd: null,
+        cpwd: null,
+        phone: null,
+        bio: null,
+      });
+    
     const user = useSelector((state) => state.user);
-    const [userProfileData, setUserProfileData] = useState(user);
-    const [inputValues, setInputValues] = useState(userProfileData);
-    const [validity, setValidity] = useState({
-        idea: true,
-        fname: true,
-        lname: true,
-        email: true,
-        pwd: true,
-        cpwd: true,
-        phone: true,
-        bio: true,
-	});
-    const [formModified, setFormModified] = useState(false);
-    const [editMode, setEditMode] = useState(false);
+    const username = user.username;
+
+    const dispatch = useDispatch();
+
+    const [successMessage, setSuccessMessage] = useState('');
+    const [error, setError] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        if(user.username){
-        const backendURL = 'http://13.52.182.209/customers/getUserProfile/username';
-        axios
-            .get(`${backendURL}/customers/getUserProfile/username=${user.username}`)
-            .then(response => {
-                const data = response.data;
-                setUserProfileData(data);
-                setInputValues(data);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-        }   
-    }, [user.username]);
+        const userProfileUrl = `http://13.52.182.209/customers/getUserProfile/username=${username}`;
+      
+        axios.get(userProfileUrl)
+          .then((response) => {
+            const userData = response.data;
+            console.log('userData:', userData);
+            setInputValues((prevValues) => userData || prevValues);
+            setIsLoading(false);
+          })
+          .catch((error) => {
+            console.error('Error fetching user profile:', error);
+            setError(`An error occurred while fetching user profile: ${error.message}`);
+            setIsLoading(false);
+          });
+      }, [username]);
+      
+      
 
+
+    const [validity, setValidity] = useState({
+		username: true,
+		fname: true,
+		lname: true,
+		email: true,
+		pwd: true,
+		cpwd: true,
+		phone: true,
+        bio: true,
+	});
     const isSubmitDisabled =
         !Object.values(validity).every((isValid) => isValid) ||
-        !Object.values(inputValues).every((value) => value) ||
-        !formModified;
+        !Object.values(inputValues).every((value) => value);
 
     const validateInput = (name, value) => {
         let isValid = true;
 
         switch (name) {
-            case 'idea':
+            case 'username':
                 isValid = /^[A-Za-z0-9]{5,16}$/.test(value);
                 break;
             case 'fname':
@@ -95,50 +113,70 @@ export default function CustomerProfile() {
         const { name, value } = event.target;
         setInputValues({ ...inputValues, [name]: value });
         validateInput(name, value);
-        setFormModified(true);
     };
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        localStorage.setItem('userProfile', JSON.stringify(inputValues));
-        console.log(inputValues);
-        setFormModified(false);
+        const editProfileUrl = 'http://13.52.182.209/customers/edit';
+
+        axios.post(editProfileUrl, inputValues)
+         .then((response) => {
+            const userData = response.data;
+            dispatch({ type: SET_USER_DATA, payload: userData });
+            toggleEditMode();
+            setSuccessMessage('Profile updated successfully!');
+            setTimeout(() => {
+                setSuccessMessage('');
+              }, 5000);
+          })
+          .catch((error) => {
+            console.error('Error fetching user profile:', error);
+            setError('An error occurred while updating your profile. Please try again later.');
+            if (error.response) {
+                console.error('Response data:', error.response.data);
+                console.error('Response status:', error.response.status);
+                console.error('Response headers:', error.response.headers);
+              }
+          });
     };
+
+    const [editMode, setEditMode] = useState(false);
 
     const toggleEditMode = () => {
         setEditMode(!editMode);
-        setFormModified(false);
-    };
-
-    const saveButtonClass = formModified
-        ? 'bg-orange-400 hover-bg-orange-400 text-white font-bold py-2 px-4 rounded-full'
-        : 'bg-orange-200 text-white font-bold py-2 px-4 rounded-full';
+        };
 
   return (
     <div className='container mx-auto px-4 py-8'>
             <form onSubmit={handleSubmit} className='bg-slate-100 p-8 rounded-lg shadow-md max-w-md mx-auto'>
             <h1 className='text-xl mb-4 text-center font-semibold text-slate-950'>User Profile</h1>
-            {inputsUserProfile.map((input) => (
+            {isLoading ? (
+                <div className='text-center'>Loading user profile data...</div>
+                ) : (
+                <>
+            {!isLoading && inputValues !== null && inputsUserProfile.map((input) => (
                 <ProfileInput
                 key={input.id}
                 {...input}
-                value={inputValues[input.name]}
+                value={inputValues[input.name] || ''}
                 onChange={handleChange}
                 isValid={validity[input.name]}
                 disabled={!editMode}
                 />
                 ))}
                 <div className="mt-4 flex justify-center">
-                <button className={saveButtonClass} disabled={isSubmitDisabled}>
+                <button className="bg-orange-300 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded-full" disabled={isSubmitDisabled}>
                     Save
                 </button>
-                </div>
-                </form>
-            <div className="mt-4 flex justify-center">
-                <button className="text-black-500 underline  font-bold" onClick={toggleEditMode}>
+                <button type='button' className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-full" onClick={toggleEditMode}>
                     {editMode ? 'Cancel' : 'Edit'}
                 </button>
-            </div>
-        </div>
-    );
+                </div>
+                </>
+                )}
+                {successMessage && <div className='text-green-600 text-center'>{successMessage}</div>}
+             {error && <div className='text-red-600 text-center'>{error}</div>}      
+        </form>
+    </div>
+  );
 }
