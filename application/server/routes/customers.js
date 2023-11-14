@@ -22,10 +22,10 @@ router.get(`/search`, async(req, res)=>{
 });
 
 /**
- * To get curreent order menus list for customer
- * @params customerId
- * @path '/customers/order/current/:id(\\d+)'
- * @method get
+ To get curreent order menus list for customer
+ @params customerId
+ @path '/customers/order/current/:id(\\d+)'
+ @method GET
  */
 router.get(`/order/current/:id(\\d+)`, /*isLoggedIn, isCustomers, isMyPage,*/  async function(req, res){
     const {id} = req.params
@@ -46,7 +46,7 @@ router.get(`/order/current/:id(\\d+)`, /*isLoggedIn, isCustomers, isMyPage,*/  a
  * To get past order menus list for customer
  * @params customerId
  * @path customers//order/past/:id(\\d+)
- * @method get
+ * @method GET
  */
 router.get(`/order/past/:id(\\d+)`, /*isLoggedIn, isCustomers, isMyPage,*/ async function(req,res){
     const {id} = req.params
@@ -77,7 +77,7 @@ router.get(`/order/past/:id(\\d+)`, /*isLoggedIn, isCustomers, isMyPage,*/ async
  * To get list of cart
  * @params customerId
  * @path `/customers//order/cart/:id(\\d+)`
- * @method get
+ * @method GET
  */
 router.get(`/order/cart/:id(\\d+)`, /*isLoggedIn, isCustomers, isMyPage,*/ async function(req,res){
     const {id} = req.params
@@ -106,12 +106,12 @@ router.get(`/order/cart/:id(\\d+)`, /*isLoggedIn, isCustomers, isMyPage,*/ async
  * To checkout cart and create order
  * @body holds customerId
  * @path `/customers/order/cart/checkout`
- * @method post
+ * @method POST
  * order status: 0: current, 1: done, 2: declined
  */
 router.post(`/order/cart/checkout`, /*isLoggedIn, isCustomers,*/ async function(req, res){
     const {customerId} = req.body
-    // const customerId = 1;
+
     // if(req.session.user.userId !== customerId){
     //     return res.status(400).json({message: "wrong access!"})
     // }
@@ -137,9 +137,7 @@ router.post(`/order/cart/checkout`, /*isLoggedIn, isCustomers,*/ async function(
         }
         
         const [newInvoice] = await db.execute(`INSERT INTO invoices(customer_id, created_at, price) VALUES(?,NOW(),?);`,[customerId,price]);
-        console.log(newInvoice)
         const invoice_id = newInvoice.insertId;
-        console.log(invoice_id)
 
         const moveCart = carts.map(async (item,i)=>{
           console.log(item.menu_id,item.customerId,invoice_id,item.quantity)
@@ -148,14 +146,7 @@ router.post(`/order/cart/checkout`, /*isLoggedIn, isCustomers,*/ async function(
           console.log(deleteCart)
         })
         await Promise.all(moveCart)
-        // var [items, _ ] = await db.execute(`SELECT * FROM orders WHERE fk_orders_customer = ? AND status = 2;`, [customerId])
-        // if(items.length < 1){
-        //     return res.status(400).json({message: "cart is empty"})
-        // }
-        // items.map(async function(item){
-        //     var [result, _ ] = await db.execute(`UPDATE orders SET status=0 WHERE id = ?;`,[item.id])
-        //     console.log(result)
-        // })
+
         return res.status(200).json({message: "items are checked out"})
     }catch(err){
         console.log(err)
@@ -174,10 +165,11 @@ DEBUG_CART_ADD = {
  * To add menu in the cart
  * @body holds menuId, customerId, restaurantId, quantity
  * @path `/customers//order/cart/add`
- * @method post
+ * @method POST
  */
 router.post('/order/cart/add', /*isLoggedIn, isCustomers,*/ async function(req,res){
     const {customerId, menuId, restaurantId, quantity} = req.body
+    
     // const {customerId, menuId, restaurantId, quantity} = DEBUG_CART_ADD;
     // if(req.session.user.userId !== customerId){
     //     return res.status(400).json({message: "wrong access!"})
@@ -215,9 +207,9 @@ DEBUG_CART_DELETE_MENU = {
  * To delete one menu in the cart
  * @body holds menuId and customerId
  * @path `/customers/order/cart/delete/menu`
- * @method post
+ * @method DELETE
  */
-router.post(`/order/cart/delete/menu`, /*isLoggedIn, isCustomers,*/ async function(req,res){
+router.delete(`/order/cart/delete/menu`, /*isLoggedIn, isCustomers,*/ async function(req,res){
     const {menuId, customerId} = req.body
     // const {menuId, customerId} = DEBUG_CART_DELETE_MENU
     
@@ -252,9 +244,9 @@ DEBUG_CART_DELETE = {
  * To delete all the menu in the cart
  * @body holds customer detail
  * @path `/customers/order/cart/delete`
- * @method post
+ * @method DELETE
  */
-router.post('/order/cart/delete', /*isLoggedIn, isCustomers,*/ async function(req,res){
+router.delete('/order/cart/delete', /*isLoggedIn, isCustomers,*/ async function(req,res){
     const { customerId} = req.body
     // const {customerId} = DEBUG_CART_DELETE
 
@@ -277,6 +269,35 @@ router.post('/order/cart/delete', /*isLoggedIn, isCustomers,*/ async function(re
     }catch(err){
         console.log(err)
         return res.status(400).json({message:"fail to empty cart"})
+    }
+})
+
+
+
+const EDIT_CART = {
+  cartId:10,
+  quantity:10,
+}
+/**
+ * To edit item in carts
+ * @method PUT
+ * @body cartId, quantity
+ * @path /customers/order/cart/edit
+ */
+router.put(`/order/cart/edit`, /*isLoggedIn, isCustomers,*/ async function(req, res){
+    const {cartId, quantity } = req.body
+    // const {cartId, quantity } = EDIT_CART;
+    try{
+      const [ cart, _ ] = await db.execute(`SELECT * FROM carts WHERE id = ?;`, [cartId]);
+      if(cart.length < 1){
+          return res.status(400).json({message: "Item does not exist in the cart."})
+      }
+
+      const [result] = await db.execute(`UPDATE carts SET quantity = ? WHERE id = ?`,[quantity, cartId])
+
+      return res.status(200).json({message:"cart updated"})
+    }catch(err){
+      return res.status(400).json({message: err.message})
     }
 })
 

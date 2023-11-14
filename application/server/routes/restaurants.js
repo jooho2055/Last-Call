@@ -3,6 +3,7 @@ var router = express.Router();
 const path = require("path");
 var db = require('../conf/database');
 const {isLoggedIn, isRestaurants, isMyPage} = require('../middleware/auth')
+const {updateProfile, updateMenu} = require('../middleware/restaurantsManage')
 const bcrypt = require('bcrypt');
 
 // This is vars for debug
@@ -80,6 +81,7 @@ const TEST_SET_MENU_WRONG4 = {
  * To get restaurants info
  * @params hold restaurants id
  * @Path `/restaurants/info/:id
+ * @method GET
  */
 router.get(`/info/:id(\\d+)`,async(req,res) => {
     const {id} = req.params;
@@ -93,31 +95,132 @@ router.get(`/info/:id(\\d+)`,async(req,res) => {
             return res.status(400).json({message: "fail to bring your profile"})
         }
 })
+
+const PROFILE_UPDATE1 = {
+    id: 1,
+    username: "restaurant513",
+    password: "sample1!",
+    email: "rest1@sam.ple",
+    phone: "12312345678",
+    city: "San Francisco"
+}
+
+const PROFILE_UPDATE2 = {
+    id: 2,
+    username: "rest2"
+}
+
 /**
  * To update rest's profile
- * @Method PUT
- * @body 
+ * @method PUT
+ * @body mush hold id 
+ * @body optional: username, password, email, phone, restName, street, city, zipcode, state, cuisine
  * @Path /restaurants/profile/update
  */
-// router.put(`/profile/update`, async(req, res) =>{
-//     let {id, username, password, email, phone, restName, street, city, zipcode, state, cuisine} = req.body;
-
-//     try{
-//         const [rows, _ ] = await db.execute(`SELECT * FROM restaurants WHERE id = ?`,[id]);
-    
-//         const user = rows[0];
-    
-//         var hashedPasswrod = await bcrypt.hash(pwd,1);
+router.put(`/profile/update`, async(req, res) =>{
+    let {id, username, password, email, phone, restName, street, city, zipcode, state, cuisine} = req.body;
+    try{
         
-//         var [results, _ ] = await db.execute(`UPDATE restaurants SET username = ? AND password = ? AND email = ? AND phone = ? AND restName = ? `)
-//     }
-// })
+        const [rows, _ ] = await db.execute(`SELECT * FROM restaurants WHERE id = ?`,[id]);
+        console.log(rows)
+
+        const user = rows[0];
+        
+        if(username && username !== user.username){
+            // const [update] = await db.execute(`UPDATE restaurants SET username = ? WHERE id = ?;`,[username,id]);
+            // console.log(update);
+            const result = await updateProfile(id,'username', username)
+            console.log(result)
+            if(result.message){
+                return res.status(400).json({message: result.message})
+            }
+            console.log(result)
+        }
+        
+        if(password){
+            const hashedpassword = await bcrypt.hash(password,1);
+            const result = await updateProfile(id,'password', hashedpassword)
+
+            if(result.message){
+                return res.status(400).json({message: result.message})
+            }
+        }
+
+        if(email && email !== user.email){
+            const result = await updateProfile(id,'email', email)
+
+            if(result.message){
+                return res.status(400).json({message: result.message})
+            }
+        }
+
+        if(phone && phone !== user.phone){
+            const result = await updateProfile(id,'phone', phone)
+
+            if(result.message){
+                return res.status(400).json({message: result.message})
+            }
+        }
+
+        if(restName && restName !== user.name){
+            const result = await updateProfile(id,'name', restName)
+
+            if(result.message){
+                return res.status(400).json({message: result.message})
+            }
+        }
+
+        if(street && street !== user.address){
+            const result = await updateProfile(id,'address', street)
+
+            if(result.message){
+                return res.status(400).json({message: result.message})
+            }
+        }
+
+        if(city && city !== user.city){
+            const result = await updateProfile(id,'city', city)
+
+            if(result.message){
+                return res.status(400).json({message: result})
+            }
+        }
+
+        if(zipcode && zipcode !== user.zipcode){
+            const result = await updateProfile(id,'zipcode', zipcode)
+
+            if(result.message){
+                return res.status(400).json({message: result.message})
+            }
+        }
+
+        if(state && state !== user.state){
+            const result = await updateProfile(id,'state', state)
+
+            if(result.message){
+                return res.status(400).json({message: result.message})
+            }
+        }
+        
+        if(cuisine && cuisine !== user.cuisine){
+            const result = await updateProfile(id,'cuisine', cuisine)
+
+            if(result.message){
+                return res.status(400).json({message: result.message})
+            }
+        }
+        return res.status(200).json({message: "updated"})
+    }catch(err){
+        return res.status(400).json({err: err.message})
+    }
+})
 
 
 /**
  * To get restaurants profile
  * @params hold restaurants id
  * @Path `/restaurants/profile/:id(\\d+)`
+ * @method GET
  */
 router.get(`/profile/:id(\\d+)`, /*isLoggedIn, isRestaurants, isMyPage,*/
     async function(req,res){
@@ -140,7 +243,7 @@ router.get(`/profile/:id(\\d+)`, /*isLoggedIn, isRestaurants, isMyPage,*/
  *  @Body must hold restautrantId, price, orignalPrice, name 
  *  @Options img, desc
  *  @path `/restaurants/menu/add`
- *  @method post
+ *  @method POST
  */
 router.post('/menu/add', /*isLoggedIn, isRestaurants,*/ async (req,res)=>{
     const {restaurantId, price, originalPrice, name} = req.body
@@ -186,7 +289,7 @@ router.post('/menu/add', /*isLoggedIn, isRestaurants,*/ async (req,res)=>{
  * To get all the menus from restaurants
  * @params hold restaurantsId
  * @path `/restaurants/menu/list/:id(\\d+)`
- * @method getMenu
+ * @method GET
  */
 router.get(`/menu/list/:id(\\d+)`, /*isLoggedIn,*/ async function(req,res){
     const { id } = req.params
@@ -204,11 +307,11 @@ router.get(`/menu/list/:id(\\d+)`, /*isLoggedIn,*/ async function(req,res){
 
 /**
  * To delete menu
- * @body hold restaurantId, menuId (which menu are you going to delete)
+ * @body hold restaurantId, menuId (menu are you going to delete)
  * @path `/restaurants/menu/delete`
- * @method post
+ * @method DELETE
  */
-router.post('/menu/delete', /*isLoggedIn, isRestaurants,*/ async function(req,res){
+router.delete('/menu/delete', /*isLoggedIn, isRestaurants,*/ async function(req,res){
     const {restaurantId, menuId} = req.body
     
     // FOR DEBUG
@@ -249,8 +352,75 @@ router.post('/menu/delete', /*isLoggedIn, isRestaurants,*/ async function(req,re
 })
 
 /**
+ * To edit menu
+ * @method PUT
+ * @body must contain menuId
+ * @body optional: name, desc, img, quantity, price, originalPrice
+ * @path /restaurants/menu/edit
+ */
+router.put(`/menu/edit`, /*isLoggedIn, isRestaurants,*/ async function(req,res){
+    const {menuId} = req.body;
+
+    const {name, desc, img, quantity, price, originalPrice} = req.body
+
+    try{
+        const [menus] = await db.execute(`SELECT * FROM menus WHERE id = ?;`,[menuId]);
+
+        if(menu.length < 1){
+            return res.status(400).json({message: "menu does not exist"})
+        }
+
+        const menu = menus[0]
+
+        if(name && name !== menu.name){
+            const result = await updateMenu(id,'name', name)
+
+            if(result.message){
+                return res.status(400).json({message: result.message})
+            }
+        }
+
+        if(desc && desc !== menu.desc){
+            const result = await updateProfile(id,'description', desc)
+
+            if(result.message){
+                return res.status(400).json({message: result.message})
+            }
+        }
+
+        if(quantity && quantity !== menu.quantity){
+            const result = await updateProfile(id,'quantity', quantity)
+
+            if(result.message){
+                return res.status(400).json({message: result.message})
+            }
+        }
+
+        if(price && price !== menu.price){
+            const result = await updateProfile(id,'price', price)
+
+            if(result.message){
+                return res.status(400).json({message: result.message})
+            }
+        }
+
+        if(originalPrice && originalPrice !== menu.originalPrice){
+            const result = await updateProfile(id,'originalPrice', originalPrice)
+
+            if(result.message){
+                return res.status(400).json({message: result.message})
+            }
+        }
+
+        return res.status(200).json({message: "menu updated"})
+    }catch(err){
+        return res.status(400).json({message: err.meesage})
+    }
+} )
+
+/**
  * To set up quantity for menu
- * @method: post
+ * @method POST
  * @body must holds restaurantId, menuId, quantity(to update)
  * @path `/restaurants/menu/setqauntity`
  */
@@ -302,6 +472,12 @@ router.post('/menu/setqauntity', /*isLoggedIn, isRestaurants,*/ async function(r
 
 })
 
+/**
+ * To get current order for restaurants
+ * @method GET
+ * @params id (restaurant id)
+ * @path /restaurants/order/current/:id(\\d+)
+ */
 router.get(`/order/current/:id(\\d+)`, /*isLoggedIn, isRestaurants,*/ async function(req,res){
     const {id} = req.params;
     try{

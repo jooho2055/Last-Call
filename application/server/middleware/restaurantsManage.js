@@ -1,4 +1,5 @@
 // All helper function for restaurants management
+const db = require('../conf/database');
 
 module.exports = {
     isYourRest: function(req,res,next){
@@ -51,4 +52,22 @@ module.exports = {
             return res.status(400).json({message: "fail"})
         }
     },
+    updateProfile: async function(id, attr, value){
+        try{
+            const [result, _ ] = await db.execute(`UPDATE restaurants SET ${attr} = ?, updated_at = NOW() Where id = ?`, [value, id]);
+            console.log(_)
+            return result;
+        }catch(err){
+            return err;
+        }
+    },
+
+    updateMenu: async function(id, attr, value){
+        try{
+            const [result, _ ] = await db.execute(`UPDATE menus SET ${attr} = ? WHERE id = ?`, [value, id]);
+            return result
+        }catch(err){
+            return err;
+        }
+    }
 }
