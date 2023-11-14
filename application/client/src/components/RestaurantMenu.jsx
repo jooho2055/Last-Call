@@ -13,7 +13,7 @@ export default function RestaurantMenu({ restarantmenuInfo }) {
 		setIsModalOpen(true);
 	};
 
-	const closeModal = () => {
+	const closeModal = (e) => {
 		setIsModalOpen(false);
 	};
 
