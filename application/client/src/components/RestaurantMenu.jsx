@@ -9,7 +9,7 @@ export default function RestaurantMenu({ restarantmenuInfo }) {
 		<li className=' flex justify-between rounded-xl shadow-md m-auto'>
 			<div className=' w-full flex'>
 				<img
-					src={sampleFood}
+					src='http://13.52.182.209/menusimg/samplefood.png'
 					className='max-w-[16rem] rounded-s-xl pr-2'
 					alt='sample img'
 				/>
