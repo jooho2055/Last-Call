@@ -90,9 +90,9 @@ export default function RestaurantMenutable() {
 		e.preventDefault();
 		try {
 		  createMenuMutation.mutate({
-			    restautrantId: id,
+			    restaurantId: id,
 				price: parseFloat(menuInput.aprice),
-				orignalPrice: parseFloat(menuInput.oprice),
+				originalPrice: parseFloat(menuInput.oprice),
 				name: menuInput.fname,
 				desc: menuInput.description,
 			});

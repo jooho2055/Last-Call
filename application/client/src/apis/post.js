@@ -4,13 +4,13 @@ import axios from 'axios';
  * It will post new menu data
  * @returns An array that holds multiple objects
  */
- export async function createNewMenu({ name, orignalPrice, price, restautrantId }) {
+ export async function createNewMenu({ name, originalPrice, price, restaurantId }) {
     try {
       const response = await axios.post(`http://13.52.182.209/restaurants/menu/add`, {
         name,
-        orignalPrice, 
+        originalPrice, 
         price, 
-        restautrantId,
+        restaurantId,
       });
       return response.data;
     } catch (error) {
