@@ -2,10 +2,10 @@
 
 ## RESTAURANTS: 
 
-1. Path: */restaurants/info/:id*.
-    -To get restaurants info.
-    -@params hold restaurants id.
-    -@method GET.
+1. Path: */restaurants/info/:id*
+    -To get restaurants info
+    -@params hold restaurants id
+    -@method GET
  
 
 
