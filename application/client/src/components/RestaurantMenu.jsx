@@ -1,9 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import sampleFood from '../images/samplefood.png';
 import { BsCartPlus } from 'react-icons/bs';
+import CustomerButton from './CustomerButton';
+import AddQuantityModal from './AddQuantityModal';
 
 export default function RestaurantMenu({ restarantmenuInfo }) {
 	const { name, description, img_path, quantity, original_price, price } = restarantmenuInfo;
+
+	const [isModalOpen, setIsModalOpen] = useState(false);
+
+	const openModal = () => {
+		setIsModalOpen(true);
+	};
+
+	const closeModal = () => {
+		setIsModalOpen(false);
+	};
+
 	return (
 		// lists of menu
 		<li className=' flex justify-between rounded-xl shadow-md m-auto'>
@@ -40,9 +53,14 @@ export default function RestaurantMenu({ restarantmenuInfo }) {
 			</div>
 
 			<div className='pl-3'>
-				<button>
+				<button onClick={openModal}>
 					<BsCartPlus className='text-3xl mt-[3.75rem] mr-2' />
 				</button>
+				<AddQuantityModal
+					isOpen={isModalOpen}
+					onClose={closeModal}
+					restarantmenuInfo={restarantmenuInfo}
+				/>
 			</div>
 		</li>
 	);

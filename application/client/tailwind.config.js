@@ -7,7 +7,7 @@ module.exports = {
 				landingpagebg: "url('./images/landingpage.jpg')",
 			},
 			backgroundColor: {
-				'custom-gray': '#c8ccd5',
+				primary: '#DE6913',
 			},
 		},
 		screens: {

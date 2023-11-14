@@ -23,7 +23,7 @@ export default function Root() {
 						<Link
 							to='/cart'
 							style={{ boxShadow: '3px 3px 0px 0px #262626' }}
-							className='fixed w-[4.5rem] h-[4.5rem] right-20 bottom-20 text-5xl bg-[#DE6913] rounded-full'
+							className='fixed w-[4.5rem] h-[4.5rem] right-14 bottom-20 text-5xl bg-primary rounded-full lg:w-12 lg:h-12 lg:text-2xl'
 						>
 							<BsCartCheck className='text-gray-50 mt-3 ml-3 ' />
 						</Link>
