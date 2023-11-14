@@ -2,9 +2,13 @@ import React, { useState, useEffect } from 'react';
 import FormInput from '../FormInput';
 import { inputForMenu } from '../../utils/resProfile';
 import { AiTwotoneEdit } from 'react-icons/ai';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { EditMenu } from '../../apis/post';
+
 
 export default function Edit({ initialData }) {
   const [isOpen, setIsOpen] = useState(false);
+  const queryClient = useQueryClient();
   const [editFormData, setEditFormData] = useState({
     fname: initialData.name,
     oprice: initialData.original_price,
@@ -16,6 +20,16 @@ export default function Edit({ initialData }) {
     oprice: true,
     aprice: true,
     description: true,
+  });
+  const createMenuMutation = useMutation({
+    mutationFn: EditMenu,
+    onSuccess: data => {
+      queryClient.setQueryData(["posts", data.id], data);
+      queryClient.invalidateQueries(["posts"], { exact: true });
+    },
+    onError: error => {
+      console.error('Mutation Error:', error);
+    },
   });
 
   const isMenuSubmitDisable =
@@ -57,6 +71,21 @@ export default function Edit({ initialData }) {
     setIsOpen(!isOpen);
 };
 
+const handleMenu = async (e) => {
+  e.preventDefault();
+  try {
+    createMenuMutation.mutate({
+      menuId: initialData.id,
+      price: parseFloat(editFormData.aprice),
+      originalPrice: parseFloat(editFormData.oprice),
+      name: editFormData.fname,
+      desc: editFormData.description,
+    });
+  } catch (error) {
+    console.error('An error occurred:', error);
+  }
+  };
+
   return (
     <div>
       {!isOpen &&(
@@ -67,13 +96,13 @@ export default function Edit({ initialData }) {
 {isOpen && (
   <button
     onClick={formatShows}
-    className={`fixed top-0 right-0 bottom-0 left-0 w-full h-full bg-black opacity-0 cursor-default`}
+    className={`fixed top-0 right-0 bottom-0 left-0 w-full h-full bg-black opacity-0 cursor-default transparent-overlay`}
   ></button>
 )}
 
 {isOpen && (
-  <div className='w-[250px] h-[350px] bg-gray-100 rounded-md flex flex-col justify-center items-center'>
-    <form>
+  <div className='relative w-[250px] h-[350px] rounded-md border-2 border-orange-500 flex flex-col justify-center items-center'>
+    <form onSubmit={handleMenu}>
       {inputForMenu.map((input) => (
         <FormInput
           key={input.id}
@@ -84,7 +113,7 @@ export default function Edit({ initialData }) {
         ></FormInput>
       ))}
       <div className='flex justify-center'>
-        <button disabled={isMenuSubmitDisable}>Save</button>
+        <button disabled={isMenuSubmitDisable} className={`bg-orange-600 text-white px-4 py-2 rounded ${isMenuSubmitDisable ? 'opacity-50 cursor-not-allowed' : ''}`}>Save</button>
       </div>
     </form>
   </div>
