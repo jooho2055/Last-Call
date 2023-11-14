@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import sampleFood from '../images/samplefood.png';
 import { BsCartPlus } from 'react-icons/bs';
 import CustomerButton from './CustomerButton';
-import AddQuantityModal from './AddQuantityModal';
+import AddToCartModal from './AddToCartModal';
 
 export default function RestaurantMenu({ restarantmenuInfo }) {
 	const { name, description, img_path, quantity, original_price, price } = restarantmenuInfo;
@@ -22,7 +21,7 @@ export default function RestaurantMenu({ restarantmenuInfo }) {
 		<li className=' flex justify-between rounded-xl shadow-md m-auto'>
 			<div className=' w-full flex'>
 				<img
-					src={sampleFood}
+					src={`http://13.52.182.209${img_path}`}
 					className='max-w-[16rem] rounded-s-xl pr-2'
 					alt='sample img'
 				/>
@@ -56,7 +55,7 @@ export default function RestaurantMenu({ restarantmenuInfo }) {
 				<button onClick={openModal}>
 					<BsCartPlus className='text-3xl mt-[3.75rem] mr-2' />
 				</button>
-				<AddQuantityModal
+				<AddToCartModal
 					isOpen={isModalOpen}
 					onClose={closeModal}
 					restarantmenuInfo={restarantmenuInfo}

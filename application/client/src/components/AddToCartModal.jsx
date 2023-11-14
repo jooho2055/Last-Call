@@ -1,9 +1,27 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import CustomerButton from './CustomerButton';
 
-export default function AddQuantityModal({ isOpen, onClose, restarantmenuInfo }) {
+export default function AddToCartModal({ isOpen, onClose, restarantmenuInfo }) {
 	const { name, quantity, original_price, price } = restarantmenuInfo;
 
 	const [quantityUserSelect, setQuantityUserSelect] = useState(1);
+	const modalRef = useRef();
+
+	useEffect(() => {
+		const handleClickOutside = (event) => {
+			if (modalRef.current && !modalRef.current.contains(event.target)) {
+				onClose();
+			}
+		};
+
+		// Add when the modal is open and remove when the modal is closed
+		if (isOpen) {
+			document.addEventListener('mousedown', handleClickOutside);
+		}
+		return () => {
+			document.removeEventListener('mousedown', handleClickOutside);
+		};
+	}, [isOpen, onClose]);
 
 	const handleDecrement = () => {
 		if (1 < quantityUserSelect) {
@@ -39,22 +57,25 @@ export default function AddQuantityModal({ isOpen, onClose, restarantmenuInfo })
 			<div className='fixed inset-0 bg-gray-600 bg-opacity-60'></div>
 
 			{/* Modal */}
-			<div className='flex flex-col justify-between fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-stone-100 w-96 h-96 rounded-3xl shadow-2xl sx:h-60 sx:overflow-y-auto'>
+			<div
+				className='flex flex-col justify-between fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-stone-100 w-96 h-96 rounded-3xl shadow-2xl sx:h-60 sx:overflow-y-auto'
+				ref={modalRef}
+			>
 				<div className='flex flex-col'>
 					<div className='text-2xl font-medium mt-5 pl-5'>{name}</div>
 					<div className='mt-3 pl-5'>
 						<div>
 							<span>Original Price: </span>
-							<span className='line-through'>$ {original_price}</span>
+							<span className='line-through ml-[1.90rem]'>$ {original_price}</span>
 						</div>
 						<div>
 							<span>Discounted Price: </span>
-							<span className='text-orange-700'>
+							<span className='text-orange-700 ml-2'>
 								<strong>$ {price}</strong>
 							</span>
 						</div>
 					</div>
-					<div className='text-orange-700 font-medium mt-5 text-xl text-center'>
+					<div className='text-orange-700 font-medium mt-5 text-2xl text-center'>
 						<strong>{discountPercent}</strong> % OFF DEALS
 					</div>
 					<div className='mt-5 pl-5'>
@@ -78,12 +99,12 @@ export default function AddQuantityModal({ isOpen, onClose, restarantmenuInfo })
 					</div>
 				</div>
 
-				<button
+				<CustomerButton
 					className='bg-primary rounded-3xl mb-4 mx-4 font-medium p-3 text-lg text-gray-50'
 					onClick={onClose}
 				>
 					ADD TO CART
-				</button>
+				</CustomerButton>
 			</div>
 		</div>
 	);

@@ -19,15 +19,17 @@ export async function createNewMenu({ name, originalPrice, price, restaurantId }
 	}
 }
 
-// export const addToCart = async () => {
-// 	try {
-// 		console.log('fetching');
-// 		const response = await axios.get(
-// 			`http://13.52.182.209/restaurants/menu/list/${restaurantId}`
-// 		);
-// 		return response.data;
-// 	} catch (error) {
-// 		console.error('Error fetching restaurants:', error);
-// 		throw error;
-// 	}
-// };
+export const addToCart = async ({ menuId, customerId, restaurantId, quantity }) => {
+	try {
+		const response = await axios.post(`http://13.52.182.209/customers/order/cart/add`, {
+			menuId,
+			customerId,
+			restaurantId,
+			quantity,
+		});
+		return response.data;
+	} catch (error) {
+		console.error('Error creating new menu:', error);
+		throw error;
+	}
+};
