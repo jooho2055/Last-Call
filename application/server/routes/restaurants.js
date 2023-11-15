@@ -4,6 +4,7 @@ const path = require("path");
 var db = require('../conf/database');
 const {isLoggedIn, isRestaurants, isMyPage} = require('../middleware/auth')
 const bcrypt = require('bcrypt');
+const { route } = require('./customers');
 
 // This is vars for debug
 const TESTMENU_CORRECT = {
@@ -298,6 +299,170 @@ router.post('/menu/setqauntity', /*isLoggedIn, isRestaurants,*/ async function(r
     }
 
 })
+
+
+
+
+
+
+
+
+
+//Being able to locate the item in the menu
+//********************************************** // **********************************************//
+
+const getMenuItem = async (id) => {
+    try {
+        const query = `SELECT * FROM menus WHERE id = ?;`;
+        const [results] = await db.execute(query, [id]);
+        return results.length > 0 ? results[0] : null;
+    } catch (error) {
+        console.error('Error fetching menu item:', error);
+        return null;
+    }
+};
+
+
+router.get('/menu/:id', async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const menuItem = await getMenuItem(id);
+        if (menuItem) {
+            res.status(200).json(menuItem);
+        } else {
+            res.status(404).json({ message: 'Menu item not found' });
+        }
+    } catch (error) {
+        console.error('Error in getting menu item:', error);
+        res.status(500).json({ error: 'An internal server error occurred' });
+    }
+});
+
+
+//********************************************** // **********************************************//
+//being able to update menu points by item id and assign wanted numbers
+
+const updateMenuPoints = async (id, newPoints) => {
+    const updateQuery = `UPDATE menus SET points = ? WHERE id = ?;`;
+    try {
+        const [result] = await db.execute(updateQuery, [newPoints, id]);
+        console.log('Menu item points updated:', result);
+        return result;
+    } catch (error) {
+        console.error('Error updating menu item points:', error);
+        throw error;
+    }
+};
+
+
+router.put('/updateMenuPoints', async (req, res) => {
+    const { id, newPoints } = req.body;
+
+    try {
+        const result = await updateMenuPoints(id, newPoints);
+        if (result && result.affectedRows > 0) {
+            res.status(200).json({ message: 'Menu item points updated successfully', result });
+        } else {
+            res.status(404).json({ message: 'Menu item not found or points are the same' });
+        }
+    } catch (error) {
+        res.status(500).json({ error: 'An error occurred', details: error.message });
+    }
+});
+
+// updateMenuPoints(1,11)
+
+
+
+
+
+// **********************************************//
+//being able to update menu points by item id and assign wanted numbers by percentage of the original price
+
+const MenuPointsToPricePercentage = async (menuId) => {
+    try {
+        const getPriceQuery = `SELECT price FROM menus WHERE id = ?;`;
+        const [priceResult] = await db.execute(getPriceQuery, [menuId]);
+
+        if (priceResult.length === 0) {
+            console.error('Menu item not found');
+            return null;
+        }
+
+        const itemPrice = priceResult[0].price;
+        const newPoints = Math.round(itemPrice * 0.10); 
+        const updateQuery = `UPDATE menus SET points = ? WHERE id = ?;`;
+        const [updateResult] = await db.execute(updateQuery, [newPoints, menuId]);
+
+        console.log('Menu item points updated to 5% of price:', updateResult);
+        return updateResult;
+    } catch (error) {
+        console.error('Error updating menu item points:', error);
+        throw error;
+    }
+};
+
+
+const percentageUpdateMenuPoints = async (id) => {
+    console.log(`Updating points for menu item ID: ${id}`);
+    await MenuPointsToPricePercentage(id);
+
+    const updatedItem = await getMenuItem(id);
+    if (updatedItem) {
+        console.log(`Updated menu item:`, updatedItem);
+    } else {
+        console.log(`Menu item with ID ${id} not found.`);
+    }
+};
+
+router.patch('/percentagePoints/:id', async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const updatedItem = await percentageUpdateMenuPoints(id);
+        if (updatedItem) {
+            res.status(200).json({ message: 'Menu item updated successfully', updatedItem });
+        } else {
+            res.status(404).json({ message: 'Menu item not found' });
+        }
+    } catch (error) {
+        console.error('Error in updating menu points:', error);
+        res.status(500).json({ error: 'An internal server error occurred' });
+    }
+});
+
+// const menuIdToTest = 3; // Example menuId
+// percentageUpdateMenuPoints(menuIdToTest);
+
+// **********************************************// // **********************************************//
+//Any item will be assigned any ## points in the database
+
+async function updateAllMenuPoints(points) {
+    try {
+        const updateQuery = `UPDATE menus SET points = ?;`;
+        const [updateResult] = await db.execute(updateQuery, [points]);
+        return updateResult;
+    } catch (error) {
+        console.error('Error updating menu item points:', error);
+        throw error;
+    }
+}
+
+router.patch('/menu/updateAllPoints', async (req, res) => {
+    try {
+        const result = await updateAllMenuPoints(10);
+        res.status(200).json({ message: 'All menu items points updated successfully', result });
+    } catch (error) {
+        console.error('Error in PATCH /menu/updateAllPoints:', error);
+        res.status(500).json({ error: 'An internal server error occurred' });
+    }
+});
+
+//updateAllMenuPoints(10);
+
+
+
 
 
 module.exports = router;

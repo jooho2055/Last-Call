@@ -3,6 +3,7 @@ var router = express.Router();
 var db = require('../conf/database');
 const path = require("path");
 const {isLoggedIn, isCustomers, isMyPage} = require('../middleware/auth')
+const request = require('supertest');
 
 router.get(`/search`, async(req, res)=>{
     const query = `SELECT * FROM restaurants `;
@@ -340,7 +341,6 @@ async function updateCustomerEmail(customerId, newEmail) {
   }
 }
 
-// updateCustomerEmail(1, "leslie@example.com")
 
 async function updateCustomerName(customerId, newName) {
   try {
@@ -360,8 +360,6 @@ async function updateCustomerName(customerId, newName) {
     throw error; 
   }
 }
-// updateCustomerName(1, "Lais")
-
 
 
 async function updateCustomerLastName(customerId, newLastName) {
@@ -382,7 +380,6 @@ async function updateCustomerLastName(customerId, newLastName) {
   }
 }
 
-// updateCustomerLastName(1, "a")
 
 async function updateCustomerPhoneNumber(customerId, phoneNumber) {
   try {
@@ -423,59 +420,69 @@ async function updateCustomerProfileTimestamp(customerId) {
 }
 
 
-router.post('/edit', async (req, res) => {
+router.put('/profile/edit', async (req, res) => {
   const { username, email, bio, name, lastName, phoneNumber } = req.body;
 
   try {
-    const customerId = await getCustomerIdByUsername(username);
+      const customerId = await getCustomerIdByUsername(username);
 
-    if (customerId === null) {
-      res.status(400).json({ error: 'Customer not found' });
-      return;
-    }
+      if (customerId === null) {
+          res.status(400).json({ error: 'Customer not found' });
+          return;
+      }
 
-    // Fetch the user's profile data
-    const userProfile = await getUserProfile(customerId);
+      // Fetch the user's profile data
+      const userProfile = await getUserProfile(customerId);
 
-    // Create an object to store the update data
-    const updateData = {};
+      // Create an object to store the update data
+      let updateFields = {};
+      let updateValues = [];
 
-    // Compare incoming data 
-    if (email && email !== userProfile.email) {
-      const emailUpdateResult = await updateCustomerEmail(customerId, email);
-      updateData.email = emailUpdateResult;
-    }
+      // Compare incoming data and prepare for update
+      if (email && email !== userProfile.email) {
+          updateFields['email'] = email;
+      }
 
-    if (bio && bio !== userProfile.bio) {
-      const bioUpdateResult = await updateCustomerBio(customerId, bio);
-      updateData.bio = bioUpdateResult;
-    }
+      if (bio && bio !== userProfile.bio) {
+          updateFields['bio'] = bio;
+      }
 
-    if (name && name !== userProfile.name) {
-      const nameUpdateResult = await updateCustomerName(customerId, name);
-      updateData.name = nameUpdateResult;
-    }
+      if (name && name !== userProfile.name) {
+          updateFields['name'] = name;
+      }
 
-    if (lastName && lastName !== userProfile.lastName) {
-      const lastNameUpdateResult = await updateCustomerLastName(customerId, lastName);
-      updateData.lastName = lastNameUpdateResult;
-    }
+      if (lastName && lastName !== userProfile.lastName) {
+          updateFields['lastName'] = lastName;
+      }
 
-    if (phoneNumber && phoneNumber !== userProfile.phoneNumber) {
-      const phoneNumberUpdateResult = await updateCustomerPhoneNumber(customerId, phoneNumber);
-      updateData.phoneNumber = phoneNumberUpdateResult;
-    }
+      if (phoneNumber && phoneNumber !== userProfile.phoneNumber) {
+          updateFields['phoneNumber'] = phoneNumber;
+      }
 
-    // Update the updated_at timestamp in the user's profile
-    const updateProfileResult = await updateCustomerProfileTimestamp(customerId);
+      // Construct the update query
+      let updateQuery = 'UPDATE customers SET ';
+      for (const [key, value] of Object.entries(updateFields)) {
+          updateQuery += `${key} = ?, `;
+          updateValues.push(value);
+      }
 
-    // Merge the user profile data with the update results
-    const updatedUserProfile = { ...userProfile, ...updateData, ...updateProfileResult };
+      // Remove the trailing comma and space
+      updateQuery = updateQuery.slice(0, -2);
+      updateQuery += ` WHERE id = ?;`;
+      updateValues.push(customerId);
 
-    res.status(200).json(updatedUserProfile);
+      // Check if there are fields to update
+      if (updateValues.length > 1) {
+          await db.execute(updateQuery, updateValues);
+      }
+
+      // Fetch updated profile
+      const updatedUserProfile = await getUserProfile(customerId);
+
+      res.status(200).json(updatedUserProfile);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'An error occurred' });
+      console.error(error);
+      res.status(500).json({ error: 'An error occurred' });
   }
 });
 

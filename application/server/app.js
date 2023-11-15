@@ -3,6 +3,7 @@ require('dotenv').config();
 const express = require("express");
 const path = require("path");
 const app = express();
+const defaultPort = 3001;
 
 const cookieParser = require('cookie-parser');
 const logger = require("morgan");
@@ -31,8 +32,8 @@ const customersRouter = require('./routes/customers');
 const restaurantsRouter = require('./routes/restaurants');
 
 
-app.set("port", process.env.PORT || port);
-
+//  app.set("port", process.env.PORT || port);
+app.set("port", process.env.PORT || defaultPort);
 const sessionStore = new mysqlStore({ }, require('./conf/database'))
 
 app.use(logger("dev"));
@@ -100,6 +101,10 @@ app.use(function(err, req, res, next){
   res.render("error");
 });
 
-app.listen(app.get("port"), () => {
-    console.log(app.get("port"), `app listening at ${ process.env.PORT }`);
+// app.listen(app.get("port"), () => {
+//     console.log(app.get("port"), `app listening at ${ process.env.PORT }`);
+// });
+
+ app.listen(app.get("port"), () => {
+  console.log(`App listening on http://localhost:${app.get("port")}`);
 });
