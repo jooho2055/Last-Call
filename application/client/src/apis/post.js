@@ -19,20 +19,20 @@ import axios from 'axios';
     }
   }
 
-  export async function Delete({restaurantId, menuId}){
-    console.log("deteling");
-    try {
+
+export async function Delete({ restaurantId, menuId }) {
+  console.log('deleting');
+  try {
     const res = await axios.delete(`http://13.52.182.209/restaurants/menu/delete`, {
-        restaurantId,
-        menuId,
-      });
-    console.log('Delete Response:', res.data); 
+      params: { restaurantId, menuId }, 
+    });
+    console.log('Delete Response:', res.data);
     return res.data;
   } catch (error) {
     console.error('Error deleting menu:', error);
     throw error;
   }
-  }
+}
 
   export async function EditMenu ({menuId, name, desc, img, quantity, price, originalPrice}){
     console.log("Editing");
@@ -40,7 +40,7 @@ import axios from 'axios';
       const res = await axios.put(`http://13.52.182.209/menu/edit`,{
         menuId,
         name,
-        desc,
+        desc: 'This is Pizza',
         img,
         quantity,
         price,

@@ -6,7 +6,7 @@ import DeleteButton from './Button/Delete';
 import Edit from './Button/EditRestaurantMenu';
 
 export default function RestaurantMenuSetting({restarantmenuInfo}) {
-    const {name, original_price, price, quantity, id, fk_menus_restaurant} = restarantmenuInfo;
+    const {name, original_price, price, quantity, id, restaurant_id} = restarantmenuInfo;
     const queryClient = useQueryClient();
     const createMenuMutation = useMutation({
         mutationFn: Delete,
@@ -23,7 +23,7 @@ export default function RestaurantMenuSetting({restarantmenuInfo}) {
         console.log('Delete button clicked');
       try{ 
        createMenuMutation.mutate({
-            restaurantId: fk_menus_restaurant,
+            restaurantId: restaurant_id,
             menuId: id,
         })
       }catch (error) {
