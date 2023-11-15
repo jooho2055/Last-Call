@@ -107,12 +107,26 @@ router.get(`/order/past/:id(\\d+)`, /*isLoggedIn, isCustomers, isMyPage,*/ async
 router.get(`/order/cart/:id(\\d+)`, /*isLoggedIn, isCustomers, isMyPage,*/ async function(req,res){
     const {id} = req.params
     try{
-        var [results, _ ] = await db.execute(`SELECT * FROM carts WHERE customer_id = ?;`, [id])
+        let [results, _ ] = await db.execute(`SELECT * FROM carts WHERE customer_id = ?;`, [id])
         if(results.length < 1){
             return res.status(400).json({message: "cart is empty"})
         }
-        console.log(results)
-        return res.status(200).json(results)
+        let menus = []
+
+        const checkCart = results.map(async (item)=>{ 
+            let [menu, fields] = await db.execute(`SELECT id, description, img_path, name, price, original_price, quantity as leftover FROM menus WHERE id = ?;`,[item.menu_id])
+            if(menu.length> 0){
+              menu[0].quantity = item.quantity;
+              menu[0].cartId = item.id;
+              menus.push(menu)
+              // console.log(menu)
+            }
+          })
+          await Promise.all(checkCart);
+          
+          console.log("menus: ", menus)
+
+        return res.status(200).json({orders: menus})
     }catch(err){
         console.log(err)
         return res.status(400).json({message: "fail to get cart"})
