@@ -32,6 +32,8 @@ export default function Edit({ initialData }) {
     },
   });
 
+
+
   const isMenuSubmitDisable =
     !Object.values(menuvalidity).every((isValid) => isValid) ||
     !Object.values(editFormData).every((value) => value);
@@ -70,21 +72,22 @@ export default function Edit({ initialData }) {
   const formatShows = () =>{
     setIsOpen(!isOpen);
 };
-
+const mydata = {menuId: editFormData.id, name: editFormData.fname, desc: editFormData.description, originalPrice: editFormData.oprice }
 const handleMenu = async (e) => {
   e.preventDefault();
-  try {
-    createMenuMutation.mutate({
-      menuId: initialData.id,
-      price: parseFloat(editFormData.aprice),
-      originalPrice: parseFloat(editFormData.oprice),
-      name: editFormData.fname,
-      desc: editFormData.description,
-    });
-  } catch (error) {
-    console.error('An error occurred:', error);
-  }
-  };
+ try{
+  const response = await fetch('http://13.52.182.209/restaurants/menu/edit',
+  {method:'PUT',
+  headers: { 
+    'Content-Type': 'application/json'
+   },
+   body: JSON.stringify(mydata),  
+  })
+ }
+ catch (error) {
+  console.error("Error:", error);
+}
+}
 
   return (
     <div>

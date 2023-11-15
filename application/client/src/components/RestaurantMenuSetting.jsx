@@ -18,18 +18,21 @@ export default function RestaurantMenuSetting({restarantmenuInfo}) {
           console.error('Mutation Error:', error);
         },
       });
-    const handleDetele = async(e)=>{
+
+const myData = {restaurantId: 1, menuId: id};  
+const handleDetele = async(e)=>{
         e.preventDefault();
         console.log('Delete button clicked');
-      try{ 
-       createMenuMutation.mutate({
-            restaurantId: restaurant_id,
-            menuId: id,
-        })
-      }catch (error) {
-        console.error('An error occurred:', error);
-      }
-    }
+     fetch('http://13.52.182.209/restaurants/menu/delete', 
+     {method: 'DELETE',
+     headers: { 
+      'Content-Type': 'application/json'
+     },
+     body: JSON.stringify(myData)
+  })
+
+}
+
     return (
       // lists of menu
       <li className='flex items-center justify-center rounded-xl shadow-md'>

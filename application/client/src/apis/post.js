@@ -24,8 +24,9 @@ export async function Delete({ restaurantId, menuId }) {
   console.log('deleting');
   try {
     const res = await axios.delete(`http://13.52.182.209/restaurants/menu/delete`, {
-      params: { restaurantId, menuId }, 
-    });
+       restaurantId, 
+       menuId, 
+  });
     console.log('Delete Response:', res.data);
     return res.data;
   } catch (error) {
