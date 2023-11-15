@@ -118,7 +118,7 @@ router.get(`/order/cart/:id(\\d+)`, /*isLoggedIn, isCustomers, isMyPage,*/ async
             if(menu.length> 0){
               menu[0].quantity = item.quantity;
               menu[0].cartId = item.id;
-              menus.push(menu)
+              menus.push(menu[0])
               // console.log(menu)
             }
           })
