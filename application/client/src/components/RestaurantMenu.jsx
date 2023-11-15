@@ -3,9 +3,10 @@ import { BsCartPlus } from 'react-icons/bs';
 import CustomerButton from './CustomerButton';
 import AddToCartModal from './AddToCartModal';
 
-export default function RestaurantMenu({ restarantmenuInfo }) {
+export default function RestaurantMenu({ restarantmenuInfo, userInfo, restaurantKey }) {
 	const { name, description, img_path, quantity, original_price, price } = restarantmenuInfo;
 
+	const [remainingCount, setRemainingCount] = useState(quantity);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	const openModal = () => {
@@ -30,7 +31,7 @@ export default function RestaurantMenu({ restarantmenuInfo }) {
 						<div className='flex justify-between sm:flex-col'>
 							<span className='text-lg font-bold pl-1 pt-1'>{name}</span>
 							<span className='text-sm pt-2 pr-3 pl-1'>
-								Remaining Count: <strong>{quantity}</strong>
+								Remaining Count: <strong>{remainingCount}</strong>
 							</span>
 						</div>
 
@@ -58,7 +59,10 @@ export default function RestaurantMenu({ restarantmenuInfo }) {
 				<AddToCartModal
 					isOpen={isModalOpen}
 					onClose={closeModal}
+					restaurantKey={restaurantKey}
 					restarantmenuInfo={restarantmenuInfo}
+					setRemainingCount={setRemainingCount}
+					userInfo={userInfo}
 				/>
 			</div>
 		</li>

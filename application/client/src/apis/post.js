@@ -33,3 +33,17 @@ export const addToCart = async ({ menuId, customerId, restaurantId, quantity }) 
 		throw error;
 	}
 };
+
+export const editLeftoverFoodQuantity = async ({ restaurantId, menuId, quantity }) => {
+	try {
+		const response = await axios.post(`restaurants/menu/setqauntity`, {
+			restaurantId,
+			menuId,
+			quantity,
+		});
+		return response.data;
+	} catch (error) {
+		console.error('Error creating new menu:', error);
+		throw error;
+	}
+};

@@ -1,15 +1,15 @@
 import React from 'react';
-import { Outlet, useLocation, Link } from 'react-router-dom';
+import { Outlet, useLocation, Link, useNavigate, useParams } from 'react-router-dom';
 import { BsCartCheck } from 'react-icons/bs';
 import { useSelector } from 'react-redux';
 import Navbar from '../components/Header/Navbar';
 
 export default function Root() {
 	const location = useLocation();
-
 	const user = useSelector((state) => state.user);
+
 	const isLandingPage = location.pathname === '/';
-	const shouldShowAside = !isLandingPage && user.isLoggedIn;
+	const shouldShowAside = !isLandingPage;
 
 	return (
 		<>
@@ -21,7 +21,7 @@ export default function Root() {
 				{shouldShowAside && (
 					<aside>
 						<Link
-							to='/cart'
+							to={`/cart/${user.userId}`}
 							style={{ boxShadow: '3px 3px 0px 0px #262626' }}
 							className='fixed w-[4.5rem] h-[4.5rem] right-14 bottom-20 text-5xl bg-primary rounded-full lg:w-12 lg:h-12 lg:text-2xl'
 						>

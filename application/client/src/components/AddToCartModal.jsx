@@ -1,9 +1,19 @@
 import React, { useEffect, useRef, useState } from 'react';
 import CustomerButton from './CustomerButton';
+import { useMutation } from '@tanstack/react-query';
+import { addToCart } from '../apis/post';
 
-export default function AddToCartModal({ isOpen, onClose, restarantmenuInfo }) {
-	const { name, quantity, original_price, price } = restarantmenuInfo;
-
+export default function AddToCartModal({
+	isOpen,
+	onClose,
+	restarantmenuInfo,
+	userInfo, //userinfo.userId
+	restaurantKey,
+	setRemainingCount,
+}) {
+	const { id, name, quantity, original_price, price } = restarantmenuInfo;
+	const { userId } = userInfo;
+	const [quantityForModal, setQuantityForModal] = useState(quantity);
 	const [quantityUserSelect, setQuantityUserSelect] = useState(1);
 	const modalRef = useRef();
 
@@ -23,6 +33,10 @@ export default function AddToCartModal({ isOpen, onClose, restarantmenuInfo }) {
 		};
 	}, [isOpen, onClose]);
 
+	const addToCartMutation = useMutation({
+		mutationFn: addToCart,
+	});
+
 	const handleDecrement = () => {
 		if (1 < quantityUserSelect) {
 			setQuantityUserSelect((prev) => prev - 1);
@@ -30,7 +44,7 @@ export default function AddToCartModal({ isOpen, onClose, restarantmenuInfo }) {
 	};
 
 	const handleIncrement = () => {
-		if (quantityUserSelect < quantity) {
+		if (quantityUserSelect < quantityForModal) {
 			setQuantityUserSelect((prev) => prev + 1);
 		}
 	};
@@ -43,6 +57,24 @@ export default function AddToCartModal({ isOpen, onClose, restarantmenuInfo }) {
 	const calculatedTotalPrice = (price, quantity) => {
 		const totalPrice = price * quantity;
 		return totalPrice.toFixed(2);
+	};
+
+	const adjustQuantity = () => {
+		const newQuantity = quantityForModal - quantityUserSelect;
+		setQuantityForModal(newQuantity);
+		setRemainingCount(newQuantity);
+	};
+
+	const handleAddToCart = () => {
+		addToCartMutation.mutate({
+			menuId: id,
+			customerId: userId,
+			restaurantId: restaurantKey,
+			quantity: quantityUserSelect,
+		});
+		adjustQuantity();
+		setQuantityUserSelect(1);
+		onClose();
 	};
 
 	const discountPercent = calculateDiscounted(original_price, price);
@@ -79,29 +111,40 @@ export default function AddToCartModal({ isOpen, onClose, restarantmenuInfo }) {
 						<strong>{discountPercent}</strong> % OFF DEALS
 					</div>
 					<div className='mt-5 pl-5'>
-						You can select the item up to <strong>{quantity}</strong>
+						You can select the item up to <strong>{quantityForModal}</strong>
 					</div>
-					<div className='text-center mt-5 flex justify-center'>
-						<span className='mr-5 font-medium'>Quantity: </span>
-						<button className='border-y-2 w-7 bg-stone-300' onClick={handleDecrement}>
-							-
-						</button>
-						<div className='border-2 w-10 font-bold'>{quantityUserSelect}</div>
-						<button className='border-y-2 w-7 bg-stone-300' onClick={handleIncrement}>
-							+
-						</button>
-					</div>
-					<div className='mt-6 flex justify-between'>
-						<span className='pt-1 pl-5'>Total Price : </span>
-						<span className='mr-10 text-2xl'>
-							<strong>$ {totalPrice}</strong>
-						</span>
-					</div>
+					{quantityForModal > 0 && (
+						<>
+							<div className='text-center mt-5 flex justify-center'>
+								<span className='mr-5 font-medium'>Quantity: </span>
+								<button
+									className='border-y-2 w-7 bg-stone-300'
+									onClick={handleDecrement}
+								>
+									-
+								</button>
+								<div className='border-2 w-10 font-bold'>{quantityUserSelect}</div>
+								<button
+									className='border-y-2 w-7 bg-stone-300'
+									onClick={handleIncrement}
+								>
+									+
+								</button>
+							</div>
+							<div className='mt-6 flex justify-between'>
+								<span className='pt-1 pl-5'>Total Price : </span>
+								<span className='mr-10 text-2xl'>
+									<strong>$ {totalPrice}</strong>
+								</span>
+							</div>
+						</>
+					)}
 				</div>
 
 				<CustomerButton
 					className='bg-primary rounded-3xl mb-4 mx-4 font-medium p-3 text-lg text-gray-50'
-					onClick={onClose}
+					onClick={handleAddToCart}
+					disabled={quantityForModal === 0}
 				>
 					ADD TO CART
 				</CustomerButton>

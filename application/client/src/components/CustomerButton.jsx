@@ -1,8 +1,8 @@
 import React from 'react';
 
-export default function CustomerButton({ onClick, className, children }) {
+export default function CustomerButton({ onClick, className, children, disabled }) {
 	return (
-		<button className={className} onClick={onClick}>
+		<button className={className} onClick={onClick} disabled={disabled}>
 			{children}
 		</button>
 	);

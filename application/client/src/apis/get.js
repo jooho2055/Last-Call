@@ -111,3 +111,14 @@ export const getMenuTable = async (id) => {
 		throw error;
 	}
 };
+
+export const getCartLists = async (customerId) => {
+	try {
+		console.log('fetching');
+		const response = await axios.get(`http://13.52.182.209/customers/order/cart/${customerId}`);
+		return response.data;
+	} catch (error) {
+		console.error('Error fetching current order:', error);
+		throw error;
+	}
+};
