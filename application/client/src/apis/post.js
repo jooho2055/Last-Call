@@ -19,22 +19,6 @@ import axios from 'axios';
     }
   }
 
-
-export async function Delete({ restaurantId, menuId }) {
-  console.log('deleting');
-  try {
-    const res = await axios.delete(`http://13.52.182.209/restaurants/menu/delete`, {
-       restaurantId, 
-       menuId, 
-  });
-    console.log('Delete Response:', res.data);
-    return res.data;
-  } catch (error) {
-    console.error('Error deleting menu:', error);
-    throw error;
-  }
-}
-
   export async function EditMenu ({menuId, name, desc, img, quantity, price, originalPrice}){
     console.log("Editing");
     try{

@@ -1,28 +1,16 @@
 import React, {useState} from 'react';
 import {Delete} from '../apis/post';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import sampleFood from '../images/samplefood.png';
 import DeleteButton from './Button/Delete';
 import Edit from './Button/EditRestaurantMenu';
 
 export default function RestaurantMenuSetting({restarantmenuInfo}) {
-    const {name, original_price, price, quantity, id, restaurant_id} = restarantmenuInfo;
-    const queryClient = useQueryClient();
-    const createMenuMutation = useMutation({
-        mutationFn: Delete,
-        onSuccess: data => {
-          queryClient.setQueryData(["posts", data.id], data);
-          queryClient.invalidateQueries(["posts"], { exact: true });
-        },
-        onError: error => {
-          console.error('Mutation Error:', error);
-        },
-      });
+const {name, original_price, price, quantity, id, restaurant_id} = restarantmenuInfo;
 
 const myData = {restaurantId: 1, menuId: id};  
 const handleDetele = async(e)=>{
-        e.preventDefault();
-        console.log('Delete button clicked');
+    e.preventDefault();
+    console.log('Delete button clicked');
      fetch('http://13.52.182.209/restaurants/menu/delete', 
      {method: 'DELETE',
      headers: { 
