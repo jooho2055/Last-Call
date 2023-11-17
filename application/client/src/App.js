@@ -14,6 +14,7 @@ import RestaurantProfile from './pages/Restaurant/RestaurantProfile';
 import CustomerSearchDetail from './pages/Customer/CustomerSearchDetail';
 import RestaurantMenutable from './pages/Restaurant/RestaurantMenutable';
 import CustomerRestCurrentMenu from './pages/Customer/CustomerRestCurrentMenu';
+import RestaurantOrder from './pages/Restaurant/RestaurantOrder';
 
 import AboutMeJooho from './pages/TeamMembers/AboutMeJooho';
 import AboutMeDorrie from './pages/TeamMembers/AboutMeDorrie';
@@ -40,6 +41,7 @@ const router = createBrowserRouter([
 			{ path: '/restaurant/:id', element: <CustomerRestCurrentMenu /> },
 			{ path: '/restaurant/profile', element: <RestaurantProfile /> },
 			{ path: '/restaurant/menu', element: <RestaurantMenutable /> },
+			{ path: '/restaurant/order', element: <RestaurantOrder/>},
 
 			{ path: '/AboutUs', element: <AboutUs /> },
 			{ path: '/AboutUs/Dorrie Shen', element: <AboutMeDorrie /> },
