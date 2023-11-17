@@ -391,7 +391,7 @@ const MenuPointsToPricePercentage = async (menuId) => {
         }
 
         const itemPrice = priceResult[0].price;
-        const newPoints = Math.round(itemPrice * 0.10); 
+        const newPoints = Math.round(itemPrice * 0.05); 
         const updateQuery = `UPDATE menus SET points = ? WHERE id = ?;`;
         const [updateResult] = await db.execute(updateQuery, [newPoints, menuId]);
 
