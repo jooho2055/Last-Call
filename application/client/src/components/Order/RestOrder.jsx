@@ -1,5 +1,5 @@
 import React,{useEffect, useState} from 'react';
-
+import ViewOrder from '../Button/ViewOrder';
 
 
 export default function RestOrder(orderInfo) {
@@ -39,8 +39,22 @@ export default function RestOrder(orderInfo) {
         ></button>
         )} 
         {isOpen && (
-            <div>
-                Test
+            <div className="w-full shadow-md">
+              <li className='flex'>
+              <div className='pd-2 pl-4'>
+                    <span>name</span>
+                </div>
+                <div className='pd-2 pl-48'>
+                    <span>quantity</span>
+                </div>
+                <div className='pd-2 pl-48'>
+                    <span>price</span>
+                </div>
+              </li>
+              <ViewOrder />
+              <div className='flex justify-end'>
+                <span> Total Price</span>
+              </div>
             </div>
 
         )}  
