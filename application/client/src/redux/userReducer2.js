@@ -2,7 +2,7 @@
 import { SET_USER_DATA } from '../actions/userActions2';
 
 const initialState = {
-  idea: '',
+  username: '',
   fname: '',
   lname: '',
   email: '',
