@@ -1,5 +1,4 @@
-import React, {useState} from 'react';
-import {Delete} from '../apis/post';
+import React from 'react';
 import sampleFood from '../images/samplefood.png';
 import DeleteButton from './Button/Delete';
 import Edit from './Button/EditRestaurantMenu';
@@ -7,7 +6,7 @@ import Edit from './Button/EditRestaurantMenu';
 export default function RestaurantMenuSetting({restarantmenuInfo}) {
 const {name, original_price, price, quantity, id, restaurant_id} = restarantmenuInfo;
 
-const myData = {restaurantId: 1, menuId: id};  
+const myData = {restaurantId: restaurant_id, menuId: id};  
 const handleDetele = async(e)=>{
     e.preventDefault();
     console.log('Delete button clicked');
@@ -41,6 +40,13 @@ const handleDetele = async(e)=>{
               </div>
             </div>
             <div className='pb-3 pl-1'>
+             {quantity>0 &&(
+              <div className='flex justify-between text-sm'>
+              <span>Quantity: </span>
+              <span className='pr-5'>{quantity}</span>
+              </div>
+             )} 
+            
               <div className='flex justify-between text-sm'>
                 <span>Original Price: </span>
                 <span className='pr-5'>${original_price}</span>
