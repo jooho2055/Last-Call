@@ -16,7 +16,7 @@ export default function Root() {
 			<header className='text-slate-100 text-lg shadow-xl'>
 				{!isLandingPage && <Navbar />}
 			</header>
-			<main className='h-full w-full m-auto overflow-y-auto'>
+			<main className='h-full w-full m-auto overflow-y-auto relative'>
 				<Outlet />
 				{shouldShowAside && (
 					<aside>

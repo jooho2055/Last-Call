@@ -2,9 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { inputsForSignIn } from '../utils/formConfig';
 import FormInput from '../components/FormInput';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../redux/userActions';
-import { useSelector } from 'react-redux';
 
 export default function SignIn() {
 	const navigate = useNavigate();
@@ -60,9 +59,12 @@ export default function SignIn() {
 		}
 	};
 	return (
-		<div className='max-w-xl m-auto max-h-full'>
-			<form onSubmit={handleSubmit} className='px-16 bg-slate-200'>
-				<h1 className='text-3xl'>Sign In</h1>
+		<div className='px-16 py-8 bg-gray-100 max-w-xl absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-3xl shadow-2xl font-medium'>
+			<form
+				onSubmit={handleSubmit}
+				className='h-[30rem] w-[28rem] rounded-3xl flex flex-col '
+			>
+				<h1 className='text-3xl text-center mt-4 mb-10'>Sign In</h1>
 				{inputsForSignIn.map((input) => (
 					<FormInput
 						key={input.id}
@@ -72,14 +74,21 @@ export default function SignIn() {
 					/>
 				))}
 
-				<div>
-					<input type='checkbox' id='roleSwitch' onChange={handleCheckbox} />
+				<div className='mt-6 mb-8 text-center'>
+					<input
+						type='checkbox'
+						id='roleSwitch'
+						onChange={handleCheckbox}
+						className='mr-5'
+					/>
 					<label htmlFor='roleSwitch'>Are you logging as a Restaurant Owner?</label>
 				</div>
-				<Link to={`/signup`}>
-					<button className='block'>Don't have accout? </button>
+				<Link to={`/signup`} className='text-center mb-7'>
+					Don't have accout?
 				</Link>
-				<button className='border text-4xl'>Submit</button>
+				<button className='border p-2 text-3xl text-stone-50 bg-primary rounded-2xl'>
+					Submit
+				</button>
 			</form>
 		</div>
 	);

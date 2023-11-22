@@ -12,8 +12,8 @@ export default function FormInput(props) {
 		setHasFocusLeft(false);
 	};
 	return (
-		<div className='flex flex-col'>
-			<label htmlFor={id} className='pl-1'>
+		<div className='flex flex-col mb-4'>
+			<label htmlFor={id} className='pl-1 mb-1 text-lg'>
 				{label}
 			</label>
 			<input
