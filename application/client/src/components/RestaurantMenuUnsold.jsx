@@ -1,18 +1,14 @@
 import React from 'react';
 import Samplefood from '../images/samplefood.png';
 
-export default function RestaurantMenuUnsold({onSelect, isSelected}) {
-    const handleCheckboxChange = () =>{
-      onSelect(!isSelected);
-    }
+export default function RestaurantMenuUnsold({restarantmenuInfo}) {
+    const {name, img, quantity, id, restaurant_id} = restarantmenuInfo;
     return (
-        <div>
+        <div className='pd-4'>
             <li className='flex items-center justify-center rounded-xl shadow-md'>
                 <div className='pd-2 pl-4'>
                 <input type='checkbox' 
-                       name='selectFood' 
-                       checked={isSelected} 
-                       onChange={handleCheckboxChange}></input>
+                       name='selectFood' />
                 </div>
                 <div className='pd-2 pl-4'>
                 <img 
@@ -21,11 +17,9 @@ export default function RestaurantMenuUnsold({onSelect, isSelected}) {
                      alt='sample img'
                      />
                 </div>    
-                <div className='pd-2 pl-4'>
-                    Menu
-                </div> 
+                <div className='pd-2 pl-4 flex-grow'>{name}</div> 
                 <div className='pd-2 pl-4'>     
-                <input type='number' className='w-20 border border-orange-500'></input>
+                <input type='number' className='w-20 border border-orange-500' placeholder={quantity}></input>
                 </div>
             </li>
         </div>

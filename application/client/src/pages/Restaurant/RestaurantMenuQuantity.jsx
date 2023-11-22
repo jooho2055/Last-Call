@@ -1,23 +1,22 @@
 import React, {useState, useEffect} from 'react';
 import { AiFillPlusSquare } from 'react-icons/ai';
 import RestaurantMenuUnsold from '../../components/RestaurantMenuUnsold';
+import {getMenuTable} from '../../apis/get';
+import { useQuery } from '@tanstack/react-query';
 
 export default function RestaurantMenuQuantity() {
     const [isFormOpen, setIsFormOpen] = useState(false);
 	const [selectedItems, setSelectedItems] = useState([]);
+	const id = 1;
 
 	const FromShows = () => {
 	  setIsFormOpen(!isFormOpen);
 	};
-	const handleSelectItem = (isSelected, itemId) =>{
-		if (isSelected) {
-			setSelectedItems((prevSelectedItems) => [...prevSelectedItems, itemId]);
-		  } else {
-			setSelectedItems((prevSelectedItems) =>
-			  prevSelectedItems.filter((item) => item !== itemId)
-			);
-		  }
-	}
+	const MenuList = useQuery({
+		queryKey: ["MenuLists"],
+		queryFn: () => getMenuTable(id),
+	  })
+	
 	const handleSubmit = (e) =>{
 		e.preventDefault();
 		console.log('Selected Items:',selectedItems);
@@ -40,11 +39,10 @@ export default function RestaurantMenuQuantity() {
 				)}
                 {isFormOpen && (
 					<div className='absolute top-30 right-70 w-auto h-auto flex flex-col justify-center items-center'>
-					<form onSubmit={handleSubmit}>	
-                    <RestaurantMenuUnsold
-					 onSelect={(isSelected)=> handleSelectItem(isSelected, 'item1')}
-					 isSelected={selectedItems.includes('item1')}
-					 />
+					<form onSubmit={handleSubmit}>
+					{MenuList.data.map((menu)=>(
+					 <RestaurantMenuUnsold key={menu.id} restarantmenuInfo={menu}/>	
+					))}		
 					<button type='submit'>Save</button>
 					</form>
 					</div>
