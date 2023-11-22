@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import FormInput from '../FormInput';
 import { inputForMenu } from '../../utils/resProfile';
 import { AiTwotoneEdit } from 'react-icons/ai';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { EditMenu } from '../../apis/post';
+import { useQueryClient } from '@tanstack/react-query';
+
 
 
 export default function Edit({ initialData }) {
@@ -21,17 +21,6 @@ export default function Edit({ initialData }) {
     aprice: true,
     description: true,
   });
-  const createMenuMutation = useMutation({
-    mutationFn: EditMenu,
-    onSuccess: data => {
-      queryClient.setQueryData(["posts", data.id], data);
-      queryClient.invalidateQueries(["posts"], { exact: true });
-    },
-    onError: error => {
-      console.error('Mutation Error:', error);
-    },
-  });
-
 
 
   const isMenuSubmitDisable =
@@ -72,7 +61,7 @@ export default function Edit({ initialData }) {
   const formatShows = () =>{
     setIsOpen(!isOpen);
 };
-const mydata = {menuId: editFormData.id, name: editFormData.fname, desc: editFormData.description, originalPrice: editFormData.oprice }
+const mydata = {menuId: initialData.id, name: editFormData.fname, desc: editFormData.description, price: editFormData.aprice, originalPrice: editFormData.oprice }
 const handleMenu = async (e) => {
   e.preventDefault();
  try{
