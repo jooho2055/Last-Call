@@ -72,6 +72,7 @@ const handleMenu = async (e) => {
    },
    body: JSON.stringify(mydata),  
   })
+  return response;
  }
  catch (error) {
   console.error("Error:", error);

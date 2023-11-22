@@ -4,9 +4,23 @@ import RestaurantMenuUnsold from '../../components/RestaurantMenuUnsold';
 
 export default function RestaurantMenuQuantity() {
     const [isFormOpen, setIsFormOpen] = useState(false);
+	const [selectedItems, setSelectedItems] = useState([]);
 
 	const FromShows = () => {
 	  setIsFormOpen(!isFormOpen);
+	};
+	const handleSelectItem = (isSelected, itemId) =>{
+		if (isSelected) {
+			setSelectedItems((prevSelectedItems) => [...prevSelectedItems, itemId]);
+		  } else {
+			setSelectedItems((prevSelectedItems) =>
+			  prevSelectedItems.filter((item) => item !== itemId)
+			);
+		  }
+	}
+	const handleSubmit = (e) =>{
+		e.preventDefault();
+		console.log('Selected Items:',selectedItems);
 	};
 
     return (
@@ -25,8 +39,14 @@ export default function RestaurantMenuQuantity() {
 					></button>
 				)}
                 {isFormOpen && (
-					 <div className='absolute top-30 right-70 w-72 h-auto flex flex-col justify-center items-center'>
-                    <RestaurantMenuUnsold/>
+					<div className='absolute top-30 right-70 w-auto h-auto flex flex-col justify-center items-center'>
+					<form onSubmit={handleSubmit}>	
+                    <RestaurantMenuUnsold
+					 onSelect={(isSelected)=> handleSelectItem(isSelected, 'item1')}
+					 isSelected={selectedItems.includes('item1')}
+					 />
+					<button type='submit'>Save</button>
+					</form>
 					</div>
 				)}
             </div>
