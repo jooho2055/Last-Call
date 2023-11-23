@@ -9,7 +9,7 @@ export const inputsForSignIn = [
 	{
 		id: 2,
 		name: 'pwd',
-		type: 'text',
+		type: 'password',
 		placeholder: 'Password',
 		label: 'Password',
 	},

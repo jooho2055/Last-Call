@@ -9,16 +9,26 @@ export default function Root() {
 	const user = useSelector((state) => state.user);
 
 	const isLandingPage = location.pathname === '/';
+	const isSignin = location.pathname === '/signin';
+	const isSignup = location.pathname === '/signup';
+	const isSignupCustomer = location.pathname === '/signup/customer';
+	const isSignupRestaurant = location.pathname === '/signup/restaurant';
+
 	const shouldShowAside = !isLandingPage;
+	const showbg = isSignin || isSignup || isSignupCustomer || isSignupRestaurant;
 
 	return (
 		<>
 			<header className='text-slate-100 text-lg shadow-xl'>
 				{!isLandingPage && <Navbar />}
 			</header>
-			<main className='h-full w-full m-auto overflow-y-auto relative'>
+			<main
+				className={`h-full w-full m-auto overflow-y-auto relative ${
+					showbg ? 'bg-custombg' : ''
+				}`}
+			>
 				<Outlet />
-				{shouldShowAside && (
+				{shouldShowAside && !showbg && (
 					<aside>
 						<Link
 							to={`/cart/${user.userId}`}
@@ -30,7 +40,7 @@ export default function Root() {
 					</aside>
 				)}
 			</main>
-			{!isLandingPage && (
+			{!isLandingPage && !showbg && (
 				<footer className='text-center'>Last Call - All rights reserved</footer>
 			)}
 		</>
