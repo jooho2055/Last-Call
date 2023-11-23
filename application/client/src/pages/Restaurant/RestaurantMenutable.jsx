@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 import {getMenuTable} from '../../apis/get';
 import { createNewMenu } from '../../apis/post';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function RestaurantMenutable() {
 	//const navigate = useNavigate();
@@ -104,20 +104,30 @@ export default function RestaurantMenutable() {
 	return (
 		<div className='min-h-full m-auto flex justify-center bg-white relative'>
 			<div className='absolute top-0 left-50'>
-				<p>Menu Manage</p>
+			<div className='fixed bg-white w-[1000px]'>	
+			<p>Menu Manage</p>
+			<div className='flex space-x-4'>	
 				<button
 					className='text-3xl mt-[0.85rem] mr-5'
 					onClick={FromShows} >
 					<AiFillPlusSquare />
 				</button>
+				<button
+				 className='text-sm mt-[0.85rem] rounded bg-slate-900 text-white'>
+				<Link to={'/restaurant/menu/unsold'}>	
+				Set Quantity
+				</Link>
+				</button>
+				</div>
+			</div>	
 				{isFormOpen && (
 					<button
 						onClick={FromShows}
-						className='fixed top-0 right-0 bottom-0 left-0 w-full h-full bg-black opacity-0 cursor-default'
+						className='fixed top-0 right-0 bottom-0 left-0 w-full h-full bg-black opacity-10 cursor-default'
 					></button>
 				)}
 				{isFormOpen && (
-					<div className='absolute right-50 w-72 h-96 bg-gray-100 flex flex-col justify-center items-center'>
+					<div className='fixed right-50 top-36 w-72 h-96 bg-gray-100 flex flex-col justify-center items-center'>
 						<form onSubmit={handleMenu}>
 							{inputForMenu.map((input) => (
 								<FormInput
@@ -132,7 +142,7 @@ export default function RestaurantMenutable() {
 						</form>
 					</div>
 				)}
-				<div className='grid grid-cols-1 gap-4'>
+				<div className='grid grid-cols-1 gap-4 overflow-y-auto mt-20'>
 					{MenuList.data?.map((food) => (
 						<RestaurantMenuSetting key={food.id} restarantmenuInfo={food}/>
 					))}

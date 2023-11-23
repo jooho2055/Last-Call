@@ -7,7 +7,6 @@ export default function RestaurantOrder() {
         <div>
             <h1>Current Order</h1>
             <div className='flex items-center justify-center'>
-
             <RestOrder />
             </div>
             

@@ -4,6 +4,7 @@ import RestaurantMenuUnsold from '../../components/RestaurantMenuUnsold';
 import {getMenuTable} from '../../apis/get';
 import { useQuery } from '@tanstack/react-query';
 
+
 export default function RestaurantMenuQuantity() {
     const [isFormOpen, setIsFormOpen] = useState(false);
 	const [selectedItems, setSelectedItems] = useState([]);
@@ -16,10 +17,23 @@ export default function RestaurantMenuQuantity() {
 		queryKey: ["MenuLists"],
 		queryFn: () => getMenuTable(id),
 	  })
+	useEffect(() => {
+		if (MenuList.data) {
+		  setSelectedItems(MenuList.data);
+		}
+	  }, [MenuList.data]);  
+	const handleQuantityChange =(menuId, newQuantity)=>{
+		setSelectedItems((prevItems) => {
+			const updatedItems = prevItems.map((item) =>
+			  item.id === menuId ? { ...item, quantity: newQuantity } : item
+			);
+			return updatedItems;
+		  });
+	}  
 	
 	const handleSubmit = (e) =>{
 		e.preventDefault();
-		console.log('Selected Items:',selectedItems);
+		console.log('Selected Items: ',selectedItems);
 	};
 
     return (
@@ -40,8 +54,11 @@ export default function RestaurantMenuQuantity() {
                 {isFormOpen && (
 					<div className='absolute top-30 right-30 w-auto h-72 overflow-y-auto justify-center items-center p-4 pt-0 bg-white border-orange-500 border-2'>
 					<form onSubmit={handleSubmit}>
-					  {MenuList.data.map((menu) => (
-						<RestaurantMenuUnsold key={menu.id} restarantmenuInfo={menu} />
+					  {selectedItems.map((menu) => (
+						<RestaurantMenuUnsold 
+						key={menu.id} 
+						restarantmenuInfo={menu}
+						onQuantityChange={handleQuantityChange} />
 					  ))}
 					  <button type='submit' className='bg-orange-500 text-white px-4 py-2 rounded'>
 						Save
