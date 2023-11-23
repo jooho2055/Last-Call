@@ -19,7 +19,7 @@ export default function RestaurantMenuUnsold({restarantmenuInfo}) {
                 </div>    
                 <div className='pd-2 pl-4 flex-grow'>{name}</div> 
                 <div className='pd-2 pl-4'>     
-                <input type='number' className='w-20 border border-orange-500' placeholder={quantity}></input>
+                <input type='number' className='w-20 border border-slate-900 rounded' placeholder={quantity}></input>
                 </div>
             </li>
         </div>

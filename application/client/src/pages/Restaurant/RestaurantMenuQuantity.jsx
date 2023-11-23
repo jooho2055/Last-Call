@@ -34,18 +34,20 @@ export default function RestaurantMenuQuantity() {
                 {isFormOpen && (
 					<button
 						onClick={FromShows}
-						className='fixed top-0 right-0 bottom-0 left-0 w-full h-full bg-black opacity-0 cursor-default'
+						className='fixed top-0 right-0 bottom-0 left-0 w-full h-full bg-black opacity-10 cursor-default'
 					></button>
 				)}
                 {isFormOpen && (
-					<div className='absolute top-30 right-70 w-auto h-auto flex flex-col justify-center items-center'>
+					<div className='absolute top-30 right-30 w-auto h-72 overflow-y-auto justify-center items-center p-4 pt-0 bg-white border-orange-500 border-2'>
 					<form onSubmit={handleSubmit}>
-					{MenuList.data.map((menu)=>(
-					 <RestaurantMenuUnsold key={menu.id} restarantmenuInfo={menu}/>	
-					))}		
-					<button type='submit'>Save</button>
+					  {MenuList.data.map((menu) => (
+						<RestaurantMenuUnsold key={menu.id} restarantmenuInfo={menu} />
+					  ))}
+					  <button type='submit' className='bg-orange-500 text-white px-4 py-2 rounded'>
+						Save
+					  </button>
 					</form>
-					</div>
+				  </div>
 				)}
             </div>
             
