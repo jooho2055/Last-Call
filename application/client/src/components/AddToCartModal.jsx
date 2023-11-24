@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import CustomerButton from './CustomerButton';
+import BtnForCustomer from './BtnForCustomer';
 import { useMutation } from '@tanstack/react-query';
 import { addToCart } from '../apis/post';
 
@@ -141,13 +141,13 @@ export default function AddToCartModal({
 					)}
 				</div>
 
-				<CustomerButton
+				<BtnForCustomer
 					className='bg-primary rounded-3xl mb-4 mx-4 font-medium p-3 text-lg text-gray-50'
 					onClick={handleAddToCart}
 					disabled={quantityForModal === 0}
 				>
 					ADD TO CART
-				</CustomerButton>
+				</BtnForCustomer>
 			</div>
 		</div>
 	);

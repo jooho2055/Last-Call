@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { BsCartPlus } from 'react-icons/bs';
-import CustomerButton from './CustomerButton';
 import AddToCartModal from './AddToCartModal';
 
 export default function RestaurantMenu({ restarantmenuInfo, userInfo, restaurantKey }) {

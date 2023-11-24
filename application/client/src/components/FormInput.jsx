@@ -1,7 +1,16 @@
 import React, { useState } from 'react';
 
 export default function FormInput(props) {
-	const { label, errorMessage, onChange, id, isValid, ...inputProps } = props;
+	const {
+		label,
+		errorMessage,
+		onChange,
+		id,
+		isValid,
+		classNameForLabel,
+		classNameForInput,
+		...inputProps
+	} = props;
 	const [hasFocusLeft, setHasFocusLeft] = useState(false);
 
 	const handleBlur = (e) => {
@@ -13,7 +22,7 @@ export default function FormInput(props) {
 	};
 	return (
 		<div className='flex flex-col mb-1'>
-			<label htmlFor={id} className='pl-1 mb-1 text-lg'>
+			<label htmlFor={id} className={classNameForLabel}>
 				{label}
 			</label>
 			<input
@@ -22,10 +31,10 @@ export default function FormInput(props) {
 				onChange={onChange}
 				onFocus={handleFocus}
 				onBlur={handleBlur}
-				className='rounded-lg p-2 mt-1 mb-1 ml-0 mr-0 shadow-md'
+				className={classNameForInput}
 			/>
 			{hasFocusLeft && !isValid && (
-				<span className='text-sm pl-[0.25rem] text-red-600 '>{errorMessage}</span>
+				<span className='w-80 text-sm pl-[0.25rem] text-red-600 '>{errorMessage}</span>
 			)}
 		</div>
 	);

@@ -15,7 +15,7 @@ export const inputsForSignIn = [
 	},
 ];
 
-export const inputsForCustomer = [
+export const inputsForCustomerOne = [
 	{
 		id: 1,
 		name: 'username',
@@ -48,6 +48,9 @@ export const inputsForCustomer = [
 		errorMessage: 'It should be a valid email address!',
 		label: 'Email Address',
 	},
+];
+
+export const inputsForCustomerTwo = [
 	{
 		id: 5,
 		name: 'pwd',

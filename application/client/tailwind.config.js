@@ -13,6 +13,7 @@ module.exports = {
 			backgroundColor: {
 				primary: '#DE6913',
 				primaryVariant: '#cb6114',
+				primaryGrayBlue: '#7388a0',
 			},
 		},
 		screens: {

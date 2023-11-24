@@ -132,7 +132,7 @@ export default function RestaurantSignUp() {
 	};
 
 	return (
-		<div className='max-w-xl m-auto'>
+		<div className='px-14 py-2 max-w-md bg-stone-100 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-3xl shadow-[rgba(0,_0,_0,_0.4)_0px_30px_90px] font-medium m-auto sm:-translate-y-[20%]'>
 			<form onSubmit={handleSubmit} className='px-16  bg-slate-200'>
 				<h1 className='text-3xl'>
 					Join Us as a <strong>Restaurant Owner</strong>

@@ -23,8 +23,10 @@ export default function Root() {
 				{!isLandingPage && <Navbar />}
 			</header>
 			<main
-				className={`h-full w-full m-auto overflow-y-auto relative ${
-					showbg ? 'bg-custombg' : ''
+				className={`h-full w-full m-auto overflow-y-auto ${showbg ? 'bg-custombg' : ''} ${
+					isSignin || isSignupCustomer || isSignupRestaurant
+						? 'flex justify-center items-center'
+						: ''
 				}`}
 			>
 				<Outlet />
@@ -40,8 +42,12 @@ export default function Root() {
 					</aside>
 				)}
 			</main>
-			{!isLandingPage && !showbg && (
-				<footer className='text-center'>Last Call - All rights reserved</footer>
+			{!isLandingPage && (
+				<footer
+					className={`text-center text-xs p-1 font-medium ${showbg ? 'bg-custombg' : ''}`}
+				>
+					Last Call © 2023
+				</footer>
 			)}
 		</>
 	);
