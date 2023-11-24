@@ -31,9 +31,31 @@ export default function RestaurantMenuQuantity() {
 		  });
 	}  
 	
-	const handleSubmit = (e) =>{
+	const handleSubmit = async (e) =>{
 		e.preventDefault();
 		console.log('Selected Items: ',selectedItems);
+		try{
+			for(const menuItem of selectedItems){
+
+				const response = await fetch('http://13.52.182.209/restaurants/menu/setquantity', {
+                     method: 'POST',
+                     headers: {
+                         'Content-Type': 'application/json',
+                     },
+                     body: JSON.stringify({
+                           restaurantId: id,
+                           menuId: menuItem.id,
+                           quantity: menuItem.quantity,
+                     }),
+              });
+
+              const data = await response.json();
+              console.log('Response:', data);
+			}
+
+		}catch(error){
+			console.error('An error occurred:', error);
+		}
 	};
 
     return (

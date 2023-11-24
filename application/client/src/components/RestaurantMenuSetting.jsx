@@ -4,7 +4,7 @@ import DeleteButton from './Button/Delete';
 import Edit from './Button/EditRestaurantMenu';
 
 export default function RestaurantMenuSetting({restarantmenuInfo}) {
-const {name, original_price, price, quantity, id, restaurant_id} = restarantmenuInfo;
+const {name, original_price, price, quantity, id, restaurant_id, description} = restarantmenuInfo;
 
 const myData = {restaurantId: restaurant_id, menuId: id};  
 const handleDetele = async(e)=>{
@@ -36,7 +36,7 @@ const handleDetele = async(e)=>{
               </div>
   
               <div className='pb-2 text-sm text-gray-500'>
-                The food is made by chicken
+                {description}
               </div>
             </div>
             <div className='pb-3 pl-1'>

@@ -95,6 +95,7 @@ export default function RestaurantMenutable() {
 				originalPrice: parseFloat(menuInput.oprice),
 				name: menuInput.fname,
 				desc: menuInput.description,
+				img: 'http://13.52.182.209/menusimg/samplefood.png'
 			});
 		} catch (error) {
 		  console.error('An error occurred:', error);
