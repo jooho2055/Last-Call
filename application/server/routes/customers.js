@@ -281,12 +281,12 @@ DEBUG_CART_DELETE = {
 }
 /**
  * To delete all the menu in the cart
- * @body holds customer detail
+ * @body holds customerId
  * @path `/customers/order/cart/delete`
  * @method DELETE
  */
 router.delete('/order/cart/delete', /*isLoggedIn, isCustomers,*/ async function(req,res){
-    const { customerId} = req.body
+    const { customerId } = req.body
     // const {customerId} = DEBUG_CART_DELETE
 
     // if(req.session.user.userId !== customerId){
