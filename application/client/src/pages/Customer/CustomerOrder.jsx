@@ -1,49 +1,78 @@
-import React, { useEffect } from 'react';
+// import React,{useEffect, useState} from 'react';
 import HistoryOrderItem from '../../components/Order/HistoryOrderItem';
 import CurrentOrderItem from '../../components/Order/currentOrderItem';
-import { useSelector } from 'react-redux';
-import { useQuery } from '@tanstack/react-query';
-import { useNavigate } from 'react-router-dom';
-import {getCurrentOrder, getPastOrder} from '../../apis/get';
+// import { useSelector } from 'react-redux';
 
+//This is the inputs for testing, will be move later
+const inputsForcurrenttest = [
+	{
+		restaurant_name: 'Test',
+		address: 'test_address',
+		foods: [
+			{
+				name: 'banana',
+				quantity: '1',
+				price: '2',
+			},
+			{
+				name: 'apple',
+				quantity: '1',
+				price: '3',
+			},
+		],
+		price: '$5',
+		date: 'May, 23, 2023',
+		time: '9 pm',
+		status: 3,
+		original_p: '6',
+		actual_p: '5',
+	},
+	{
+		restaurant_name: 'Test2',
+		address: 'test_address2',
+		foods: [
+			{
+				name: 'banana',
+				quantity: '1',
+				price: '2',
+			},
+			{
+				name: 'apple',
+				quantity: '1',
+				price: '3',
+			},
+		],
+		price: '$5',
+		date: 'May, 24, 2023',
+		time: '9 pm',
+		status: 1,
+		original_p: '6',
+		actual_p: '5',
+	},
+	{
+		restaurant_name: 'Test3',
+		address: 'test_address3',
+		foods: [
+			{
+				name: 'banana',
+				quantity: '1',
+				price: '2',
+			},
+			{
+				name: 'apple',
+				quantity: '1',
+				price: '3',
+			},
+		],
+		price: '5',
+		date: 'May, 25, 2023',
+		time: '9 pm',
+		status: 0,
+		original_p: '6',
+		actual_p: '5',
+	},
+];
 export default function CustomerOrder() {
-<<<<<<< HEAD
-	const navigate = useNavigate();
-  const user = useSelector((state) => state.user);
-  useEffect(() => {
-    if (!user.isLoggedIn) {
-      navigate('/signin');
-    }
-  }, [navigate, user.isLoggedIn]);
-  const currentItems = useQuery({
-    queryKey: ["currentItems"],
-    queryFn: getCurrentOrder(user.userId),
-  });
-  const pastItems = useQuery({
-    queryKey: ["pastItem"],
-    queryFn: getPastOrder(user.userId),
-  });
-	
-
-	  return (
-		<div className='min-h-full m-auto flex flex-col justify-center items-center bg-white gap-4'>
-		  <br />
-		  <h3>Current Order</h3>
-		  <div className='grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 grid-cols-5 gap-4'>
-			{currentItems.data?.map(input => (
-			  <CurrentOrderItem currentorderInfo={input} />
-			))}
-		  </div>
-		  <br />
-		  <hr className='border-t-4 border-solid border-blue-500 w-full' />
-		  <br />
-		  <h3>Order History</h3>
-		  <div className='grid sm:grid-cols-1 md:grid-cols-1 grid-cols-2 gap-9'>
-			{pastItems.data?.map(input => (
-			  <HistoryOrderItem historyOrderInfo={input} />
-			))}
-		  </div>
-=======
 	//Comment: add '//' just in case it will show not found state in this branch
 	//	const [currentorderlist, setCurrentorder]=useState([]);
 	//	const [pastorderlist, setPastorder] = useState([]);
@@ -86,7 +115,6 @@ export default function CustomerOrder() {
 					<HistoryOrderItem historyOrderInfo={input} />
 				))}
 			</div>
->>>>>>> frontfeature
 		</div>
-	  );
+	);
 }
