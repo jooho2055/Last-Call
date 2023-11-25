@@ -2,10 +2,12 @@ import { useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import { fetchRestaurantAvailableMenu, fetchRestaurantInfo } from '../../apis/get';
 import { useLocation, useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import RestaurantMenu from '../../components/RestaurantMenu';
 
 export default function CustomerRestCurrentMenu() {
 	const { id } = useParams();
+	const user = useSelector((state) => state.user);
 
 	const {
 		isLoading: isMenuLoading,
@@ -41,9 +43,10 @@ export default function CustomerRestCurrentMenu() {
 
 			<ul className='grid grid-cols-2 gap-8 px-12 pt-10 xl:grid-cols-1 xl:px-4'>
 				{restaurantMenu?.map((item) => (
-					<RestaurantMenu restarantmenuInfo={item} />
+					<RestaurantMenu restaurantKey={id} restarantmenuInfo={item} userInfo={user} />
 				))}
 			</ul>
+			<br />
 		</div>
 	);
 }

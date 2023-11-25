@@ -33,3 +33,12 @@ img {
 	-moz-user-drag: none;
 	-o-user-drag: none;
 }
+
+.toggle-checkbox:checked {
+	right: 0;
+	border-color: #de6913;
+}
+
+.toggle-checkbox:checked + .toggle-label {
+	background-color: #de6913;
+}
