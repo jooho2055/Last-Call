@@ -2,12 +2,14 @@ import React, {useState, useEffect} from 'react';
 import { AiFillPlusSquare } from 'react-icons/ai';
 import RestaurantMenuUnsold from '../../components/RestaurantMenuUnsold';
 import {getMenuTable} from '../../apis/get';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { editLeftoverFoodQuantity } from '../../apis/post';
 
 
 export default function RestaurantMenuQuantity() {
     const [isFormOpen, setIsFormOpen] = useState(false);
 	const [selectedItems, setSelectedItems] = useState([]);
+	const queryClient = useQueryClient();
 	const id = 1;
 
 	const FromShows = () => {
@@ -17,6 +19,13 @@ export default function RestaurantMenuQuantity() {
 		queryKey: ["MenuLists"],
 		queryFn: () => getMenuTable(id),
 	  })
+	const editleftoverFoodQ = useMutation({
+		mutationFn: editLeftoverFoodQuantity,
+		onSuccess: data =>{
+		  queryClient.setQueryData(["posts", data.id], data)
+		  queryClient.invalidateQueries(["posts"],{exact: true})
+		}, 
+	  });  
 	useEffect(() => {
 		if (MenuList.data) {
 		  setSelectedItems(MenuList.data);
@@ -40,10 +49,25 @@ export default function RestaurantMenuQuantity() {
 		  });
 	}  
 	
+	
 	const handleSubmit = async (e) =>{
 		e.preventDefault();
 		const selectedItemsToSubmit = selectedItems.filter((item) => item.checked);
+
        console.log('Selected Items: ', selectedItemsToSubmit);	
+	   selectedItemsToSubmit.forEach((currentItem)=>{
+		   console.log('Processing item:', currentItem.id, currentItem.quantity);
+		   try{
+			editleftoverFoodQ.mutate({
+				restaurantId: id,
+				menuId: currentItem.id,
+				quantity: currentItem.quantity
+			})
+		   }catch (error) {
+			console.error('An error occurred:', error);
+		  }
+	   })
+
 	};
 
     return (

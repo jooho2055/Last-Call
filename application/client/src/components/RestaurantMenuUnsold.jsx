@@ -4,7 +4,7 @@ import Samplefood from '../images/samplefood.png';
 export default function RestaurantMenuUnsold({restarantmenuInfo, onQuantityChange, onCheckChange}) {
     const {name, img, quantity, id, restaurant_id} = restarantmenuInfo;
     const [localquantity, setLocalQuantity] = useState(
-        quantity !== undefined ? quantity : ''
+        quantity !== undefined ? quantity : 0
       );
     const isChecked = restarantmenuInfo.checked || false; 
     const handleQuantityChange = (e) =>{

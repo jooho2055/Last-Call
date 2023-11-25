@@ -64,19 +64,24 @@ export default function Edit({ initialData }) {
 const mydata = {menuId: initialData.id, name: editFormData.fname, desc: editFormData.description, price: editFormData.aprice, originalPrice: editFormData.oprice }
 const handleMenu = async (e) => {
   e.preventDefault();
- try{
-  const response = await fetch('http://13.52.182.209/restaurants/menu/edit',
-  {method:'PUT',
-  headers: { 
-    'Content-Type': 'application/json'
-   },
-   body: JSON.stringify(mydata),  
-  })
-  return response;
- }
- catch (error) {
-  console.error("Error:", error);
-}
+  console.log(mydata);
+  const requestOptions ={
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json'},
+    body: JSON.stringify(mydata)
+  }
+  fetch('http://13.52.182.209/restaurants/menu/edit', requestOptions)
+       .then(async response =>{
+        const data = await response.json();
+
+        if(!response.ok){
+          const error = (data && data.message) || response.status;
+          return Promise.reject(error);
+        }
+       })
+       .catch(error=>{
+        console.error('There was an error: ', error);
+       })
 }
 
   return (
