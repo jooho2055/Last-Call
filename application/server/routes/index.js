@@ -51,7 +51,11 @@ const restaurantStorage = multer.diskStorage({
          cb(null, 'src/restaurants/') // Ensure this directory exists
     },
     filename: function (req, file, cb) {
-      cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
+        if(file){
+            cb(null, '/menusimg/' + file.originalname + '-' + Date.now() + path.extname(file.originalname))
+        }else{
+            cb(null, '/menusimg/' + 'samplefood.png')
+        }
     }
 });
 

@@ -337,7 +337,7 @@ router.delete('/menu/delete', /*isLoggedIn, isRestaurants,*/ async function(req,
         var menu = result[0]
 
         // check menu owner
-        if( menu.fk_menus_restaurant !== restaurantId)
+        if( menu.restauranat_id !== restaurantId)
             return res.status(400).json({message: "This menu is not in your restaurant"})
 
         // delete menu
@@ -404,8 +404,8 @@ router.put(`/menu/edit`, /*isLoggedIn, isRestaurants,*/ async function(req,res){
             }
         }
 
-        if(originalPrice && originalPrice !== menu.originalPrice){
-            const result = await updateProfile(id,'originalPrice', originalPrice)
+        if(originalPrice && originalPrice !== menu.original_price){
+            const result = await updateProfile(id,'original_price', originalPrice)
 
             if(result.message){
                 return res.status(400).json({message: result.message})
