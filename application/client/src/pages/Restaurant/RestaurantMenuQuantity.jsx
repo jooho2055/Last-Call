@@ -22,6 +22,15 @@ export default function RestaurantMenuQuantity() {
 		  setSelectedItems(MenuList.data);
 		}
 	  }, [MenuList.data]);  
+	  const handleCheckChange = (menuId) => {
+		setSelectedItems((prevItems) => {
+		  return prevItems.map((item) =>
+			item.id === menuId
+			  ? { ...item, checked: !item.checked || false }
+			  : item
+		  );
+		});
+	  };
 	const handleQuantityChange =(menuId, newQuantity)=>{
 		setSelectedItems((prevItems) => {
 			const updatedItems = prevItems.map((item) =>
@@ -33,29 +42,8 @@ export default function RestaurantMenuQuantity() {
 	
 	const handleSubmit = async (e) =>{
 		e.preventDefault();
-		console.log('Selected Items: ',selectedItems);
-		try{
-			for(const menuItem of selectedItems){
-
-				const response = await fetch('http://13.52.182.209/restaurants/menu/setquantity', {
-                     method: 'POST',
-                     headers: {
-                         'Content-Type': 'application/json',
-                     },
-                     body: JSON.stringify({
-                           restaurantId: id,
-                           menuId: menuItem.id,
-                           quantity: menuItem.quantity,
-                     }),
-              });
-
-              const data = await response.json();
-              console.log('Response:', data);
-			}
-
-		}catch(error){
-			console.error('An error occurred:', error);
-		}
+		const selectedItemsToSubmit = selectedItems.filter((item) => item.checked);
+       console.log('Selected Items: ', selectedItemsToSubmit);	
 	};
 
     return (
@@ -80,7 +68,8 @@ export default function RestaurantMenuQuantity() {
 						<RestaurantMenuUnsold 
 						key={menu.id} 
 						restarantmenuInfo={menu}
-						onQuantityChange={handleQuantityChange} />
+						onQuantityChange={handleQuantityChange}
+						onCheckChange={() => handleCheckChange(menu.id)} />
 					  ))}
 					  <button type='submit' className='bg-orange-500 text-white px-4 py-2 rounded'>
 						Save
