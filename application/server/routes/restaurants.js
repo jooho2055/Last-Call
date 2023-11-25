@@ -465,7 +465,7 @@ router.post('/menu/setqauntity', /*isLoggedIn, isRestaurants,*/ async function(r
          var menu = result[0]
 
          // check menu owner
-        if( menu.fk_menus_restaurant !== restaurantId)
+        if( menu.restaurant_id !== restaurantId)
             return res.status(400).json({message: "This menu is not in your restaurant"})
 
         // check update value
