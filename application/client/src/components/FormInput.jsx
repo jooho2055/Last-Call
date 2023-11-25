@@ -27,7 +27,6 @@ export default function FormInput(props) {
 			</label>
 			<input
 				id={id}
-				name={name}
 				{...inputProps}
 				onChange={onChange}
 				onFocus={handleFocus}
