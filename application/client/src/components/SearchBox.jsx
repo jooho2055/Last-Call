@@ -33,24 +33,22 @@ export default function SearchBox({ searchValue, onSubmit, onChange, inputRef })
 	};
 
 	return (
-		<div>
-			<div className='w-full justify-center flex'>
-				<form onSubmit={onSubmit}>
-					<input
-						className='border-gray-300 border rounded-lg py-1 px-3 w-96'
-						type='text'
-						value={searchValue}
-						placeholder='Search...'
-						onChange={handleChange}
-						ref={inputRef}
-						onFocus={handleFocus} // Event handler for when the input receives focus
-						onBlur={handleBlur}
-					/>
-					{searchValue && isInputFocused && (
-						<SearchToggle isLoading={isLoading} data={searchedSuggestions} />
-					)}
-				</form>
-			</div>
+		<div className='w-full justify-center flex'>
+			<form onSubmit={onSubmit}>
+				<input
+					className='border-gray-300 border rounded-lg py-1 px-3 w-96'
+					type='text'
+					value={searchValue}
+					placeholder='Search...'
+					onChange={handleChange}
+					ref={inputRef}
+					onFocus={handleFocus} // Event handler for when the input receives focus
+					onBlur={handleBlur}
+				/>
+				{searchValue && isInputFocused && (
+					<SearchToggle isLoading={isLoading} data={searchedSuggestions} />
+				)}
+			</form>
 		</div>
 	);
 }

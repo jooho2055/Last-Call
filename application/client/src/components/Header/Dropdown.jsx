@@ -29,7 +29,7 @@ export default function Dropdown() {
 	};
 	return (
 		<div className='relative'>
-			<button className='text-3xl mt-[0.85rem] mr-5 text-stone-900' onClick={toggleDropdown}>
+			<button className='text-3xl mt-5 mr-6 text-stone-900' onClick={toggleDropdown}>
 				<AiOutlineUser />
 			</button>
 			{isDropdownOpen && (
