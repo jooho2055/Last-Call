@@ -1,5 +1,9 @@
 import React from 'react';
 
-export default function BtnForRegister({ className, children }) {
-	return <button className={className}>{children}</button>;
+export default function BtnForRegister({ className, children, disabled }) {
+	return (
+		<button className={className} disabled={disabled}>
+			{children}
+		</button>
+	);
 }

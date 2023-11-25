@@ -3,7 +3,6 @@ import FormInput from '../../components/FormInput';
 import { useNavigate } from 'react-router-dom';
 import { inputsForCustomerOne, inputsForCustomerTwo } from '../../utils/formConfig';
 import BtnForRegister from '../../components/BtnForRegister';
-import FooterForLogin from '../../components/FooterForLogin';
 
 export default function CustomerSignup() {
 	const navigate = useNavigate();
@@ -124,7 +123,7 @@ export default function CustomerSignup() {
 									onChange={onChange}
 									isValid={validity[input.name]}
 									classNameForLabel='pl-1 mb-1'
-									classNameForInput='w-80 rounded-lg p-2 mt-1 mb-1 ml-0 mr-0 shadow-md'
+									classNameForInput='w-80 rounded-lg p-2 mt-1 mb-1 ml-0 mr-0 shadow-md outline-none border-2 focus:border-[#7388a0]'
 								/>
 							))}
 						</div>
@@ -137,13 +136,16 @@ export default function CustomerSignup() {
 									onChange={onChange}
 									isValid={validity[input.name]}
 									classNameForLabel='pl-1 mb-1'
-									classNameForInput='w-80 rounded-lg p-2 mt-1 mb-1 ml-0 mr-0 shadow-md'
+									classNameForInput='w-80 rounded-lg p-2 mt-1 mb-1 ml-0 mr-0 shadow-md outline-none border-2 focus:border-[#7388a0]'
 								/>
 							))}
 						</div>
 					</div>
 
-					<BtnForRegister className='p-2 mt-10 mb-7 text-2xl text-stone-50 bg-primary rounded-2xl shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)] hover:bg-primaryVariant '>
+					<BtnForRegister
+						className='p-2 mt-10 mb-7 text-2xl text-stone-50 bg-primary rounded-2xl shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)] hover:bg-primaryVariant'
+						disabled={isSubmitDisabled}
+					>
 						Submit
 					</BtnForRegister>
 				</form>
