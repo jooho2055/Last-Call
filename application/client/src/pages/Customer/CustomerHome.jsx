@@ -64,6 +64,7 @@ export default function CustomerHome() {
 					</Link>
 				))}
 			</div>
+			<br />
 		</div>
 	);
 }
