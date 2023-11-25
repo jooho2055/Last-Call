@@ -340,6 +340,18 @@ router.delete('/menu/delete', /*isLoggedIn, isRestaurants,*/ async function(req,
         if( menu.restauranat_id !== restaurantId)
             return res.status(400).json({message: "This menu is not in your restaurant"})
 
+        let [ carts, _ ] = await db.execute(`SELECT * FROM carts WHERE menu_id = ?`, [menuId]);
+        
+        if(carts.length > 0 ){
+            let deleteCart = await db.execute(`DELETE FROM carts WHERE menu_id = ?`,[menuId]);
+        }
+        
+        let [orders, ordersField] = await db.execute(`SELECT * FROM orders WHERE menu_id = ?`, [menuId]);
+        
+        if(orders.length > 0){
+            let deleteOrders = await db.execute(`DELETE FROM orders WHERE menu_id = ?`, [menuId])
+        }
+
         // delete menu
         var [ result, _ ] = await db.execute(`DELETE FROM menus WHERE id = ? AND restaurant_id = ?;`,
         [menuId, restaurantId])
