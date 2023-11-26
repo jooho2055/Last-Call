@@ -4,47 +4,10 @@ var db = require('../conf/database');
 const path = require("path");
 const {isLoggedIn, isCustomers, isMyPage} = require('../middleware/auth')
 const multer = require('multer')
-const fs = require('fs')
-
-const customerStorage = multer.diskStorage({
-  destination: function (req, file, cb) {
-      try{
-          fs.readdirSync('src');
-      }catch(err){
-          console.log(err)
-          fs.mkdirSync('src')
-      }
-      try{
-          fs.readdirSync('src/customers')
-      }catch(err){
-          console.log(err)
-          fs.mkdirSync('src/customers')
-      }
-    cb(null, 'src/customers/') // Ensure this directory exists
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
-  }
-});
-
-
-
-router.get(`/search`, async(req, res)=>{
-    const {search} = req.query;
-    console.log(search)
-    try{
-        if(search == null){
-            var [rows, fields] = await db.query(`SELECT id, name, cuisine, status FROM restaurants WHERE status = "open";`, []);
-            res.status(200).json(rows);
-        }else{
-            var [rows, fields] = await db.query(`SELECT id, name, cuisine, status, concat_ws(' ', name, cuisine, status) 
-            as haystack FROM restaurants having haystack like ?;`, [`%${search}%`]);
-            res.status(200).json(rows);
-        }
-    }catch(error){
-        res.status(400);
-    }
-});
+const {customerStorage} = require('../conf/multer')
+const customerUpload = multer({ storage: customerStorage });
+const {getCurrentOrdersById,getInvoicesByCustId,getCustCartsById
+} = require('../conf/queries')
 
 /**
  To get curreent order menus list for customer
@@ -55,7 +18,7 @@ router.get(`/search`, async(req, res)=>{
 router.get(`/order/current/:id(\\d+)`, /*isLoggedIn, isCustomers, isMyPage,*/  async function(req, res){
     const {id} = req.params
     try{
-        const [results, _ ] = await db.execute(`SELECT * FROM orders WHERE customer_id = ? AND status = 0;`,[id]);
+        const [results, _ ] = await db.execute(getCurrentOrdersById,[id]);
         if(results.length < 1){
           return res.status(400).json({message: "no current orders"})
         }
@@ -76,13 +39,13 @@ router.get(`/order/current/:id(\\d+)`, /*isLoggedIn, isCustomers, isMyPage,*/  a
 router.get(`/order/past/:id(\\d+)`, /*isLoggedIn, isCustomers, isMyPage,*/ async function(req,res){
     const {id} = req.params
     try{
-        const [results, _ ] = await db.execute(`SELECT * FROM invoices WHERE customer_id = ? ORDER BY created_at DESC;`,[id]);
+        const [results, _ ] = await db.execute(getInvoicesByCustId,[id]);
         if(results.length < 1){
             return res.status(400).json({message: "no results"})
         }
         let orderHistory = []
         const orderHis = results.map(async (res,count)=>{
-            const [orders, _ ] = await db.execute(`SELECT * FROM orders WHERE invoice_id = ? AND status != 0;`, [res.id])
+            const [orders, _ ] = await db.execute(getPastOrdersByInvoiceId, [res.id])
             if(orders.length>1){
               orderHistory.push(orders);
             }
@@ -101,45 +64,25 @@ router.get(`/order/past/:id(\\d+)`, /*isLoggedIn, isCustomers, isMyPage,*/ async
 /**
  * To get list of cart
  * @params customerId
- * @path `/customers//order/cart/:id(\\d+)`
+ * @path `/customers/order/cart/:id(\\d+)`
  * @method GET
  */
 router.get(`/order/cart/:id(\\d+)`, /*isLoggedIn, isCustomers, isMyPage,*/ async function(req,res){
     const {id} = req.params
     try{
-        let [results, _ ] = await db.execute(`SELECT * FROM carts WHERE customer_id = ?;`, [id])
+        const [results, _ ] = await db.execute(getCustCartsById, [id])
         if(results.length < 1){
             return res.status(400).json({message: "cart is empty"})
         }
-        let menus = []
-
-        const checkCart = results.map(async (item)=>{ 
-            let [menu, fields] = await db.execute(`SELECT id, description, img_path, name, price, original_price, quantity as leftover FROM menus WHERE id = ?;`,[item.menu_id])
-            if(menu.length> 0){
-              menu[0].quantity = item.quantity;
-              menu[0].cartId = item.id;
-              menus.push(menu[0])
-              // console.log(menu)
-            }
-          })
-          await Promise.all(checkCart);
-          
-          console.log("menus: ", menus)
-
-        return res.status(200).json({orders: menus})
+        
+        return res.status(200).json({orders: results})
     }catch(err){
         console.log(err)
         return res.status(400).json({message: "fail to get cart"})
     }
 })
 
-
-
-
 /// need to rewrite
-
-
-
 
 /**
  * To checkout cart and create order

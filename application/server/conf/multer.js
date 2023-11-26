@@ -1,7 +1,8 @@
 const multer = require('multer')
 const fs = require('fs')
+const path = require("path");
 
-export const customerStorage = multer.diskStorage({
+const customerStorage = multer.diskStorage({
     destination: function (req, file, cb) {
         try{
             fs.readdirSync('src');
@@ -20,9 +21,9 @@ export const customerStorage = multer.diskStorage({
     filename: function (req, file, cb) {
       cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
     }
-});
+})
 
-export const menuStorage = multer.diskStorage({
+const menuStorage = multer.diskStorage({
     destination: function (req, file, cb) {
         try{
             fs.readdirSync('src');
@@ -41,9 +42,9 @@ export const menuStorage = multer.diskStorage({
     filename: function (req, file, cb) {
       cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
     }
-});
+})
 
-export const restaurantStorage = multer.diskStorage({
+const restaurantStorage = multer.diskStorage({
     destination: function (req, file, cb) {
         try{
             fs.readdirSync('src');
@@ -63,3 +64,5 @@ export const restaurantStorage = multer.diskStorage({
       cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
     }
 });
+
+module.exports = {customerStorage, menuStorage, restaurantStorage}
