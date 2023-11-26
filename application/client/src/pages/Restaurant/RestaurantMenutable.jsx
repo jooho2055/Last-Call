@@ -105,7 +105,7 @@ export default function RestaurantMenutable() {
 	return (
 		<div className='min-h-full m-auto flex justify-center bg-white relative'>
 			<div className='absolute top-0 left-50'>
-			<div className='fixed bg-white w-[1000px]'>	
+			<div className='fixed bg-white w-[400px]'>	
 			<p>Menu Manage</p>
 			<div className='flex space-x-4'>	
 				<button
@@ -128,7 +128,7 @@ export default function RestaurantMenutable() {
 					></button>
 				)}
 				{isFormOpen && (
-					<div className='fixed right-50 top-36 w-72 h-96 bg-gray-100 flex flex-col justify-center items-center'>
+					<div className='fixed right-50 top-36 w-72 h-96 bg-gradient-to-r from-orange-200 via-slate-50 to-orange-200 rounded flex flex-col justify-center items-center'>
 						<form onSubmit={handleMenu}>
 							{inputForMenu.map((input) => (
 								<FormInput

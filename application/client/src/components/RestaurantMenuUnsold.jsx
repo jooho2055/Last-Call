@@ -13,7 +13,7 @@ export default function RestaurantMenuUnsold({restarantmenuInfo, onQuantityChang
         onQuantityChange(id, newQuantity);
     }
     return (
-        <div className='pd-4'>
+        <div className='pd-4 mb-4'>
             <li className='flex items-center justify-center rounded-xl shadow-md'>
                 <div className='pd-2 pl-4'>
                 <input type='checkbox' 

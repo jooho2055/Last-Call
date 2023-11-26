@@ -99,7 +99,7 @@ const handleMenu = async (e) => {
 )}
 
 {isOpen && (
-  <div className='relative w-[250px] h-[350px] rounded-md border-2 border-orange-500 flex flex-col justify-center items-center'>
+  <div className='relative w-[250px] h-[350px] bg-gradient-to-r from-orange-200 via-slate-50 to-orange-200 rounded flex flex-col justify-center items-center'>
     <form onSubmit={handleMenu}>
       {inputForMenu.map((input) => (
         <FormInput

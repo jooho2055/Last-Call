@@ -1,7 +1,14 @@
 import React from 'react';
 import RestOrder from '../../components/Order/RestOrder';
+import { getRestaurantOrder } from '../../apis/get';
+import { useQuery } from '@tanstack/react-query';
 
 export default function RestaurantOrder() {
+    const id = 1;
+    const CurrentOrder = useQuery({
+        queryKey: ["CurrentOrder"],
+        queryFn: () => getRestaurantOrder(id),
+    })
     
     return (
         <div>

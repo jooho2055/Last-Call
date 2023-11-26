@@ -86,7 +86,8 @@ export default function RestaurantMenuQuantity() {
 					></button>
 				)}
                 {isFormOpen && (
-					<div className='absolute top-30 right-30 w-auto h-72 overflow-y-auto justify-center items-center p-4 pt-0 bg-white border-orange-500 border-2'>
+				<div className='absolute top-30 right-30 w-auto h-72 overflow-y-auto justify-center items-center p-4 pt-0 bg-gradient-to-r from-orange-200 via-slate-50 to-orange-200 rounded'>
+					<div className='relative top-2'>
 					<form onSubmit={handleSubmit}>
 					  {selectedItems.map((menu) => (
 						<RestaurantMenuUnsold 
@@ -95,10 +96,12 @@ export default function RestaurantMenuQuantity() {
 						onQuantityChange={handleQuantityChange}
 						onCheckChange={() => handleCheckChange(menu.id)} />
 					  ))}
-					  <button type='submit' className='bg-orange-500 text-white px-4 py-2 rounded'>
+					  <button type='submit' className='bg-orange-400 text-white px-4 py-2 rounded transition-colors hover:bg-orange-500'>
 						Save
 					  </button>
+		
 					</form>
+					</div>
 				  </div>
 				)}
             </div>
