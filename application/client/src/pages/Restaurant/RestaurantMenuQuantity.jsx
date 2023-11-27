@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { AiFillPlusSquare } from 'react-icons/ai';
 import RestaurantMenuUnsold from '../../components/RestaurantMenuUnsold';
+import RestaurantMenuSetting from '../../components/RestaurantMenuSetting';
 import {getMenuTable} from '../../apis/get';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { editLeftoverFoodQuantity } from '../../apis/post';
@@ -11,6 +12,7 @@ export default function RestaurantMenuQuantity() {
 	const [selectedItems, setSelectedItems] = useState([]);
 	const queryClient = useQueryClient();
 	const id = 1;
+	const unsold = true;
 
 	const FromShows = () => {
 	  setIsFormOpen(!isFormOpen);
@@ -94,7 +96,8 @@ export default function RestaurantMenuQuantity() {
 						key={menu.id} 
 						restarantmenuInfo={menu}
 						onQuantityChange={handleQuantityChange}
-						onCheckChange={() => handleCheckChange(menu.id)} />
+						onCheckChange={() => handleCheckChange(menu.id)}
+					   />
 					  ))}
 					  <button type='submit' className='bg-orange-400 text-white px-4 py-2 rounded transition-colors hover:bg-orange-500'>
 						Save
@@ -104,6 +107,13 @@ export default function RestaurantMenuQuantity() {
 					</div>
 				  </div>
 				)}
+				<div className='grid grid-cols-1 gap-4 overflow-y-auto mt-20'>
+					{MenuList.data?.map((food) => (
+						food.quantity>0 &&(
+							<RestaurantMenuSetting key={food.id} restarantmenuInfo={food} unsold={unsold}/>	
+						)
+					))}
+				</div>
             </div>
             
         </div>

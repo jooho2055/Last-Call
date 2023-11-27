@@ -3,7 +3,7 @@ import sampleFood from '../images/samplefood.png';
 import DeleteButton from './Button/Delete';
 import Edit from './Button/EditRestaurantMenu';
 
-export default function RestaurantMenuSetting({restarantmenuInfo}) {
+export default function RestaurantMenuSetting({restarantmenuInfo, unsold}) {
 const {name, original_price, price, quantity, id, restaurant_id, description} = restarantmenuInfo;
 
 const myData = {restaurantId: restaurant_id, menuId: id};  
@@ -40,7 +40,7 @@ const handleDetele = async(e)=>{
               </div>
             </div>
             <div className='pb-3 pl-1'>
-             {quantity>0 &&(
+             {unsold &&(
               <div className='flex justify-between text-sm'>
               <span>Quantity: </span>
               <span className='pr-5'>{quantity}</span>
@@ -57,14 +57,17 @@ const handleDetele = async(e)=>{
               </div>
             </div>
           </div>
-          <div className='pb-1 pl-1 flex justify-between'>
-           <span>
-          <DeleteButton handleDetele={handleDetele} />
-           </span>
-           <span className='pr-5'>
-           <Edit initialData={restarantmenuInfo}/>
-            </span>
-      </div>
+          {!unsold && (
+             <div className='pb-1 pl-1 flex justify-between'>
+             <span>
+            <DeleteButton handleDetele={handleDetele} />
+             </span>
+             <span className='pr-5'>
+             <Edit initialData={restarantmenuInfo}/>
+              </span>
+            </div>
+          )}
+         
         </div>
 
       </li>

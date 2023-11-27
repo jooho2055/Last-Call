@@ -26,6 +26,7 @@ export default function RestaurantMenutable() {
       }
     }, [navigate, user.isLoggedIn, user.role]); */
     const id = 1;
+	const unsold = false;
     const MenuList = useQuery({
       queryKey: ["MenuLists"],
       queryFn: () => getMenuTable(id),
@@ -145,7 +146,7 @@ export default function RestaurantMenutable() {
 				)}
 				<div className='grid grid-cols-1 gap-4 overflow-y-auto mt-20'>
 					{MenuList.data?.map((food) => (
-						<RestaurantMenuSetting key={food.id} restarantmenuInfo={food}/>
+						<RestaurantMenuSetting key={food.id} restarantmenuInfo={food} unsold={unsold}/>
 					))}
 				</div>
 			</div>
