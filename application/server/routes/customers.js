@@ -6,7 +6,8 @@ const {isLoggedIn, isCustomers, isMyPage} = require('../middleware/auth')
 const multer = require('multer')
 const {customerStorage} = require('../conf/multer')
 const customerUpload = multer({ storage: customerStorage });
-const {getCurrentOrdersById,getInvoicesByCustId,getCustCartsById
+const {getCurrentOrdersById,getInvoicesByCustId,getCustCartsById,getCartsByCustId,getMenuById,addInvoice,
+  addOrder,deleteCartById,getCartsByCustMenuId,updateCartItemById,addCart
 } = require('../conf/queries')
 
 /**
@@ -99,12 +100,12 @@ router.post(`/order/cart/checkout`, /*isLoggedIn, isCustomers,*/ async function(
     // }
 
     try{
-        const [carts, _ ] = await db.execute(`SELECT * FROM carts WHERE customer_id = ?;`, [customerId])
+        const [carts, _ ] = await db.execute(getCartsByCustId, [customerId])
         let flag = true;
         let errMes = [];
         let price = 0;
         const getMenu = carts.map(async (item,i)=>{
-          const [quantity, _ ] = await db.execute(`SELECT name, quantity, price FROM menus WHERE id = ?;`,[item.menu_id])
+          const [quantity, _ ] = await db.execute(getMenuById,[item.menu_id])
           // console.log("cart q: ", carts[i].quantity, " menu q:", quantity[0].quantity, " ", quantity[0].name)
           if(quantity[0].quantity < carts[i].quantity){
             flag = false;
@@ -118,14 +119,12 @@ router.post(`/order/cart/checkout`, /*isLoggedIn, isCustomers,*/ async function(
           return res.status(400).json({message: errMes})
         }
         
-        const [newInvoice] = await db.execute(`INSERT INTO invoices(customer_id, created_at, price) VALUES(?,NOW(),?);`,[customerId,price]);
+        const [newInvoice] = await db.execute(addInvoice,[customerId,price]);
         const invoice_id = newInvoice.insertId;
 
         const moveCart = carts.map(async (item,i)=>{
-          console.log(item.menu_id,item.customerId,invoice_id,item.quantity)
-          const [addOrder] = await db.execute(`INSERT INTO orders(created_at, status, menu_id, customer_id, invoice_id, quantity) VALUES(NOW(), 0, ?,?,?,?);`,[item.menu_id,customerId,invoice_id,item.quantity])
-          const [deleteCart] = await db.execute(`DELETE FROM carts WHERE id = ?;`,[item.id])
-          console.log(deleteCart)
+          const [addOrders] = await db.execute(addOrder,[item.menu_id,customerId,invoice_id,item.quantity])
+          const [deleteCart] = await db.execute(deleteCartById,[item.id])
         })
         await Promise.all(moveCart)
 
@@ -158,21 +157,18 @@ router.post('/order/cart/add', /*isLoggedIn, isCustomers,*/ async function(req,r
     // }
 
     try{
-        let [menu, _ ] = await db.execute(`SELECT * FROM menus WHERE id = ? AND restaurant_id = ?;`,[menuId,restaurantId])
-        if(menu.length < 1){
+        const [menus, _ ] = await db.execute(getMenuById,[menuId])
+        if(menus.length < 1 || menus[0].restaurant_id !== restaurantId){
             return res.status(400).json({message: "menu does not exist"})
         }
-        menu = menu[0]
-        console.log(menuId, customerId,quantity)
-        let [cart] = await db.execute(`SELECT * FROM carts WHERE customer_id = ? AND menu_id = ?;`,[customerId,menuId]);
+
+        let [cart] = await db.execute(getCartsByCustMenuId,[customerId,menuId]);
         let result = []
         if(cart.length> 0){
-          result = await db.execute(`UPDATE carts SET quantity = ? WHERE id = ?;`,[cart[0].quantity+quantity, cart[0].id])
+          result = await db.execute(updateCartItemById,[cart[0].quantity+quantity, cart[0].id])
         }else{
-          result = await db.execute(`INSERT INTO carts (menu_id,customer_id,quantity) VALUES(?,?,?);`,
-          [menuId, customerId,quantity])
+          result = await db.execute(addCart,[menuId, customerId,quantity])
         }
-        console.log(result)
         return res.status(200).json({message: "new item is added!", item: result})
     }catch(err){
         console.log(err)
