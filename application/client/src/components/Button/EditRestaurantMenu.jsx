@@ -15,11 +15,13 @@ export default function Edit({ initialData }) {
     fname: initialData.name,
     oprice: initialData.original_price,
     aprice: initialData.price,
+    description: initialData.description || "",
   });
   const [menuvalidity, setmenuValidity] = useState({
     fname: true,
     oprice: true,
     aprice: true,
+    description: true,
   });
   const editeachMenuItem = useMutation({
     mutationFn: editMenuItem,
@@ -46,6 +48,9 @@ export default function Edit({ initialData }) {
       case 'aprice':
         isValid = /^[0-9]*\.?[0-9]+$/.test(value) && parseFloat(value) > 0;
         break;
+      case 'description':
+          isValid = /[A-Za-z]/.test(value);
+          break;  
       default:
         isValid = false;
     }
@@ -65,7 +70,7 @@ export default function Edit({ initialData }) {
   const formatShows = () =>{
     setIsOpen(!isOpen);
 };
-const mydata = {menuId: initialData.id, name: editFormData.fname, price: editFormData.aprice, originalPrice: editFormData.oprice, quantity: initialData.quantity}
+const mydata = {menuId: initialData.id, name: editFormData.fname, price: editFormData.aprice, originalPrice: editFormData.oprice, quantity: initialData.quantity, desc:editFormData.description}
 const handleMenu = async (e) => {
   e.preventDefault();
   console.log(mydata);
@@ -75,7 +80,7 @@ const handleMenu = async (e) => {
     price: editFormData.aprice,
     originalPrice: editFormData.oprice,
     quantity: initialData.quantity,
-    desc:"Test",
+    desc:editFormData.description,
   })
 }
 
@@ -94,7 +99,7 @@ const handleMenu = async (e) => {
 )}
 
 {isOpen && (
-  <div className='relative w-[250px] h-[350px] bg-gradient-to-r from-orange-200 via-slate-50 to-orange-200 rounded flex flex-col justify-center items-center'>
+  <div className='relative w-[250px] h-[350px] bg-gradient-to-r from-orange-200 via-slate-50 to-orange-200 rounded flex flex-col justify-center items-center overflow-y-auto'>
     <form onSubmit={handleMenu}>
       {inputForMenu.map((input) => (
         <FormInput
