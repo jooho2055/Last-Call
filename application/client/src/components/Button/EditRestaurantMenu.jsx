@@ -3,6 +3,8 @@ import FormInput from '../FormInput';
 import { inputForMenu } from '../../utils/resProfile';
 import { AiTwotoneEdit } from 'react-icons/ai';
 import { useQueryClient } from '@tanstack/react-query';
+import { editMenuItem } from '../../apis/post';
+import { useMutation } from '@tanstack/react-query';
 
 
 
@@ -13,13 +15,18 @@ export default function Edit({ initialData }) {
     fname: initialData.name,
     oprice: initialData.original_price,
     aprice: initialData.price,
-    description: '',
   });
   const [menuvalidity, setmenuValidity] = useState({
     fname: true,
     oprice: true,
     aprice: true,
-    description: true,
+  });
+  const editeachMenuItem = useMutation({
+    mutationFn: editMenuItem,
+    onSuccess:data =>{
+		  queryClient.setQueryData(["posts", data.id], data)
+		  queryClient.invalidateQueries(["posts"],{exact: true})
+		}, 
   });
 
 
@@ -38,9 +45,6 @@ export default function Edit({ initialData }) {
         break;
       case 'aprice':
         isValid = /^[0-9]*\.?[0-9]+$/.test(value) && parseFloat(value) > 0;
-        break;
-      case 'description':
-        isValid = /[A-Za-z]/.test(value);
         break;
       default:
         isValid = false;
@@ -61,27 +65,18 @@ export default function Edit({ initialData }) {
   const formatShows = () =>{
     setIsOpen(!isOpen);
 };
-const mydata = {menuId: initialData.id, name: editFormData.fname, desc: editFormData.description, price: editFormData.aprice, originalPrice: editFormData.oprice }
+const mydata = {menuId: initialData.id, name: editFormData.fname, price: editFormData.aprice, originalPrice: editFormData.oprice, quantity: initialData.quantity}
 const handleMenu = async (e) => {
   e.preventDefault();
   console.log(mydata);
-  const requestOptions ={
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json'},
-    body: JSON.stringify(mydata)
-  }
-  fetch('http://13.52.182.209/restaurants/menu/edit', requestOptions)
-       .then(async response =>{
-        const data = await response.json();
-
-        if(!response.ok){
-          const error = (data && data.message) || response.status;
-          return Promise.reject(error);
-        }
-       })
-       .catch(error=>{
-        console.error('There was an error: ', error);
-       })
+  editeachMenuItem.mutate({
+    menuId: initialData.id,
+    name: editFormData.fname,
+    price: editFormData.aprice,
+    originalPrice: editFormData.oprice,
+    quantity: initialData.quantity,
+    desc:"Test",
+  })
 }
 
   return (

@@ -49,3 +49,20 @@ export const editLeftoverFoodQuantity = async ({ restaurantId, menuId, quantity 
 		throw error;
 	}
 };
+
+export const editMenuItem = async({menuId, quantity, name, price, originalPrice, desc}) =>{
+	try{
+		const response = await axios.post('http://13.52.182.209/restaurants/menu/edit', {
+			menuId,
+			quantity,
+			name,
+			price,
+			originalPrice,
+			desc,
+		});
+		return response.data;
+	}catch(error){
+		console.error('Error edit menu', error);
+		throw error;
+	}
+}
