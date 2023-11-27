@@ -66,7 +66,7 @@ export default function CustomerProfile() {
 
     const fetchUserData = async (username) => {
       try {
-        const response = await axios.get(`${BASE_URL}/customers/getUserProfile/${username}`);
+        const response = await axios.get(`${BASE_URL}/customers/getUserProfile/?username=qwaszx`);
   
         const contentType = response.headers['content-type'];
 
