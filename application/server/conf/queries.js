@@ -45,7 +45,7 @@ const updateRestImgById = "UPDATE restaurants SET img_path=?, updated_at = NOW()
 
 // const updateMenuImgById = "UPDATE menus SET img_path=? WHERE id = ?;"
 
-// const updateMenuInfo = "UPDATE menus SET name = ?, price = ?, quantity = ?, original_price = ?, status = 1, description = ? WHERE id = ?;"
+const updateMenuInfo = "UPDATE menus SET name = ?, price = ?, quantity = ?, original_price = ?, status = 1, description = ? WHERE id = ?;"
 
 const updateMenuQuantityById = "UPDATE menus SET quantity=? WHERE id = ?;"
 
@@ -65,5 +65,5 @@ module.exports = {getCurrentOrdersById, getMenusByRestId, getInvoicesByCustId, g
     getCustomerById, getRestaurantsById,getRestInfoById,updatRestProfile,updateRestImgById,addMenu,getMenuById,
     deleteCartsByMenuId,getOrdersByMenuId,deleteOrdersByMenuId,deleteMenuById,updateMenuQuantityById,getRestCurrentOrdersById,
     getPastOrdersByInvoiceId,getCustCartsById,getCartsByCustId,addInvoice,addOrder,deleteCartById,getCartsByCustMenuId,
-    updateCartItemById,addCart
+    updateCartItemById,addCart,updateMenuInfo
 }
