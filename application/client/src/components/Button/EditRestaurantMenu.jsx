@@ -99,22 +99,22 @@ const handleMenu = async (e) => {
 )}
 
 {isOpen && (
-  <div className='relative w-[250px] h-[350px] bg-gradient-to-r from-orange-200 via-slate-50 to-orange-200 rounded flex flex-col justify-center items-center overflow-y-auto'>
-    <form onSubmit={handleMenu}>
-      {inputForMenu.map((input) => (
-        <FormInput
-          key={input.id}
-          {...input}
-          value={editFormData[input.name]}
-          onChange={onMenuChange}
-          isValid={menuvalidity[input.name]}
-        ></FormInput>
-      ))}
-      <div className='flex justify-center'>
-        <button disabled={isMenuSubmitDisable} className={`bg-orange-600 text-white px-4 py-2 rounded ${isMenuSubmitDisable ? 'opacity-50 cursor-not-allowed' : ''}`}>Save</button>
-      </div>
-    </form>
-  </div>
+  <div className='relative z-0 w-[250px] h-[350px] bg-gradient-to-r from-orange-200 via-slate-50 to-orange-200 rounded flex flex-col justify-center items-center'>
+  <form onSubmit={handleMenu}>
+    {inputForMenu.map((input) => (
+      <FormInput
+        key={input.id}
+        {...input}
+        value={editFormData[input.name]}
+        onChange={onMenuChange}
+        isValid={menuvalidity[input.name]}
+      ></FormInput>
+    ))}
+    <div className='flex justify-center'>
+      <button disabled={isMenuSubmitDisable} className={`bg-orange-600 text-white px-4 py-2 rounded ${isMenuSubmitDisable ? 'opacity-50 cursor-not-allowed' : ''}`}>Save</button>
+    </div>
+  </form>
+</div>
 )}
 
     </div>
