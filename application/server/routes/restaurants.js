@@ -215,6 +215,14 @@ router.delete('/menu/delete', /*isLoggedIn, isRestaurants,*/ async function(req,
     }
 })
 
+const TEST = {
+    menuId: 3,
+    name: "smaple",
+    quantity: 10,
+    desc: null,
+    price: 15,
+    originalPrice: 300
+}
 /**
  * To edit menu
  * @method PUT
@@ -222,15 +230,19 @@ router.delete('/menu/delete', /*isLoggedIn, isRestaurants,*/ async function(req,
  * @body optional: name, desc, img, quantity, price, originalPrice
  * @path /restaurants/menu/edit
  */
-router.put(`/menu/edit`, /*isLoggedIn, isRestaurants,*/ async function(req,res){
+router.get(`/menu/edit`, /*isLoggedIn, isRestaurants,*/ async function(req,res){
 
-    const {menuId, name, desc, quantity, price, originalPrice} = req.body
-
+    let {menuId, name, desc, quantity, price, originalPrice} = req.body
+    // let {menuId, name, desc, quantity, price, originalPrice} = TEST;
     try{
         const [menus] = await db.execute(getMenuById,[menuId]);
 
-        if(menu.length < 1){
+        if(menus.length < 1){
             return res.status(400).json({message: "menu does not exist"})
+        }
+        
+        if(!desc || desc.length < 0){
+            desc = null;
         }
 
         const [update, updateField] = await db.execute(updateMenuInfo,[name,price,quantity,originalPrice,desc,menuId])
