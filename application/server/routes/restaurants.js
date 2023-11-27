@@ -230,7 +230,7 @@ const TEST = {
  * @body optional: name, desc, img, quantity, price, originalPrice
  * @path /restaurants/menu/edit
  */
-router.get(`/menu/edit`, /*isLoggedIn, isRestaurants,*/ async function(req,res){
+router.post(`/menu/edit`, /*isLoggedIn, isRestaurants,*/ async function(req,res){
 
     let {menuId, name, desc, quantity, price, originalPrice} = req.body
     // let {menuId, name, desc, quantity, price, originalPrice} = TEST;
