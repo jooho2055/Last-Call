@@ -144,11 +144,12 @@ export default function RestaurantMenutable() {
 						</form>
 					</div>
 				)}
-				<div className='grid grid-cols-1 gap-4 overflow-y-auto mt-20'>
+				<div className='grid grid-cols-1 gap-4 overflow-y-auto mt-20 mb-56'>
 					{MenuList.data?.map((food) => (
 						<RestaurantMenuSetting key={food.id} restarantmenuInfo={food} unsold={unsold}/>
 					))}
 				</div>
+
 			</div>
 		</div>
 	);
