@@ -5,9 +5,13 @@ import RestaurantMenuSetting from '../../components/RestaurantMenuSetting';
 import {getMenuTable} from '../../apis/get';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { editLeftoverFoodQuantity } from '../../apis/post';
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 
 export default function RestaurantMenuQuantity() {
+	//const navigate = useNavigate();
+    //const user = useSelector((state) => state.user);
     const [isFormOpen, setIsFormOpen] = useState(false);
 	const [selectedItems, setSelectedItems] = useState([]);
 	const queryClient = useQueryClient();
@@ -28,11 +32,27 @@ export default function RestaurantMenuQuantity() {
 		  queryClient.invalidateQueries(["posts"],{exact: true})
 		}, 
 	  });  
-	useEffect(() => {
+	/*useEffect(() => {
+		if(user.isLoggedIn){
+			if(user.role === 'restaurant'){
+			if (MenuList.data) {
+				setSelectedItems(MenuList.data);
+			  }
+			}else{
+			  navigate("/home")
+			}
+		  }
+		  else{
+			navigate('/signin');
+		  }
+	  }, [MenuList.data, navigate, user.isLoggedIn, user.role]);*/
+	  useEffect(()=>{
 		if (MenuList.data) {
-		  setSelectedItems(MenuList.data);
-		}
-	  }, [MenuList.data]);  
+			setSelectedItems(MenuList.data);
+		  }
+	  },[MenuList.data]
+	  )
+ 
 	  const handleCheckChange = (menuId) => {
 		setSelectedItems((prevItems) => {
 		  return prevItems.map((item) =>
