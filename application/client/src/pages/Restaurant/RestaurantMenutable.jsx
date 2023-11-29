@@ -10,22 +10,20 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Link, useNavigate } from 'react-router-dom';
 
 export default function RestaurantMenutable() {
-	//const navigate = useNavigate();
-    //const user = useSelector((state) => state.user);
+	const navigate = useNavigate();
+    const user = useSelector((state) => state.user);
     const queryClient = useQueryClient();
-    /* useEffect(() => {
+    useEffect(() => {
       if(user.isLoggedIn){
-        if(user.role === 'restaurant'){
-          navigate('/restaurantprofile')
-        }else{
-          navigate("/home")
+        if(user.role !== 'restaurant'){
+			navigate("/home")
         }
       }
       else{
         navigate('/signin');
       }
-    }, [navigate, user.isLoggedIn, user.role]); */
-    const id = 1;
+    }, [navigate, user.isLoggedIn, user.role]); 
+    const id = user.userId;
 	const unsold = false;
     const MenuList = useQuery({
       queryKey: ["MenuLists"],
