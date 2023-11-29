@@ -28,7 +28,7 @@ export default function Edit({ initialData }) {
     onSuccess:data =>{
 		  queryClient.setQueryData(["posts", data.id], data)
 		  queryClient.invalidateQueries(["posts"],{exact: true})
-		}, 
+		},
   });
 
 

@@ -63,7 +63,6 @@ const handleDetele = async(e)=>{
             <DeleteButton handleDetele={handleDetele} />
              </span>
              <span className='pr-5'>
-             <Edit initialData={restarantmenuInfo}/>
               </span>
             </div>
           )}

@@ -10,10 +10,10 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Link, useNavigate } from 'react-router-dom';
 
 export default function RestaurantMenutable() {
-	const navigate = useNavigate();
-    const user = useSelector((state) => state.user);
+	//const navigate = useNavigate();
+    //const user = useSelector((state) => state.user);
     const queryClient = useQueryClient();
-    useEffect(() => {
+   /* useEffect(() => {
       if(user.isLoggedIn){
         if(user.role !== 'restaurant'){
 			navigate("/home")
@@ -22,8 +22,8 @@ export default function RestaurantMenutable() {
       else{
         navigate('/signin');
       }
-    }, [navigate, user.isLoggedIn, user.role]); 
-    const id = user.userId;
+    }, [navigate, user.isLoggedIn, user.role]); */
+    const id = 1;
 	const unsold = false;
     const MenuList = useQuery({
       queryKey: ["MenuLists"],
@@ -138,7 +138,7 @@ export default function RestaurantMenutable() {
 									isValid={menuvalidity[input.name]}
 								></FormInput>
 							))}
-							<button disabled={isMenuSubmitDisable}>Submit</button>
+							<button disabled={isMenuSubmitDisable} className={`bg-orange-600 text-white px-4 py-2 rounded ${isMenuSubmitDisable ? 'opacity-50 cursor-not-allowed' : ''}`}>Submit</button>
 						</form>
 					</div>
 				)}
