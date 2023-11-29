@@ -41,12 +41,24 @@ export default function CustomerProfile() {
     const fetchUserData = async () => {
       try {
         const response = await axios.get(`${BASE_URL}/customers/getUserProfile/?username=qwaszx`);
-  
+    
         const contentType = response.headers['content-type'];
-
+    
         if (contentType && contentType.includes('application/json')) {
           const userData = response.data;
           console.log('Fetched User Data:', userData);
+        
+          // Set the fetched user data in the state, including password-related fields
+          setInputValues({
+            username: userData.username || '',
+            fname: userData.fname || '',
+            lname: userData.lname || '',
+            email: userData.email || '',
+            pwd: userData.pwd || '', // Include password fields
+            cpwd: userData.cpwd || '', // Include confirm password fields
+            phone: userData.phone || '',
+            bio: userData.bio || '',
+          });
         } else if (contentType && contentType.includes('text/html')) {
           const htmlData = response.data;
           console.log('HTML Response:', htmlData);
@@ -54,7 +66,6 @@ export default function CustomerProfile() {
         } else {
           console.error('Unsupported Content Type:', contentType);
         }
-  
       } catch (error) {
         console.error('Error fetching user profile data:', error.message);
         if (error.response && error.response.data) {
@@ -122,7 +133,7 @@ export default function CustomerProfile() {
   };
 
   const handleSave = (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
     console.log('Request Payload:', inputValues); // Log the payload
     const editProfileUrl = `${BASE_URL}/customers/edit`;
 
@@ -136,6 +147,7 @@ export default function CustomerProfile() {
           setSuccessMessage('');
         }, 5000);
       })
+      .catch
       .catch((error) => {
         console.error('Error updating user profile:', error);
         setErrorMsg(
