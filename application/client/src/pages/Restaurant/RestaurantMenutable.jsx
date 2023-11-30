@@ -108,8 +108,9 @@ export default function RestaurantMenutable() {
 			<p>Menu Manage</p>
 			<div className='flex space-x-4'>	
 				<button
+				    data-testid="button"
 					className='text-3xl mt-[0.85rem] mr-5'
-					onClick={FromShows} >
+					onClick={FromShows} >	
 					<AiFillPlusSquare />
 				</button>
 				<button

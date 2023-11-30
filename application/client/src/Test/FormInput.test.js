@@ -17,7 +17,7 @@ describe('FormInput Component', () => {
         id="username"
         onChange={()=>{}}
         isValid={true}
-		classNameForLabel="label-class"
+		    classNameForLabel="label-class"
         classNameForInput="input-class"
         ></FormInput>)
 
