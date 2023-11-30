@@ -5,23 +5,21 @@ import RestaurantMenuSetting from '../../components/RestaurantMenuSetting';
 import {getMenuTable} from '../../apis/get';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { editLeftoverFoodQuantity } from '../../apis/post';
-import {useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 
 export default function RestaurantMenuQuantity() {
     const [isFormOpen, setIsFormOpen] = useState(false);
 	const [selectedItems, setSelectedItems] = useState([]);
+	const user = useSelector((state) => state.user);
 	const queryClient = useQueryClient();
-	const {userId} = useParams();
-	const id = 1;
+	const id = user.userId;
 	const unsold = true;
-
 	const FromShows = () => {
 	  setIsFormOpen(!isFormOpen);
 	};
-	const MenuList = useQuery({
-		queryKey: ["MenuLists"],
+	const MenuListUnsold = useQuery({
+		queryKey: ["MenuListUnsold"],
 		queryFn: () => getMenuTable(id),
 	  })
 	const editleftoverFoodQ = useMutation({
@@ -32,16 +30,10 @@ export default function RestaurantMenuQuantity() {
 		}, 
 	  });  
 	useEffect(() => {
-			if (MenuList.data) {
-				setSelectedItems(MenuList.data);
+			if (MenuListUnsold.data) {
+				setSelectedItems(MenuListUnsold.data);
 			  }
-			}, [MenuList.data]);
-	  /*useEffect(()=>{
-		if (MenuList.data) {
-			setSelectedItems(MenuList.data);
-		  }
-	  },[MenuList.data]
-	  )*/
+			}, [MenuListUnsold.data]);
  
 	  const handleCheckChange = (menuId) => {
 		setSelectedItems((prevItems) => {
@@ -101,14 +93,14 @@ export default function RestaurantMenuQuantity() {
 				<div className='absolute top-30 right-30 w-auto h-72 overflow-y-auto justify-center items-center p-4 pt-0 bg-gradient-to-r from-orange-200 via-slate-50 to-orange-200 rounded'>
 					<div className='relative top-2'>
 					<form onSubmit={handleSubmit}>
-					  {selectedItems.map((menu) => (
+					{Array.isArray(selectedItems) && selectedItems.map((menu) => (
 						<RestaurantMenuUnsold 
 						key={menu.id} 
 						restarantmenuInfo={menu}
 						onQuantityChange={handleQuantityChange}
 						onCheckChange={() => handleCheckChange(menu.id)}
 					   />
-					  ))}
+					  ))}	
 					  <button type='submit' className='bg-orange-400 text-white px-4 py-2 rounded transition-colors hover:bg-orange-500'>
 						Save
 					  </button>
@@ -118,11 +110,15 @@ export default function RestaurantMenuQuantity() {
 				  </div>
 				)}
 				<div className='grid grid-cols-1 gap-4 overflow-y-auto mt-20'>
-					{MenuList.data?.map((food) => (
-						food.quantity>0 &&(
-							<RestaurantMenuSetting key={food.id} restarantmenuInfo={food} unsold={unsold}/>	
-						)
-					))}
+				   {Array.isArray(MenuListUnsold.data) &&
+                  MenuListUnsold.data.map((food) => (
+					food.quantity>0 &&(
+						<RestaurantMenuSetting key={food.id} restarantmenuInfo={food} unsold={unsold}/>	
+					)
+    
+              ))
+           }
+
 				</div>
             </div>
             

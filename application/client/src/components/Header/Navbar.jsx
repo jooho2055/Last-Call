@@ -10,7 +10,13 @@ const navigation = [
 	{ name: 'About Us', href: '/AboutUs', current: false },
 ];
 
-export default function Navbar() {
+const navigation_rest = [
+	{ name: 'Menu', href: '/restaurant/menu', current: true },
+	{ name: 'Order', href: '/restaurant/order', current: false },
+	{ name: 'About Us', href: '/AboutUs', current: false },
+];
+
+export default function Navbar({role}) {
 	// const [isSignIn, setIsSignin] = useState(false);
 
 	const { pathname } = useLocation();
@@ -22,6 +28,7 @@ export default function Navbar() {
 
 	const showNavItems =
 		!isSignin && !isSignup && !isLandingPage && !isSignupCustomer && !isSignupRestaurant;
+		const currentNavigation = role === 'restaurants' ? navigation_rest : navigation;
 
 	return (
 		<>
@@ -35,7 +42,7 @@ export default function Navbar() {
 					<nav className='mr-36 pt-[1.35rem]'>
 						<ul className={!isLandingPage ? 'flex space-x-16' : ''}>
 							{showNavItems &&
-								navigation.map((item) => (
+								currentNavigation.map((item) => (
 									<li
 										key={item.name}
 										className='space-x-3 text-stone-900 font-medium'

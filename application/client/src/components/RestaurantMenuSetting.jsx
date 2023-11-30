@@ -4,6 +4,9 @@ import DeleteButton from './Button/Delete';
 import Edit from './Button/EditRestaurantMenu';
 
 export default function RestaurantMenuSetting({restarantmenuInfo, unsold}) {
+if (!restarantmenuInfo) {
+    return null;
+  }  
 const {name, original_price, price, quantity, id, restaurant_id, description} = restarantmenuInfo;
 
 const myData = {restaurantId: restaurant_id, menuId: id};  
@@ -21,7 +24,6 @@ const handleDetele = async(e)=>{
 }
 
     return (
-      // lists of menu
       <li className='flex items-center justify-center rounded-xl shadow-md'>
         <div>
           <img

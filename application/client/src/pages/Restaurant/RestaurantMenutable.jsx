@@ -10,20 +10,20 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Link, useNavigate } from 'react-router-dom';
 
 export default function RestaurantMenutable() {
-	//const navigate = useNavigate();
-    //const user = useSelector((state) => state.user);
+	const navigate = useNavigate();
+    const user = useSelector((state) => state.user);
     const queryClient = useQueryClient();
-   /* useEffect(() => {
+   useEffect(() => {
       if(user.isLoggedIn){
-        if(user.role !== 'restaurant'){
+        if(user.role !== 'restaurants'){
 			navigate("/home")
         }
       }
       else{
         navigate('/signin');
       }
-    }, [navigate, user.isLoggedIn, user.role]); */
-    const id = 1;
+    }, [navigate, user.isLoggedIn, user.role]); 
+    const id = user.userId;
 	const unsold = false;
     const MenuList = useQuery({
       queryKey: ["MenuLists"],
@@ -87,6 +87,7 @@ export default function RestaurantMenutable() {
 
 	const handleMenu = async (e) => {
 		e.preventDefault();
+		console.log(id);
 		try {
 		  createMenuMutation.mutate({
 			    restaurantId: id,
@@ -144,9 +145,12 @@ export default function RestaurantMenutable() {
 					</div>
 				)}
 				<div className='grid grid-cols-1 gap-4 overflow-y-auto mt-20 mb-56'>
-					{MenuList.data?.map((food) => (
-						<RestaurantMenuSetting key={food.id} restarantmenuInfo={food} unsold={unsold}/>
-					))}
+				{Array.isArray(MenuList.data) &&
+                   MenuList.data.map((food) => (
+                  <RestaurantMenuSetting key={food.id} restarantmenuInfo={food} unsold={unsold}/>	
+    
+                 ))
+                }
 				</div>
 
 			</div>
