@@ -8,6 +8,7 @@ import {getMenuTable} from '../../apis/get';
 import { createNewMenu } from '../../apis/post';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 export default function RestaurantMenutable() {
 	const navigate = useNavigate();
@@ -34,6 +35,8 @@ export default function RestaurantMenutable() {
       onSuccess: data =>{
         queryClient.setQueryData(["posts", data.id], data)
         queryClient.invalidateQueries(["posts"],{exact: true})
+        console.log(data);
+		return data;
       }, 
     });
     
@@ -49,6 +52,12 @@ export default function RestaurantMenutable() {
 		aprice: true,
 		description: true,
 	});
+	const [file, setFile] = useState(null);
+
+	const onFileChange = (e) => {
+        setFile(e.target.files[0]);
+    };
+
 	const [isFormOpen, setIsFormOpen] = useState(false);
 
 	const FromShows = () => {
@@ -89,14 +98,29 @@ export default function RestaurantMenutable() {
 		e.preventDefault();
 		console.log(id);
 		try {
-		  createMenuMutation.mutate({
-			    restaurantId: id,
-				price: parseFloat(menuInput.aprice),
-				originalPrice: parseFloat(menuInput.oprice),
-				name: menuInput.fname,
-				desc: menuInput.description,
-				img: 'http://13.52.182.209/memusimg/samplefood.png'
-			});
+		  const menuResponse = await createMenuMutation.mutateAsync({
+			  restaurantId: id,
+			  price: parseFloat(menuInput.aprice),
+			  originalPrice: parseFloat(menuInput.oprice),
+			  name: menuInput.fname,
+			  desc: menuInput.description,
+		  });
+            console.log(menuResponse);
+			const formData = new FormData();
+			formData.append('file', file);
+
+            axios.post('http://13.52.182.209/restaurants/menus/image', formData, {
+				headers: {
+					'Content-Type': 'multipart/form-data'
+				}
+				})
+				.then(response => {
+				console.log('File uploaded successfully', response);
+				})
+				.catch(error => {
+				console.error('Error uploading file', error);
+				});
+
 		} catch (error) {
 		  console.error('An error occurred:', error);
 		}
@@ -129,8 +153,9 @@ export default function RestaurantMenutable() {
 					></button>
 				)}
 				{isFormOpen && (
-					<div className='fixed right-50 top-36 w-72 h-96 bg-gradient-to-r from-orange-200 via-slate-50 to-orange-200 rounded flex flex-col justify-center items-center'>
+					<div className='fixed right-50 top-36 w-96 h-96 bg-gradient-to-r from-orange-200 via-slate-50 to-orange-200 rounded flex flex-col justify-center items-center'>
 						<form onSubmit={handleMenu}>
+						   <input type="file" onChange={onFileChange} />
 							{inputForMenu.map((input) => (
 								<FormInput
 									key={input.id}
