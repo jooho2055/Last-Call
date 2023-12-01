@@ -1,5 +1,6 @@
 import React from 'react';
 import sampleFood from '../images/samplefood.png';
+import { deleteMenuItem } from '../apis/delete';
 import DeleteButton from './Button/Delete';
 import Edit from './Button/EditRestaurantMenu';
 
@@ -7,7 +8,7 @@ export default function RestaurantMenuSetting({restarantmenuInfo, unsold}) {
 if (!restarantmenuInfo) {
     return null;
   }  
-const {name, original_price, price, quantity, id, restaurant_id, description} = restarantmenuInfo;
+const {name, original_price, price, quantity, id, restaurant_id, description, img_path} = restarantmenuInfo;
 
 const myData = {restaurantId: restaurant_id, menuId: id};  
 const handleDetele = async(e)=>{
@@ -28,8 +29,8 @@ const handleDetele = async(e)=>{
       <li className='flex items-center justify-center rounded-xl shadow-md'>
         <div>
           <img
-            src={sampleFood}
-            className='rounded-t-xl'
+            src={`http://13.52.182.209${img_path}`}
+            className='rounded-t-xl w-[400px] h-[300px] object-cover'
             alt='sample img'
           />
           <div>
