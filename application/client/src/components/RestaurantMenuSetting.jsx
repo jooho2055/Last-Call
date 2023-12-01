@@ -12,10 +12,11 @@ const {name, original_price, price, quantity, id, restaurant_id, description} = 
 const myData = {restaurantId: restaurant_id, menuId: id};  
 const handleDetele = async(e)=>{
     e.preventDefault();
-    console.log('Delete button clicked');
+    console.log(myData);
      fetch('http://13.52.182.209/restaurants/menu/delete', 
-     {method: 'DELETE',
-     headers: { 
+     {
+      method: 'DELETE',
+      headers: { 
       'Content-Type': 'application/json'
      },
      body: JSON.stringify(myData)
