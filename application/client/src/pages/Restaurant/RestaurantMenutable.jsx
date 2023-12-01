@@ -29,6 +29,7 @@ export default function RestaurantMenutable() {
     const MenuList = useQuery({
       queryKey: ["MenuLists"],
       queryFn: () => getMenuTable(id),
+	  refetchInterval:1000,
     })
     const createMenuMutation = useMutation({
       mutationFn: createNewMenu,
@@ -105,10 +106,10 @@ export default function RestaurantMenutable() {
 			  name: menuInput.fname,
 			  desc: menuInput.description,
 		  });
-            console.log(menuResponse);
+            console.log(menuResponse.menuId);
 			const formData = new FormData();
 			formData.append('file', file);
-
+			formData.append('menuId', menuResponse.menuId);
             axios.post('http://13.52.182.209/restaurants/menus/image', formData, {
 				headers: {
 					'Content-Type': 'multipart/form-data'
