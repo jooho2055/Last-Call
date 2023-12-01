@@ -43,7 +43,7 @@ const updatRestProfile = "UPDATE restaurants SET username = ?, email = ?, phone 
 
 const updateRestImgById = "UPDATE restaurants SET img_path=?, updated_at = NOW() WHERE id = ?;"
 
-// const updateMenuImgById = "UPDATE menus SET img_path=? WHERE id = ?;"
+const updateMenuImgById = "UPDATE menus SET img_path=? WHERE id = ?;"
 
 const updateMenuInfo = "UPDATE menus SET name = ?, price = ?, quantity = ?, original_price = ?, status = 1, description = ? WHERE id = ?;"
 
@@ -65,5 +65,5 @@ module.exports = {getCurrentOrdersById, getMenusByRestId, getInvoicesByCustId, g
     getCustomerById, getRestaurantsById,getRestInfoById,updatRestProfile,updateRestImgById,addMenu,getMenuById,
     deleteCartsByMenuId,getOrdersByMenuId,deleteOrdersByMenuId,deleteMenuById,updateMenuQuantityById,getRestCurrentOrdersById,
     getPastOrdersByInvoiceId,getCustCartsById,getCartsByCustId,addInvoice,addOrder,deleteCartById,getCartsByCustMenuId,
-    updateCartItemById,addCart,updateMenuInfo
+    updateCartItemById,addCart,updateMenuInfo,updateMenuImgById
 }
