@@ -23,6 +23,9 @@ module.exports = {
 			xl: { max: '1279px' },
 			// => @media (max-width: 1279px) { ... }
 
+			'2lg': { max: '1175px' },
+			// => @media (max-width: 1175px) { ... }
+
 			lg: { max: '1023px' },
 			// => @media (max-width: 1023px) { ... }
 
@@ -36,5 +39,5 @@ module.exports = {
 			// => @media (max-width: 585px) { ... }
 		},
 	},
-	plugins: [],
+	plugins: [require('@tailwindcss/aspect-ratio')],
 };
