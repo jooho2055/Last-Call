@@ -149,8 +149,24 @@ DEBUG_CART_ADD = {
  * @method POST
  */
 router.post('/order/cart/add', /*isLoggedIn, isCustomers,*/ async function(req,res){
-    const {customerId, menuId, restaurantId, quantity} = req.body
+    let {customerId, menuId, restaurantId, quantity} = req.body
     
+    if(typeof(customerId) === "string"){
+      customerId = parseInt(customerId)
+    }
+
+    if(typeof(menuId) === "string"){
+      menuId = parseInt(menuId)
+    }
+
+    if(typeof(restaurantId) === "string"){
+      restaurantId = parseInt(restaurantId)
+    }
+
+    if(typeof(quantity) === "string"){
+      quantity = parseInt(quantity)
+    }
+
     // const {customerId, menuId, restaurantId, quantity} = DEBUG_CART_ADD;
     // if(req.session.user.userId !== customerId){
     //     return res.status(400).json({message: "wrong access!"})
