@@ -1,34 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import { inputForRestaurant, optionsForState, optionsForCuisine } from '../utils/resProfile';
+import { useQuery } from '@tanstack/react-query';
 import FormInput from '../components/FormInput';
 import Select from 'react-select';
-
-const testinput = {
-  id: '1',
-  username: 'Test1',
-  email: 'Test@gmail.com',
-  phone: '4151231234',
-  rname: 'Testname',
-  street: 'address_s',
-  city: 'testcity',
-  zip: '90000',
-  state: 'CA',
-  cuisine: 'cafe',
-};
+import {fetchRestaurantsProfile} from '../apis/get';
+import { useSelector } from 'react-redux';
 
 export default function RestaurantProfile() {
+  const user = useSelector((state) => state.user);
+  const profileData = useQuery({
+    queryKey: ["profileData"],
+    queryFn: () => fetchRestaurantsProfile(18),
+  })
+  console.log(profileData.data);
+ 
   const [inputValues, setInputValues] = useState({
-    username: testinput.username,
-    pwd: '',
-    cpwd: '',
-    email: testinput.email,
-    phone: testinput.phone,
-    rname: testinput.rname,
-    street: testinput.street,
-    city: testinput.city,
-    zip: testinput.zip,
-    state: testinput.state,
-    cuisine: testinput.cuisine,
+    username: profileData.data.username,
+    pwd: profileData.data.password,
+    cpwd: profileData.data.password,
+    email: profileData.data.email,
+    phone: profileData.data.phone,
+    rname: profileData.data.name,
+    street: profileData.data.address,
+    city: profileData.data.city,
+    zip: profileData.data.zipcode,
+    state: profileData.data.state,
+    cuisine: profileData.data.cuisine,
   });
 
   const [validity, setValidity] = useState({
@@ -115,17 +112,44 @@ export default function RestaurantProfile() {
     return true;
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    
     if (formModified) {
       localStorage.setItem('restaurantProfile', JSON.stringify(inputValues));
-      console.log(inputValues);
-      setFormModified(false);
-      setSubmissionSuccess(true);
-
-      setTimeout(() => {
-        setSubmissionSuccess(false);
-      }, 3000); // Adjust the time as needed
+  
+      try {
+        const response = await fetch("http://13.52.182.209/restaurants/profile/update", {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json", // Set the content type to JSON
+          },
+          body: JSON.stringify({
+            id: 18,
+            username: inputValues.username,
+            phone: inputValues.phone,
+            email: inputValues.email,
+            restName: inputValues.rname,
+            street: inputValues.street,
+            city: inputValues.city,
+            zipcode: inputValues.zip,
+            state: inputValues.state,
+            cuisine: inputValues.cuisine
+          }),
+        });
+  
+        const result = await response.json();
+        console.log("Success:", result);
+  
+        setFormModified(false);
+        setSubmissionSuccess(true);
+  
+        setTimeout(() => {
+          setSubmissionSuccess(false);
+        }, 3000); // Adjust the time as needed
+      } catch (error) {
+        console.error("Error:", error);
+      }
     }
   };
 
