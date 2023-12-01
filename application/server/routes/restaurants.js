@@ -100,6 +100,12 @@ router.get(`/profile/:id(\\d+)`, /*isLoggedIn, isRestaurants, isMyPage,*/
     }
 )
 
+TEST_ADD_MENU = {
+    restaurantId: 1,
+    price: 5,
+    originalPrice: 10,
+    name: "TEST",
+}
 /**
  *  To add new menu for restaurant 
  *  @Post
@@ -109,7 +115,20 @@ router.get(`/profile/:id(\\d+)`, /*isLoggedIn, isRestaurants, isMyPage,*/
  *  @method POST
  */
 router.post('/menu/add', /*isLoggedIn, isRestaurants,*/ async (req,res)=>{
-    const {restaurantId, price, originalPrice, name} = req.body
+    let {restaurantId, price, originalPrice, name} = req.body
+    // let {restaurantId, price, originalPrice, name} = TEST_ADD_MENU
+    if(typeof(restaurantId) === "string"){
+        restaurantId = parseInt(restaurantId)
+    }
+
+    if(typeof(price) === "string"){
+        price = parseFloat(price)
+    }
+
+    if(typeof(originalPrice) === "string"){
+        originalPrice = parseFloat(originalPrice)
+    }
+
     let { desc } = req.body
     
     // TEST
@@ -135,12 +154,13 @@ router.post('/menu/add', /*isLoggedIn, isRestaurants,*/ async (req,res)=>{
 
         // add menu
         const [ newMenu, resultField ] = await db.execute(addMenu,[restaurantId,price,originalPrice,name,desc])
-        
+        console.log(newMenu)
+        console.log(resultField)
         if(newMenu && newMenu.affectedRows !== 1){
             return res.status(400).json({meesage: 'fail to add menu'})
         }
 
-        return res.status(200).json({message:"new menu is added!"})
+        return res.status(200).json({message:"new menu is added!", menuId:newMenu.insertId})
     }catch(err){
         return res.status(400).json({message: "fail to add menu"})
     }
@@ -166,6 +186,10 @@ router.get(`/menu/list/:id(\\d+)`, /*isLoggedIn,*/ async function(req,res){
     }
 })
 
+TEST_DELETE = {
+    restaurantId:"1",
+    menuId: 16
+}
 /**
  * To delete menu
  * @body hold restaurantId, menuId (menu are you going to delete)
@@ -173,13 +197,20 @@ router.get(`/menu/list/:id(\\d+)`, /*isLoggedIn,*/ async function(req,res){
  * @method DELETE
  */
 router.delete('/menu/delete', /*isLoggedIn, isRestaurants,*/ async function(req,res){
-    const {restaurantId, menuId} = req.body
-    
+    let {restaurantId, menuId} = req.body
+    // let {restaurantId, menuId} = TEST_DELETE
     // FOR DEBUG
     // const {restaurantId, menuId} = TEST_DELETE_MENU_CORRECT
     // const {restaurantId, menuId} = TEST_DELETE_MENU_CORRECT
     // console.log(restaurantId, menuId)
-    
+    if(typeof(restaurantId) === "string"){
+        restaurantId = parseInt(restaurantId)
+    }
+
+    if(typeof(menuId) === "string"){
+        menuId = parseInt(menuId)
+    }
+
     // check working on same rest
     // if(req.session.user.userId !== restaurantId){
     //     return res.status(400).json({message: "It's not your restaurant"})
@@ -188,17 +219,18 @@ router.delete('/menu/delete', /*isLoggedIn, isRestaurants,*/ async function(req,
     try{
         // get menu from database
         const [ menus, menuField ] = await db.execute(getMenuById,[menuId])
+        
+        const menu = menus[0]
 
         // check menu exists  
-        if(menus.length < 1){
+        if(menus.length < 1 || menu.restaurant_id !== restaurantId){
             return res.status(400).json({message: "menu does not exists"})
         }
 
-        const menu = menus[0]
 
         // check menu owner
-        if( menu.restauranat_id !== restaurantId)
-            return res.status(400).json({message: "This menu is not in your restaurant"})
+        // if( )
+        //     return res.status(400).json({message: "This menu is not in your restaurant"})
 
       
         const deleteCart = await db.execute(deleteCartsByMenuId,[menuId]);
@@ -215,6 +247,14 @@ router.delete('/menu/delete', /*isLoggedIn, isRestaurants,*/ async function(req,
     }
 })
 
+const TEST = {
+    menuId: 3,
+    name: "smaple",
+    quantity: 10,
+    desc: null,
+    price: 15,
+    originalPrice: 300
+}
 /**
  * To edit menu
  * @method PUT
@@ -222,15 +262,19 @@ router.delete('/menu/delete', /*isLoggedIn, isRestaurants,*/ async function(req,
  * @body optional: name, desc, img, quantity, price, originalPrice
  * @path /restaurants/menu/edit
  */
-router.put(`/menu/edit`, /*isLoggedIn, isRestaurants,*/ async function(req,res){
+router.post(`/menu/edit`, /*isLoggedIn, isRestaurants,*/ async function(req,res){
 
-    const {menuId, name, desc, quantity, price, originalPrice} = req.body
-
+    let {menuId, name, desc, quantity, price, originalPrice} = req.body
+    // let {menuId, name, desc, quantity, price, originalPrice} = TEST;
     try{
         const [menus] = await db.execute(getMenuById,[menuId]);
 
-        if(menu.length < 1){
+        if(menus.length < 1){
             return res.status(400).json({message: "menu does not exist"})
+        }
+        
+        if(!desc || desc.length < 0){
+            desc = null;
         }
 
         const [update, updateField] = await db.execute(updateMenuInfo,[name,price,quantity,originalPrice,desc,menuId])
