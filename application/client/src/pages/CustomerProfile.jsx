@@ -4,11 +4,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import { SET_USER_DATA } from '../redux/userActions2';
 import ProfileInput from '../components/ProfileInput';
 import { inputsUserProfile } from '../utils/cusProfile';
+import { setUserProfile } from '../redux/userActions2';
 
 const BASE_URL = 'http://13.52.182.209';
 
 export default function CustomerProfile() {
   const dispatch = useDispatch();
+  const userData = useSelector(state => state.user);
 
   const [inputValues, setInputValues] = useState({
     username: '',
@@ -20,6 +22,7 @@ export default function CustomerProfile() {
     phone: '',
     bio: '',
   });
+
 
   const [validity, setValidity] = useState({
     username: true,
@@ -40,29 +43,30 @@ export default function CustomerProfile() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get(`${BASE_URL}/customers/getUserProfile/?username=qwaszx`);
-    
+        const response = await axios.get(`${BASE_URL}/customers/getUserProfile/?username=${userData.username}`);
+
         const contentType = response.headers['content-type'];
-    
+
         if (contentType && contentType.includes('application/json')) {
-          const userData = response.data;
-          console.log('Fetched User Data:', userData);
-        
-          // Set the fetched user data in the state, including password-related fields
+          const fetchedUserData = response.data;
+          console.log('Fetched User Data:', fetchedUserData);
+
+          dispatch(setUserProfile(fetchedUserData));
+
           setInputValues({
-            username: userData.username || '',
-            fname: userData.fname || '',
-            lname: userData.lname || '',
-            email: userData.email || '',
-            pwd: userData.pwd || '', // Include password fields
-            cpwd: userData.cpwd || '', // Include confirm password fields
-            phone: userData.phone || '',
-            bio: userData.bio || '',
+            username: fetchedUserData.username || '',
+            fname: fetchedUserData.fname || '',
+            lname: fetchedUserData.lname || '',
+            email: fetchedUserData.email || '',
+            pwd: fetchedUserData.pwd || '',
+            cpwd: fetchedUserData.cpwd || '',
+            phone: fetchedUserData.phone || '',
+            bio: fetchedUserData.bio || '',
           });
         } else if (contentType && contentType.includes('text/html')) {
           const htmlData = response.data;
           console.log('HTML Response:', htmlData);
-          setHtmlResponse(htmlData); // Store the HTML response in state
+          setHtmlResponse(htmlData);
         } else {
           console.error('Unsupported Content Type:', contentType);
         }
@@ -71,13 +75,13 @@ export default function CustomerProfile() {
         if (error.response && error.response.data) {
           const htmlData = error.response.data;
           console.log('HTML Response:', htmlData);
-          setHtmlResponse(htmlData); // Store the HTML response in state
+          setHtmlResponse(htmlData);
         }
       }
     };
 
     fetchUserData();
-  }, []); 
+  }, [dispatch, userData.username]);
 
   const isSubmitDisabled =
     !Object.values(validity).every((isValid) => isValid) ||
@@ -134,25 +138,25 @@ export default function CustomerProfile() {
 
   const handleSave = (e) => {
     e.preventDefault();
-    console.log('Request Payload:', inputValues); // Log the payload
+    console.log('Request Payload:', inputValues);
+
     const editProfileUrl = `${BASE_URL}/customers/edit`;
 
     axios
       .post(editProfileUrl, inputValues)
       .then((response) => {
         const updatedUserData = response.data;
-        dispatch({ type: SET_USER_DATA, payload: updatedUserData });
+
+        dispatch(setUserProfile(updatedUserData));
+
         setSuccessMessage('Profile updated successfully!');
         setTimeout(() => {
           setSuccessMessage('');
         }, 5000);
       })
-      .catch
       .catch((error) => {
         console.error('Error updating user profile:', error);
-        setErrorMsg(
-          'An error occurred while updating your profile. Please try again later.'
-        );
+        setErrorMsg('An error occurred while updating your profile. Please try again later.');
       });
   };
 
@@ -165,7 +169,6 @@ export default function CustomerProfile() {
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          // Only call handleSave when in edit mode
         }}
         className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-1/2 mx-auto">
         <h1 className="text-2xl mb-4 text-center font-semibold text-gray-700">
