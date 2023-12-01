@@ -293,9 +293,9 @@ router.post(`/menu/edit`, /*isLoggedIn, isRestaurants,*/ async function(req,res)
  * @Method POST
  */
 router.post('/menus/image' ,menuUpload.single('file'), async(req,res)=>{    
-    const {path} = req.file
+    const {filename} = req.file
     const {menuId} = req.body
-
+    const path = "/menusimg/" + filename;
     try{
         const [result, field] = await db.execute(updateMenuImgById,[path,menuId]);
 
