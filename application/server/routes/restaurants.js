@@ -196,9 +196,9 @@ TEST_DELETE = {
  * @path `/restaurants/menu/delete`
  * @method DELETE
  */
-router.get('/menu/delete', /*isLoggedIn, isRestaurants,*/ async function(req,res){
-    // let {restaurantId, menuId} = req.body
-    let {restaurantId, menuId} = TEST_DELETE
+router.delete('/menu/delete', /*isLoggedIn, isRestaurants,*/ async function(req,res){
+    let {restaurantId, menuId} = req.body
+    // let {restaurantId, menuId} = TEST_DELETE
     // FOR DEBUG
     // const {restaurantId, menuId} = TEST_DELETE_MENU_CORRECT
     // const {restaurantId, menuId} = TEST_DELETE_MENU_CORRECT

@@ -73,7 +73,7 @@ router.get(`/order/cart/:id(\\d+)`, /*isLoggedIn, isCustomers, isMyPage,*/ async
     try{
         const [results, _ ] = await db.execute(getCustCartsById, [id])
         if(results.length < 1){
-            return res.status(400).json({message: "cart is empty"})
+            return res.status(200).json({orders: []})
         }
         
         return res.status(200).json({orders: results})
