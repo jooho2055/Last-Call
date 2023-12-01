@@ -15,17 +15,17 @@ export default function RestaurantProfile() {
   console.log(profileData.data);
  
   const [inputValues, setInputValues] = useState({
-    username: profileData.data.username,
-    pwd: profileData.data.password,
-    cpwd: profileData.data.password,
-    email: profileData.data.email,
-    phone: profileData.data.phone,
-    rname: profileData.data.name,
-    street: profileData.data.address,
-    city: profileData.data.city,
-    zip: profileData.data.zipcode,
-    state: profileData.data.state,
-    cuisine: profileData.data.cuisine,
+    username:'',
+    pwd:'',
+    cpwd:'',
+    email:'',
+    phone:'',
+    rname:'',
+    street:'',
+    city:'',
+    zip:'',
+    state:'',
+    cuisine:'',
   });
 
   const [validity, setValidity] = useState({
