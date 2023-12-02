@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useState } from 'react';
 import { deleteOneMenuCart } from '../apis/delete';
 import { editQuantityInCart } from '../apis/put';
@@ -19,7 +19,6 @@ export default function CartMenu({ CartMenuInfo, userId }) {
 		restaurant,
 	} = CartMenuInfo;
 	const [quantityUserSelect, setQuantityUserSelect] = useState(quantity);
-	const [pendingQuantity, setPendingQuantity] = useState(quantity);
 	const queryClient = useQueryClient();
 
 	const deleteOneMenuMutation = useMutation({
@@ -33,19 +32,9 @@ export default function CartMenu({ CartMenuInfo, userId }) {
 		mutationFn: ({ cartId, quantity }) => editQuantityInCart({ cartId, quantity }),
 		onSuccess: () => {
 			queryClient.invalidateQueries(['cartMenuLists']);
-			setQuantityUserSelect(quantity);
+			// setQuantityUserSelect(quantity); // Update the state here after successful mutation
 		},
 	});
-
-	useEffect(() => {
-		if (quantityUserSelect !== pendingQuantity) {
-			setQuantityUserSelect(pendingQuantity);
-			editQuantity.mutate({
-				cartId: cart_id,
-				quantity: pendingQuantity,
-			});
-		}
-	}, [pendingQuantity, cart_id, editQuantity, quantityUserSelect]);
 
 	const handleDeleteOne = () => {
 		deleteOneMenuMutation.mutate({
@@ -55,14 +44,60 @@ export default function CartMenu({ CartMenuInfo, userId }) {
 	};
 
 	const handleDecrement = () => {
-		const newQuantity = quantityUserSelect > 1 ? quantityUserSelect - 1 : 1;
-		setPendingQuantity(newQuantity); // Set pending quantity instead of directly setting quantityUserSelect
+		if (quantityUserSelect > 1) {
+			setQuantityUserSelect((prevQuantity) => {
+				const newQuantity = prevQuantity - 1;
+				// Call the mutation inside this callback
+				editQuantity.mutate({
+					cartId: cart_id,
+					quantity: newQuantity,
+				});
+				return newQuantity;
+			});
+		}
 	};
 
+	// const handleDecrement = () => {
+	// 	// Only decrease if quantity is greater than 1
+	// 	if (quantityUserSelect > 1) {
+	// 		const newQuantity = quantityUserSelect - 1;
+	// 		setQuantityUserSelect(newQuantity); // Update state
+
+	// 		// Call the mutation
+	// 		editQuantity.mutate({
+	// 			cartId: cart_id,
+	// 			quantity: newQuantity,
+	// 		});
+	// 	}
+	// };
+
 	const handleIncrement = () => {
-		const newQuantity = quantityUserSelect < leftover ? quantityUserSelect + 1 : leftover;
-		setPendingQuantity(newQuantity); // Set pending quantity instead of directly setting quantityUserSelect
+		if (quantityUserSelect < leftover) {
+			setQuantityUserSelect((prevQuantity) => {
+				const newQuantity = prevQuantity + 1;
+				// Call the mutation inside this callback
+				editQuantity.mutate({
+					cartId: cart_id,
+					quantity: newQuantity,
+				});
+				return newQuantity;
+			});
+		}
 	};
+
+	// const handleIncrement = () => {
+	// 	// Only increase if quantity is less than leftover
+	// 	if (quantityUserSelect < leftover) {
+	// 		const newQuantity = quantityUserSelect + 1;
+	// 		setQuantityUserSelect(newQuantity); // Update state
+
+	// 		// Call the mutation
+	// 		editQuantity.mutate({
+	// 			cartId: cart_id,
+	// 			quantity: newQuantity,
+	// 		});
+	// 	}
+	// };
 
 	return (
 		<li className='flex justify-between shadow-[6.0px_9.0px_9.0px_rgba(0,0,0,0.30)] rounded-lg'>
