@@ -2,7 +2,8 @@ import React from 'react';
 import { useState } from 'react';
 
 export default function CartMenu({ CartMenuInfo }) {
-	const { name, description, img_path, quantity, original_price, price } = CartMenuInfo;
+	const { name, description, img_path, quantity, original_price, price, restaurant } =
+		CartMenuInfo;
 	const [quantityUserSelect, setQuantityUserSelect] = useState(quantity);
 
 	const handleDecrement = () => {
@@ -17,7 +18,7 @@ export default function CartMenu({ CartMenuInfo }) {
 		}
 	};
 	return (
-		<li className='flex justify-between mb-14 shadow-[6.0px_9.0px_9.0px_rgba(0,0,0,0.30)] rounded-lg'>
+		<li className='flex justify-between shadow-[6.0px_9.0px_9.0px_rgba(0,0,0,0.30)] rounded-lg'>
 			<div className='flex'>
 				<div className='relative'>
 					<img
@@ -33,10 +34,11 @@ export default function CartMenu({ CartMenuInfo }) {
 				</div>
 
 				<div className='pl-3 min-w-[15rem] flex flex-col justify-between pr-10'>
-					<div className='flex flex-col text-xl font-medium'>
-						<span className=''>{name}</span>
+					<div className='flex flex-col font-medium'>
+						<span className='text-xl'>{restaurant}</span>
+						<span className='mt-2 text-lg'>{name}</span>
 					</div>
-					<div className='pb-16 pl-10'>
+					<div className='pb-10 pl-10'>
 						<span className='block mb-1'>Discounted Price: </span>
 						<span className='line-through mr-1 ml-6'>{original_price}</span>
 						<span className='font-bold text-orange-700'>

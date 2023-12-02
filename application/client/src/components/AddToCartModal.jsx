@@ -69,7 +69,7 @@ export default function AddToCartModal({
 		addToCartMutation.mutate({
 			menuId: id,
 			customerId: userId,
-			restaurantId: restaurantKey,
+			restaurantId: parseInt(restaurantKey),
 			quantity: quantityUserSelect,
 		});
 		adjustQuantity();
