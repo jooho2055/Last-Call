@@ -108,7 +108,7 @@ export default function AddToCartModal({
 						</div>
 					</div>
 					<div className='text-orange-700 font-medium mt-5 text-2xl text-center'>
-						<strong>{discountPercent}</strong> % OFF DEALS
+						<strong>{discountPercent.toFixed(0)}</strong> % OFF DEALS
 					</div>
 					<div className='mt-5 pl-5'>
 						You can select the item up to <strong>{quantityForModal}</strong>

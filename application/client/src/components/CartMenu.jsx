@@ -1,22 +1,69 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
+import { deleteOneMenuCart } from '../apis/delete';
+import { editQuantityInCart } from '../apis/put';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import BtnForCustomer from './BtnForCustomer';
 
-export default function CartMenu({ CartMenuInfo }) {
-	const { name, description, img_path, quantity, original_price, price, restaurant } =
-		CartMenuInfo;
+export default function CartMenu({ CartMenuInfo, userId }) {
+	const {
+		id,
+		cart_id,
+		name,
+		description,
+		img_path,
+		quantity,
+		original_price,
+		price,
+		leftover,
+		restaurant,
+	} = CartMenuInfo;
 	const [quantityUserSelect, setQuantityUserSelect] = useState(quantity);
+	const [pendingQuantity, setPendingQuantity] = useState(quantity);
+	const queryClient = useQueryClient();
+
+	const deleteOneMenuMutation = useMutation({
+		mutationFn: ({ menuId, customerId }) => deleteOneMenuCart({ menuId, customerId }),
+		onSuccess: () => {
+			queryClient.invalidateQueries(['cartMenuLists']);
+		},
+	});
+
+	const editQuantity = useMutation({
+		mutationFn: ({ cartId, quantity }) => editQuantityInCart({ cartId, quantity }),
+		onSuccess: () => {
+			queryClient.invalidateQueries(['cartMenuLists']);
+			setQuantityUserSelect(quantity);
+		},
+	});
+
+	useEffect(() => {
+		if (quantityUserSelect !== pendingQuantity) {
+			setQuantityUserSelect(pendingQuantity);
+			editQuantity.mutate({
+				cartId: cart_id,
+				quantity: pendingQuantity,
+			});
+		}
+	}, [pendingQuantity, cart_id, editQuantity, quantityUserSelect]);
+
+	const handleDeleteOne = () => {
+		deleteOneMenuMutation.mutate({
+			menuId: id,
+			customerId: userId,
+		});
+	};
 
 	const handleDecrement = () => {
-		if (1 < quantityUserSelect) {
-			setQuantityUserSelect((prev) => prev - 1);
-		}
+		const newQuantity = quantityUserSelect > 1 ? quantityUserSelect - 1 : 1;
+		setPendingQuantity(newQuantity); // Set pending quantity instead of directly setting quantityUserSelect
 	};
 
 	const handleIncrement = () => {
-		if (quantityUserSelect < quantity) {
-			setQuantityUserSelect((prev) => prev + 1);
-		}
+		const newQuantity = quantityUserSelect < leftover ? quantityUserSelect + 1 : leftover;
+		setPendingQuantity(newQuantity); // Set pending quantity instead of directly setting quantityUserSelect
 	};
+
 	return (
 		<li className='flex justify-between shadow-[6.0px_9.0px_9.0px_rgba(0,0,0,0.30)] rounded-lg'>
 			<div className='flex'>
@@ -48,19 +95,28 @@ export default function CartMenu({ CartMenuInfo }) {
 				</div>
 			</div>
 
-			<div className='text-center flex justify-center items-center mr-10'>
-				<span className='mr-5 font-medium'>Quantity: </span>
-				<button className='border-y-2 h-7 w-7 bg-stone-300' onClick={handleDecrement}>
-					-
-				</button>
-				<div className='border-2 h-7 w-7 font-bold'>{quantityUserSelect}</div>
-				<button className='border-y-2 h-7 w-7 bg-stone-300' onClick={handleIncrement}>
-					+
-				</button>
+			<div className='flex flex-col justify-center'>
+				<div className='ml-8 text-base text-green-800 font-bold pl-2 pb-3'>
+					[ Only {leftover} left ]
+				</div>
+				<div className='text-center flex justify-center items-center mr-10'>
+					<span className='mr-5 font-medium'>Quantity: </span>
+					<button className='border-y-2 h-7 w-7 bg-stone-300' onClick={handleDecrement}>
+						-
+					</button>
+					<div className='border-2 h-7 w-7 font-bold'>{quantityUserSelect}</div>
+					<button className='border-y-2 h-7 w-7 bg-stone-300' onClick={handleIncrement}>
+						+
+					</button>
+				</div>
 			</div>
-			<button className='bg-primary mr-14 my-[4.30rem] px-3 rounded-lg text-stone-100 font-medium'>
+
+			<BtnForCustomer
+				onClick={handleDeleteOne}
+				className='bg-primary mr-14 my-[4.30rem] px-3 rounded-lg text-stone-100 font-medium'
+			>
 				Delete
-			</button>
+			</BtnForCustomer>
 		</li>
 	);
 }

@@ -4,6 +4,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getCartLists } from '../../apis/get';
 import { useParams } from 'react-router-dom';
 import { deleteAllMenuCart } from '../../apis/delete';
+import { cartCheckout } from '../../apis/post';
 import CartMenu from '../../components/CartMenu';
 import BtnForCustomer from '../../components/BtnForCustomer';
 
@@ -21,10 +22,19 @@ export default function CustomerCart() {
 		queryFn: () => getCartLists(userId),
 	});
 
-	const deleteMutation = useMutation({
+	const deleteAllMenuMutation = useMutation({
 		mutationFn: () => deleteAllMenuCart(userId),
 		onSuccess: () => {
 			queryClient.invalidateQueries(['cartMenuLists']);
+		},
+	});
+
+	const cartCheckoutMutation = useMutation({
+		mutationFn: () => cartCheckout(userId),
+		onSuccess: () => {
+			// Clearing the cart after successful checkout
+			queryClient.invalidateQueries(['cartMenuLists']);
+			setCheckedItems({}); // Clear the checked items
 		},
 	});
 
@@ -33,12 +43,13 @@ export default function CustomerCart() {
 	};
 
 	const handleCheckout = () => {
-		console.log(checkedItems);
-		// Implement the logic to handle checkout with only checked items
+		cartCheckoutMutation.mutate({
+			customerId: userId,
+		});
 	};
 
 	const handleDeleteAll = () => {
-		deleteMutation.mutate({
+		deleteAllMenuMutation.mutate({
 			customerId: userId,
 		});
 	};
@@ -55,16 +66,17 @@ export default function CustomerCart() {
 		}
 		return 0; // Return 0 if data is not loaded yet
 	};
-	const subtotal = calculateSubtotal();
 
 	const calculateTax = (subtotal) => {
 		return subtotal * 0.0863;
 	};
-	const taxes = calculateTax(subtotal);
 
 	const calcutaleTotal = (subtotal, taxes) => {
 		return subtotal + taxes;
 	};
+
+	const subtotal = calculateSubtotal();
+	const taxes = calculateTax(subtotal);
 	const total = calcutaleTotal(subtotal, taxes);
 
 	if (isLoading) {
@@ -78,7 +90,16 @@ export default function CustomerCart() {
 
 	return (
 		<div className='max-w-[80rem] m-auto mt-10'>
-			<div className='text-left text-2xl font-medium'>My Cart</div>
+			<div className='flex justify-between'>
+				<div className='text-2xl font-medium'>My Cart</div>
+				<BtnForCustomer
+					onClick={handleDeleteAll}
+					className='bg-primary px-4 py-2 text-white text-lg font-medium rounded-[2.0rem] shadow-[6.0px_9.0px_9.0px_rgba(0,0,0,0.30)]'
+				>
+					Empty Cart
+				</BtnForCustomer>
+			</div>
+
 			<ul className='flex flex-col mx-28 px-10 pt-10 gap-y-14 lg:mx-12 sm:items-center'>
 				{cartMenuLists.orders.map((item) => (
 					<div key={item.id} className='flex justify-center'>
@@ -91,33 +112,33 @@ export default function CustomerCart() {
 							/>
 						</div>
 
-						<CartMenu CartMenuInfo={item} />
+						<CartMenu CartMenuInfo={item} userId={userId} />
 					</div>
 				))}
 			</ul>
 
-			<div className='max-w-[80rem] m-auto mt-20 mx-20 px-6 py-6 mb-24 bg-slate-100 rounded-lg flex justify-between shadow-[6.0px_9.0px_9.0px_rgba(0,0,0,0.30)]'>
-				<div className='flex flex-col justify-center font-medium text-2xl ml-10 gap-y-3'>
-					<div className='text-xl'>Subtotal</div>
+			<div className='max-w-[80rem] m-auto mt-20 mx-20 px-6 py-6 mb-24  rounded-lg flex justify-between'>
+				<div className='w-28 h-32 flex flex-col justify-center font-medium text-xl gap-y-3 bg-stone-100 rounded-xl text-center ml-10'>
+					<div className='text-lg'>Subtotal</div>
 					<div>${subtotal.toFixed(2)}</div>
 				</div>
 				<div className='flex flex-col justify-center font-medium text-2xl'>+</div>
-				<div className='flex flex-col justify-center font-medium text-2xl gap-y-3'>
-					<div className='text-xl'>Tax</div>
+				<div className='w-28 h-32 flex flex-col justify-center font-medium text-xl gap-y-3 text-center bg-stone-100 rounded-xl'>
+					<div className='text-lg'>Tax</div>
 					<div>${taxes.toFixed(2)}</div>
 				</div>
 				<div className='flex flex-col justify-center font-medium text-2xl'>=</div>
-				<div className='flex flex-col justify-center font-medium text-2xl mr-10 gap-y-3'>
-					<div className='text-xl'>Total</div>
-					<div>${total.toFixed(2)}</div>
+				<div className='w-36 h-32 flex flex-col justify-center font-medium text-xl gap-y-3 bg-stone-100 rounded-xl text-center mr-10'>
+					<div className='text-lg text-center'>Total</div>
+					<div className='text-2xl'>${total.toFixed(2)}</div>
 				</div>
 				{/* <button onClick={handleDeleteAll}>delete all menu</button>
 				 */}
 			</div>
 
-			<div className='text-right mb-10'>
+			<div className='text-right mb-14'>
 				<BtnForCustomer
-					className='bg-primary px-4 py-3 text-white text-lg font-medium rounded-3xl shadow-[6.0px_9.0px_9.0px_rgba(0,0,0,0.30)]'
+					className='bg-primary px-7 py-5 text-white text-xl font-medium rounded-[2.0rem] shadow-[6.0px_9.0px_9.0px_rgba(0,0,0,0.30)]'
 					onClick={handleCheckout}
 				>
 					Checkout Selected Items
