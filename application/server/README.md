@@ -55,6 +55,11 @@
     - @body must contain menuId
     - @body optional: name, desc, img, quantity, price, originalPrice
 
+10. Path: */restaurants/order/confirm*
+ - To confirm current orders for restaurants
+ - @method PUT
+ - @body orderIds (array of order_ids, ex)[1,3,5])
+
 ## CUSTOMERS:
 
 1. Path:   */customers/order/current/:id(\\d+)*
