@@ -7,7 +7,7 @@ const multer = require('multer')
 const {customerStorage} = require('../conf/multer')
 const customerUpload = multer({ storage: customerStorage });
 const {getCurrentOrdersById,getInvoicesByCustId,getCustCartsById,getCartsByCustId,getMenuById,addInvoice,
-  addOrder,deleteCartById,getCartsByCustMenuId,updateCartItemById,addCart
+  addOrder,deleteCartById,getCartsByCustMenuId,updateCartItemById,addCart,getRestInfoById,getPastOrdersByInvoiceId
 } = require('../conf/queries')
 
 /**
@@ -21,10 +21,11 @@ router.get(`/order/current/:id(\\d+)`, /*isLoggedIn, isCustomers, isMyPage,*/  a
     try{
         const [results, _ ] = await db.execute(getCurrentOrdersById,[id]);
         if(results.length < 1){
-          return res.status(400).json({message: "no current orders"})
+          return res.status(200).json({orders: []})
         }
+        const [restaurant, restaurantField] = await db.execute(getRestInfoById, [results[0].restaurant_id])
         console.log(results)
-        return res.status(200).json(results)
+        return res.status(200).json({orders: results,restaurants: restaurant})
     }catch(err){
         console.log(err)
         return res.status(400).json({message: "fail to get current order"})
@@ -44,18 +45,24 @@ router.get(`/order/past/:id(\\d+)`, /*isLoggedIn, isCustomers, isMyPage,*/ async
         if(results.length < 1){
             return res.status(400).json({message: "no results"})
         }
+        // console.log(results)
+
         let orderHistory = []
+        let restaurants = []
         const orderHis = results.map(async (res,count)=>{
             const [orders, _ ] = await db.execute(getPastOrdersByInvoiceId, [res.id])
-            if(orders.length>1){
+            // console.log(orders)
+            if(orders.length>0){
               orderHistory.push(orders);
+              const [restaurant] = await db.execute(getRestInfoById, [orders[0].restaurant_id])
+              restaurants.push(restaurant)
             }
         })
         await Promise.all(orderHis)
-        
+        console.log(orderHistory.length)
         // console.log(orderHistory.length)
 
-        return res.status(200).json({orders: orderHistory})
+        return res.status(200).json({orders: orderHistory, restaurants: restaurants})
     }catch(err){
        console.log(err)
         return res.status(400).json({message: "fail to get current order"})
