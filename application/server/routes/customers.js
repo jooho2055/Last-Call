@@ -124,6 +124,7 @@ router.post(`/order/cart/checkout`, /*isLoggedIn, isCustomers,*/ async function(
 
         const moveCart = carts.map(async (item,i)=>{
           const [addOrders] = await db.execute(addOrder,[item.menu_id,customerId,invoice_id,item.quantity])
+          const [subtMenuQuan] = await db.execute(`UPDATE menus SET quantity = ( quantity - ? ) WHERE id = ?`,[item.quantity, item.menu_id])
           const [deleteCart] = await db.execute(deleteCartById,[item.id])
         })
         await Promise.all(moveCart)
