@@ -39,6 +39,7 @@ export default function CustomerSearchDetail() {
 		queryFn: () => fetchSearchboxRestaurants(searchId),
 		enabled: !!searchId,
 		keepPreviousData: true,
+		staleTime: 100000,
 	});
 
 	const handleSubmit = (e) => {

@@ -26,6 +26,7 @@ export default function CustomerRestCurrentMenu() {
 		queryKey: ['restaurantInfo', id],
 		queryFn: () => fetchRestaurantInfo(id),
 		enabled: !!id,
+		staleTime: 240000,
 	});
 
 	if (isMenuLoading || isInfoLoading) {

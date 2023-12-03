@@ -33,7 +33,7 @@ export default function CustomerHome() {
 		// use query to fetch data from DB, the key is different from the key in search box
 		queryKey: ['restaurants'],
 		queryFn: fetchRestaurants,
-		staleTime: 60000,
+		staleTime: 120000,
 	});
 
 	const handleSubmit = (e) => {
