@@ -134,3 +134,13 @@ export const getCartLists = async (customerId) => {
 };
 
 
+
+export const fetchRestaurantsProfile = async (id) =>{
+	try{
+		const response = await axios.get(`http://13.52.182.209/restaurants/profile/${id}`);
+		return response.data;
+	}catch (error) {
+		console.error('Error fetching restaurants:', error);
+		throw error;
+	}
+}
