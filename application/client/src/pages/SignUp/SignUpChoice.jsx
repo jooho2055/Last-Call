@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import BtnForRegister from '../../components/BtnForRegister';
-import FooterForLogin from '../../components/FooterForLogin';
 
 export default function SignUpChoice() {
 	return (

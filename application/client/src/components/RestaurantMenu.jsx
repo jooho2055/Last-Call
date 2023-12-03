@@ -35,7 +35,7 @@ export default function RestaurantMenu({ restarantmenuInfo, userInfo, restaurant
 						</div>
 
 						<div className='text-sm text-gray-500 pl-1 pt-1 sx:hidden'>
-							The food is made by chicken asdfasdf asdfasdf asdfasdf
+							{description}
 						</div>
 					</div>
 					<div className='pb-1 pl-1'>

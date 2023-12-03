@@ -2,7 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import { deleteOneMenuCart } from '../apis/delete';
 import { editQuantityInCart } from '../apis/put';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import BtnForCustomer from './BtnForCustomer';
 
 export default function CartMenu({ CartMenuInfo, userId }) {

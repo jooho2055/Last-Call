@@ -1,5 +1,4 @@
 import React from 'react';
-import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getCartLists } from '../../apis/get';
 import { useParams } from 'react-router-dom';

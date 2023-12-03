@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
-import React, { useState } from 'react';
 import { fetchRestaurantAvailableMenu, fetchRestaurantInfo } from '../../apis/get';
-import { useLocation, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import RestaurantMenu from '../../components/RestaurantMenu';
 
