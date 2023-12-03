@@ -25,7 +25,7 @@ router.get(`/order/current/:id(\\d+)`, /*isLoggedIn, isCustomers, isMyPage,*/  a
         }
         const [restaurant, restaurantField] = await db.execute(getRestInfoById, [results[0].restaurant_id])
         console.log(results)
-        return res.status(200).json({orders: results,restaurants: restaurant})
+        return res.status(200).json({orders: results,restaurants: restaurant[0]})
     }catch(err){
         console.log(err)
         return res.status(400).json({message: "fail to get current order"})
@@ -55,7 +55,7 @@ router.get(`/order/past/:id(\\d+)`, /*isLoggedIn, isCustomers, isMyPage,*/ async
             if(orders.length>0){
               orderHistory.push(orders);
               const [restaurant] = await db.execute(getRestInfoById, [orders[0].restaurant_id])
-              restaurants.push(restaurant)
+              restaurants.push(restaurant[0])
             }
         })
         await Promise.all(orderHis)
