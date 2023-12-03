@@ -2,7 +2,7 @@ import React from 'react';
 import { Card as RestCard } from 'semantic-ui-react';
 
 export default function RestaurantList({ restaurantInfo }) {
-	const { name, location, cuisine, status } = restaurantInfo;
+	const { name, cuisine, status } = restaurantInfo;
 
 	return (
 		<RestCard className='w-full'>

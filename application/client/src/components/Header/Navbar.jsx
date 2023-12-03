@@ -3,15 +3,11 @@ import { Link, useLocation } from 'react-router-dom';
 
 import Dropdown from './Dropdown';
 import lastcall from '../../images/lastcall.png';
-
-const navigation = [
-	{ name: 'Home', href: '/home', current: true },
-	{ name: 'Order', href: '/order', current: false },
-	{ name: 'About Us', href: '/AboutUs', current: false },
-];
+import { useSelector } from 'react-redux';
 
 export default function Navbar() {
 	// const [isSignIn, setIsSignin] = useState(false);
+	const user = useSelector((state) => state.user);
 
 	const { pathname } = useLocation();
 	const isLandingPage = pathname === '/';
@@ -19,6 +15,12 @@ export default function Navbar() {
 	const isSignup = pathname === '/signup';
 	const isSignupCustomer = pathname === '/signup/customer';
 	const isSignupRestaurant = pathname === '/signup/restaurant';
+
+	const navigation = [
+		{ name: 'Home', href: '/home', current: true },
+		{ name: 'Order', href: `/order/${user.userId}`, current: false },
+		{ name: 'About Us', href: '/AboutUs', current: false },
+	];
 
 	const showNavItems =
 		!isSignin && !isSignup && !isLandingPage && !isSignupCustomer && !isSignupRestaurant;

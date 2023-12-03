@@ -132,3 +132,16 @@ export const getCartLists = async (customerId) => {
 		throw error;
 	}
 };
+
+export const customerGetCurrentOrder = async (customerId) => {
+	try {
+		console.log('fetching');
+		const response = await axios.get(
+			`http://13.52.182.209/customers/order/current/${customerId}`
+		);
+		return response.data;
+	} catch (error) {
+		console.error('Error fetching current order:', error);
+		throw error;
+	}
+};

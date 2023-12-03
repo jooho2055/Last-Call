@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet, useLocation, Link, useNavigate, useParams } from 'react-router-dom';
+import { Outlet, useLocation, Link } from 'react-router-dom';
 import { BsCartCheck } from 'react-icons/bs';
 import { useSelector } from 'react-redux';
 import Navbar from '../components/Header/Navbar';

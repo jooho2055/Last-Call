@@ -9,7 +9,7 @@ export default function AddToCartModal({
 	restarantmenuInfo,
 	userInfo, //userinfo.userId
 	restaurantKey,
-	setRemainingCount,
+	// setRemainingCount,
 }) {
 	const { id, name, quantity, original_price, price } = restarantmenuInfo;
 	const { userId } = userInfo;
@@ -32,6 +32,10 @@ export default function AddToCartModal({
 			document.removeEventListener('mousedown', handleClickOutside);
 		};
 	}, [isOpen, onClose]);
+
+	useEffect(() => {
+		setQuantityForModal(restarantmenuInfo.quantity);
+	}, [restarantmenuInfo.quantity]);
 
 	const addToCartMutation = useMutation({
 		mutationFn: addToCart,
@@ -62,14 +66,14 @@ export default function AddToCartModal({
 	const adjustQuantity = () => {
 		const newQuantity = quantityForModal - quantityUserSelect;
 		setQuantityForModal(newQuantity);
-		setRemainingCount(newQuantity);
+		// setRemainingCount(newQuantity);
 	};
 
 	const handleAddToCart = () => {
 		addToCartMutation.mutate({
 			menuId: id,
 			customerId: userId,
-			restaurantId: restaurantKey,
+			restaurantId: parseInt(restaurantKey),
 			quantity: quantityUserSelect,
 		});
 		adjustQuantity();
@@ -108,7 +112,7 @@ export default function AddToCartModal({
 						</div>
 					</div>
 					<div className='text-orange-700 font-medium mt-5 text-2xl text-center'>
-						<strong>{discountPercent}</strong> % OFF DEALS
+						<strong>{discountPercent.toFixed(0)}</strong> % OFF DEALS
 					</div>
 					<div className='mt-5 pl-5'>
 						You can select the item up to <strong>{quantityForModal}</strong>
