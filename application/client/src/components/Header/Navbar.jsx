@@ -1,6 +1,8 @@
 // import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+
 import Dropdown from './Dropdown';
+import lastcall from '../../images/lastcall.png';
 
 const navigation = [
 	{ name: 'Home', href: '/home', current: true },
@@ -8,12 +10,13 @@ const navigation = [
 	{ name: 'About Us', href: '/AboutUs', current: false },
 ];
 
-// function classNames(...classes) {
+const navigation_rest = [
+	{ name: 'Menu', href: '/restaurant/menu', current: true },
+	{ name: 'Order', href: '/restaurant/order', current: false },
+	{ name: 'About Us', href: '/AboutUs', current: false },
+];
 
-//     return classes.filter(Boolean).join(' ');
-// }
-
-export default function Navbar() {
+export default function Navbar({role}) {
 	// const [isSignIn, setIsSignin] = useState(false);
 
 	const { pathname } = useLocation();
@@ -25,23 +28,33 @@ export default function Navbar() {
 
 	const showNavItems =
 		!isSignin && !isSignup && !isLandingPage && !isSignupCustomer && !isSignupRestaurant;
+		const currentNavigation = role === 'restaurants' ? navigation_rest : navigation;
 
 	return (
-		<div className='bg-gray-100 flex justify-between'>
-			<Link to={'/'}>
-				<div className='py-4 text-2xl ml-5 text-stone-900'>LAST CALL</div>
-			</Link>
-			<nav className='mr-24 pt-4'>
-				<ul className={!isLandingPage && 'flex space-x-16'}>
-					{showNavItems &&
-						navigation.map((item) => (
-							<li key={item.name} className='space-x-3 text-stone-900'>
-								<Link to={item.href}>{item.name}</Link>
-							</li>
-						))}
-				</ul>
-			</nav>
-			{showNavItems && <Dropdown />}
-		</div>
+		<>
+			{showNavItems && (
+				<div className='bg-gray-100 flex justify-between h-[4.5rem]'>
+					<Link to={'/'}>
+						<div className='mt-[1.35rem] ml-9 w-36 h-14'>
+							<img src={lastcall} alt='Last Call logo' />
+						</div>
+					</Link>
+					<nav className='mr-36 pt-[1.35rem]'>
+						<ul className={!isLandingPage ? 'flex space-x-16' : ''}>
+							{showNavItems &&
+								currentNavigation.map((item) => (
+									<li
+										key={item.name}
+										className='space-x-3 text-stone-900 font-medium'
+									>
+										<Link to={item.href}>{item.name}</Link>
+									</li>
+								))}
+						</ul>
+					</nav>
+					{showNavItems && <Dropdown />}
+				</div>
+			)}
+		</>
 	);
 }

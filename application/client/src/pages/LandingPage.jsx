@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import lastcall from '../images/landinglogosvg.svg';
 
 export default function LandingPage() {
 	const user = useSelector((state) => state.user);
@@ -18,20 +19,22 @@ export default function LandingPage() {
 	return (
 		<div className='min-h-full m-auto bg-landingpagebg bg-cover bg-no-repeat bg-right-bottom flex text-gray-50'>
 			<section className='flex flex-col flex-1 items-center justify-center '>
-				<div className='flex flex-col items-center justify-between'>
-					<h1 className='text-9xl mb-10 md:text-6xl md:mb-6'>
-						<strong>LAST CALL</strong>
-					</h1>
-					<p className='text-5xl md:text-3xl'>Avoid Food Waste and Save money</p>
+				<div className='flex flex-col items-center justify-between w-full max-h-96'>
+					<div>
+						<img src={lastcall} alt='Logo' className='w-[35rem] sm:w-[20rem]' />
+					</div>
+					<p className='text-3xl mt-10 md:text-3xl'>
+						Grab Delicious Deals, Prevent Waste, and Savor Sustainability
+					</p>
 				</div>
-				<div className='mt-24 space-x-8 md:mt-16'>
+				<div className='mt-16 space-x-8 md:mt-12'>
 					<Link to={'/signin'}>
-						<button className='bg-stone-900 text-lg px-6 py-2.5 rounded-2xl'>
+						<button className='bg-stone-50 text-lg px-6 py-2.5 rounded-xl text-stone-900 font-medium'>
 							Sign In
 						</button>
 					</Link>
 					<Link to={'signup'}>
-						<button className='bg-stone-900 text-lg px-6 py-2.5 rounded-2xl'>
+						<button className='bg-[#DE6913] text-lg px-6 py-2.5 rounded-xl text-stone-50 font-medium'>
 							Sign Up
 						</button>
 					</Link>

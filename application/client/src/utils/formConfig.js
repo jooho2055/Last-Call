@@ -9,13 +9,13 @@ export const inputsForSignIn = [
 	{
 		id: 2,
 		name: 'pwd',
-		type: 'text',
+		type: 'password',
 		placeholder: 'Password',
 		label: 'Password',
 	},
 ];
 
-export const inputsForCustomer = [
+export const inputsForCustomerOne = [
 	{
 		id: 1,
 		name: 'username',
@@ -48,6 +48,9 @@ export const inputsForCustomer = [
 		errorMessage: 'It should be a valid email address!',
 		label: 'Email Address',
 	},
+];
+
+export const inputsForCustomerTwo = [
 	{
 		id: 5,
 		name: 'pwd',
@@ -75,7 +78,7 @@ export const inputsForCustomer = [
 	},
 ];
 
-export const inputsForRestaurant = [
+export const inputsForRestaurantOne = [
 	{
 		id: 1,
 		name: 'username',
@@ -86,6 +89,14 @@ export const inputsForRestaurant = [
 	},
 	{
 		id: 2,
+		name: 'rname',
+		type: 'text',
+		placeholder: 'Restaurant Name',
+		errorMessage: 'It should not contain special characters!',
+		label: 'Restaurant Name',
+	},
+	{
+		id: 3,
 		name: 'pwd',
 		type: 'text',
 		placeholder: 'Password',
@@ -94,7 +105,7 @@ export const inputsForRestaurant = [
 		label: 'Password',
 	},
 	{
-		id: 3,
+		id: 4,
 		name: 'cpwd',
 		type: 'text',
 		placeholder: 'Confirm Password',
@@ -102,7 +113,7 @@ export const inputsForRestaurant = [
 		label: 'Confirm Password',
 	},
 	{
-		id: 4,
+		id: 5,
 		name: 'email',
 		type: 'email',
 		placeholder: 'Email Address',
@@ -110,21 +121,16 @@ export const inputsForRestaurant = [
 		label: 'Email Address',
 	},
 	{
-		id: 5,
+		id: 6,
 		name: 'phone',
 		type: 'text',
 		placeholder: 'Phone',
 		errorMessage: 'The phone number must be a valid number!',
 		label: 'Phone',
 	},
-	{
-		id: 6,
-		name: 'rname',
-		type: 'text',
-		placeholder: 'Restaurant Name',
-		errorMessage: 'It should not contain special characters!',
-		label: 'Restaurant Name',
-	},
+];
+
+export const inputsForRestaurantTwo = [
 	{
 		id: 7,
 		name: 'street',
@@ -220,139 +226,4 @@ export const optionsForCuisine = [
 	{ value: 'french', label: 'French' },
 	{ value: 'indian', label: 'Indian' },
 	{ value: 'mexican', label: 'Mexican' },
-];
-
-export const test = [
-	{
-		name: 'gen',
-		cuisine: 'korean',
-		location: 'sunset',
-		status: '1',
-	},
-	{
-		name: 'mugubokka',
-		cuisine: 'korean',
-		location: 'nycity',
-		status: '1',
-	},
-	{
-		name: 'pho 24',
-		cuisine: 'veitnamese',
-		location: 'burchell ave',
-		status: '1',
-	},
-	{
-		name: 'san tung',
-		cuisine: 'chinese',
-		location: 'charllet drive',
-		status: '0',
-	},
-	{
-		name: 'mc donald',
-		cuisine: 'american',
-		location: 'oakland',
-		status: '1',
-	},
-	{
-		name: 'indianna',
-		cuisine: 'indian',
-		location: 'busan',
-		status: '0',
-	},
-	{
-		name: 'showmen',
-		cuisine: 'chinese',
-		location: 'seoul',
-		status: '1',
-	},
-	{
-		name: 'tacotatico',
-		cuisine: 'mexican',
-		location: 'mxcity',
-		status: '1',
-	},
-	{
-		name: 'in-n-out',
-		cuisine: 'american',
-		location: 'balboa',
-		status: '0',
-	},
-	{
-		name: 'miyakko',
-		cuisine: 'japanese',
-		location: 'blossom hill',
-		status: '0',
-	},
-	{
-		name: 'paris buggget',
-		cuisine: 'bakery',
-		location: 'daegu',
-		status: '1',
-	},
-	{
-		name: 'tour',
-		cuisine: 'bakery',
-		location: 'busan',
-		status: '1',
-	},
-	{
-		name: 'tour',
-		cuisine: 'bakery',
-		location: 'busan',
-		status: '1',
-	},
-	{
-		name: 'tour',
-		cuisine: 'bakery',
-		location: 'busan',
-		status: '1',
-	},
-	{
-		name: 'tour',
-		cuisine: 'bakery',
-		location: 'busan',
-		status: '1',
-	},
-	{
-		name: 'tour',
-		cuisine: 'bakery',
-		location: 'busan',
-		status: '1',
-	},
-	{
-		name: 'tour',
-		cuisine: 'bakery',
-		location: 'busan',
-		status: '1',
-	},
-	{
-		name: 'tour',
-		cuisine: 'bakery',
-		location: 'busan',
-		status: '1',
-	},
-	{
-		name: 'tour',
-		cuisine: 'bakery',
-		location: 'busan',
-		status: '1',
-	},
-	{
-		name: 'tour',
-		cuisine: 'bakery',
-		location: 'busan',
-		status: '1',
-	},
-	{
-		name: 'tour',
-		cuisine: 'bakery',
-		location: 'busan',
-		status: '1',
-	},
-	{
-		name: 'tour',
-		cuisine: 'bakery',
-		location: 'busan',
-		status: '1',
-	},
 ];

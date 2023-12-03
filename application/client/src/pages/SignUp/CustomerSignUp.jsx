@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import FormInput from '../../components/FormInput';
 import { useNavigate } from 'react-router-dom';
-import { inputsForCustomer } from '../../utils/formConfig';
+import { inputsForCustomerOne, inputsForCustomerTwo } from '../../utils/formConfig';
+import BtnForRegister from '../../components/BtnForRegister';
 
 export default function CustomerSignup() {
 	const navigate = useNavigate();
@@ -99,27 +100,56 @@ export default function CustomerSignup() {
 		const { name, value } = e.target;
 		setInputValues({ ...inputValues, [e.target.name]: e.target.value });
 		validateInput(name, value);
+		console.log(inputValues);
 	};
 
 	return (
-		<div className='max-w-xl m-auto'>
-			<form onSubmit={handleSubmit} className='px-16  bg-slate-200'>
-				<h1 className='text-3xl'>
+		<>
+			<div className='max-w-[60rem] bg-stone-100 rounded-3xl shadow-[rgba(0,_0,_0,_0.4)_0px_30px_90px] font-medium m-auto'>
+				<h1 className='text-xl text-center my-8'>
 					Join Us as a <strong>Customer</strong>
 				</h1>
-				{inputsForCustomer.map((input) => (
-					<FormInput
-						key={input.id}
-						{...input}
-						value={inputValues[input.name]}
-						onChange={onChange}
-						isValid={validity[input.name]}
-					/>
-				))}
-				<button className='border text-4xl' disabled={isSubmitDisabled}>
-					Submit
-				</button>
-			</form>
-		</div>
+				<form
+					onSubmit={handleSubmit}
+					className='bg-stone-100 rounded-3xl flex flex-col px-12'
+				>
+					<div className='flex justify-between gap-12 md:px-4 md:flex-col md:gap-0'>
+						<div>
+							{inputsForCustomerOne.map((input) => (
+								<FormInput
+									key={input.id}
+									{...input}
+									value={inputValues[input.name]}
+									onChange={onChange}
+									isValid={validity[input.name]}
+									classNameForLabel='pl-1 mb-1'
+									classNameForInput='w-80 rounded-lg p-2 mt-1 mb-1 ml-0 mr-0 shadow-md outline-none border-2 focus:border-[#7388a0]'
+								/>
+							))}
+						</div>
+						<div>
+							{inputsForCustomerTwo.map((input) => (
+								<FormInput
+									key={input.id}
+									{...input}
+									value={inputValues[input.name]}
+									onChange={onChange}
+									isValid={validity[input.name]}
+									classNameForLabel='pl-1 mb-1'
+									classNameForInput='w-80 rounded-lg p-2 mt-1 mb-1 ml-0 mr-0 shadow-md outline-none border-2 focus:border-[#7388a0]'
+								/>
+							))}
+						</div>
+					</div>
+
+					<BtnForRegister
+						className='p-2 mt-10 mb-7 text-2xl text-stone-50 bg-primary rounded-2xl shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)] hover:bg-primaryVariant'
+						disabled={isSubmitDisabled}
+					>
+						Submit
+					</BtnForRegister>
+				</form>
+			</div>
+		</>
 	);
 }

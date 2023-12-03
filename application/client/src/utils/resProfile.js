@@ -85,14 +85,6 @@ export const inputForMenu = [
 	},
 	{
 		id: 2,
-		name: 'quantity',
-		type: 'number',
-		placeholder: 'Quantity',
-		errorMessage: 'Must be a integer',
-		label:'Quantity',
-	},
-	{
-		id: 3,
 		name: 'oprice',
 		type: 'number',
 		placeholder: 'Original price',
@@ -100,13 +92,21 @@ export const inputForMenu = [
 		label:'Original price',
 	},
 	{
-		id: 4,
+		id: 3,
 		name: 'aprice',
 		type: 'number',
 		placeholder: 'Actual price',
 		errorMessage: 'Must be a number',
 		label:'Actual price',
 	},
+	{
+		id: 4,
+		name: 'description',
+		type: 'text',
+		placeholder: 'Description',
+		errorMessage: 'Cannot be empty',
+		label: 'Description',
+	}
 
 ]
 
