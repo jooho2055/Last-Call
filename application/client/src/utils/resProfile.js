@@ -99,6 +99,14 @@ export const inputForMenu = [
 		errorMessage: 'Must be a number',
 		label:'Actual price',
 	},
+	{
+		id: 4,
+		name: 'description',
+		type: 'text',
+		placeholder: 'Description',
+		errorMessage: 'Cannot be empty',
+		label: 'Description',
+	}
 
 ]
 

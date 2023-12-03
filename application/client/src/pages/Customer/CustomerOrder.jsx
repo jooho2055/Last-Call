@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { customerGetCurrentOrder } from '../../apis/get';
 
 export default function CustomerOrder() {
+
 	const { userId } = useParams();
 
 	const { data: currentOrder } = useQuery({
@@ -13,3 +14,4 @@ export default function CustomerOrder() {
 	});
 	return <div className=''>this is order section {userId}</div>;
 }
+

@@ -1,104 +1,134 @@
-import React, { useState } from 'react';
-import { inputForMenu } from '../../utils/resProfile';
-import RestaurantMenu from '../../components/RestaurantMenu';
+import React,{useState, useEffect} from 'react';
+import {inputForMenu} from '../../utils/resProfile';
+import RestaurantMenuSetting from '../../components/RestaurantMenuSetting';
 import { AiFillPlusSquare } from 'react-icons/ai';
 import FormInput from '../../components/FormInput';
-
-const foodlist = [
-	{
-		fname: 'apple',
-		quantity: 2,
-		oprice: 3,
-		aprice: 2,
-	},
-	{
-		fname: 'banana',
-		quantity: 1,
-		oprice: 2,
-		aprice: 1,
-	},
-	{
-		fname: 'rice',
-		quantity: 3,
-		oprice: 15,
-		aprice: 10,
-	},
-];
+import { useSelector } from 'react-redux';
+import {getMenuTable} from '../../apis/get';
+import { createNewMenu } from '../../apis/post';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function RestaurantMenutable() {
-	const [menuInput, setMenuInput] = useState({
+	//const navigate = useNavigate();
+    //const user = useSelector((state) => state.user);
+    const queryClient = useQueryClient();
+    /* useEffect(() => {
+      if(user.isLoggedIn){
+        if(user.role === 'restaurant'){
+          navigate('/restaurantprofile')
+        }else{
+          navigate("/home")
+        }
+      }
+      else{
+        navigate('/signin');
+      }
+    }, [navigate, user.isLoggedIn, user.role]); */
+    const id = 1;
+    const MenuList = useQuery({
+      queryKey: ["MenuLists"],
+      queryFn: () => getMenuTable(id),
+    })
+    const createMenuMutation = useMutation({
+      mutationFn: createNewMenu,
+      onSuccess: data =>{
+        queryClient.setQueryData(["posts", data.id], data)
+        queryClient.invalidateQueries(["posts"],{exact: true})
+      }, 
+    });
+    
+  const [menuInput, setMenuInput] = useState({
 		fname: '',
-		quantity: '',
-		oprice: '',
-		aprice: '',
+		oprice:'',
+		aprice:'',
+		description: '',
 	});
-
 	const [menuvalidity, setmenuValidity] = useState({
-		fail: true,
-		quantity: true,
+		fname: true,
 		oprice: true,
 		aprice: true,
+		description: true,
 	});
+	const [isFormOpen, setIsFormOpen] = useState(false);
 
-	const [isOpen, setIsOpen] = useState(false);
-
-	const formatShows = () => {
-		setIsOpen(!isOpen);
+	const FromShows = () => {
+	  setIsFormOpen(!isFormOpen);
 	};
+    
+    const isMenuSubmitDisable =
+		    !Object.values(menuvalidity).every((isValid) => isValid) ||
+		    !Object.values(menuInput).every((value) => value);
+			const validateMenuInput = (name, value) => {
+				let isValid = true;
+				switch (name) {
+					case 'fname':
+						isValid = /^[A-Za-z0-9\s]{1,16}$/.test(value);
+					    break;
+					case 'oprice':
+						isValid = /^[0-9]*\.?[0-9]+$/.test(value) && parseFloat(value) > 0;
+                        break;
+					case 'aprice':
+						isValid = /^[0-9]*\.?[0-9]+$/.test(value) && parseFloat(value) > 0;
+                        break;
+					case 'description':
+						isValid = /[A-Za-z]/.test(value);
+						break;
+					default:
+						isValid=false;
+					
+				}
+				setmenuValidity({...menuvalidity, [name]: isValid});
+			}
+    const onMenuChange = (e) =>{
+        const { name, value } = e.target;
+        setMenuInput({...menuInput, [e.target.name]: e.target.value});
+        validateMenuInput(name, value);
+    }
 
-	const isMenuSubmitDisable =
-		!Object.values(menuvalidity).every((isValid) => isValid) ||
-		!Object.values(menuInput).every((value) => value);
-	const validateMenuInput = (name, value) => {
-		let isValid = true;
-		switch (name) {
-			case 'fname':
-				isValid = /^[A-Za-z0-9]{1,16}$/.test(value);
-				break;
-			case 'quantity':
-				isValid = /^[1-9]\d*$/.test(value);
-				break;
-			case 'oprice':
-				isValid = /^[0-9]*\.?[0-9]+$/.test(value) && parseFloat(value) > 0;
-				break;
-			case 'aprice':
-				isValid = /^[0-9]*\.?[0-9]+$/.test(value) && parseFloat(value) > 0;
-				break;
-			default:
-				isValid = false;
-		}
-		setmenuValidity({ ...menuvalidity, [name]: isValid });
-	};
-	const handleMenu = (e) => {
+	const handleMenu = async (e) => {
 		e.preventDefault();
-		console.log(menuInput);
-	};
-
-	const onMenuChange = (e) => {
-		const { name, value } = e.target;
-		setMenuInput({ ...menuInput, [e.target.name]: e.target.value });
-		validateMenuInput(name, value);
-	};
-
+		try {
+		  createMenuMutation.mutate({
+			    restaurantId: id,
+				price: parseFloat(menuInput.aprice),
+				originalPrice: parseFloat(menuInput.oprice),
+				name: menuInput.fname,
+				desc: menuInput.description,
+				img: '/menusimg/samplefood.png'
+			});
+		} catch (error) {
+		  console.error('An error occurred:', error);
+		}
+	  };
+	  
 	return (
 		<div className='min-h-full m-auto flex justify-center bg-white relative'>
 			<div className='absolute top-0 left-50'>
-				<p>Menu Manage</p>
+			<div className='fixed bg-white w-[1000px]'>	
+			<p>Menu Manage</p>
+			<div className='flex space-x-4'>	
 				<button
 					className='text-3xl mt-[0.85rem] mr-5'
-					onClick={formatShows} // Toggle the isOpen state when the button is clicked
-				>
+					onClick={FromShows} >
 					<AiFillPlusSquare />
 				</button>
-				{isOpen && (
+				<button
+				 className='text-sm mt-[0.85rem] rounded bg-slate-900 text-white'>
+				<Link to={'/restaurant/menu/unsold'}>	
+				Set Quantity
+				</Link>
+				</button>
+				</div>
+			</div>	
+				{isFormOpen && (
 					<button
-						onClick={formatShows}
-						className='fixed top-0 right-0 bottom-0 left-0 w-full h-full bg-black opacity-0 cursor-default'
+						onClick={FromShows}
+						className='fixed top-0 right-0 bottom-0 left-0 w-full h-full bg-black opacity-10 cursor-default'
 					></button>
 				)}
-				{isOpen && (
-					<div className='absolute right-50 w-72 h-96 bg-gray-100'>
-						<p>Test</p>
+				{isFormOpen && (
+					<div className='fixed right-50 top-36 w-72 h-96 bg-gray-100 flex flex-col justify-center items-center'>
 						<form onSubmit={handleMenu}>
 							{inputForMenu.map((input) => (
 								<FormInput
@@ -113,9 +143,9 @@ export default function RestaurantMenutable() {
 						</form>
 					</div>
 				)}
-				<div className='grid grid-cols-1 gap-4'>
-					{foodlist.map((food) => (
-						<RestaurantMenu restarantmenuInfo={food} />
+				<div className='grid grid-cols-1 gap-4 overflow-y-auto mt-20'>
+					{MenuList.data?.map((food) => (
+						<RestaurantMenuSetting key={food.id} restarantmenuInfo={food}/>
 					))}
 				</div>
 			</div>
