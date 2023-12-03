@@ -4,6 +4,7 @@ import { getRestaurantOrder } from '../../apis/get';
 import { useQuery } from '@tanstack/react-query';
 import ViewOrder from '../../components/Button/ViewOrder';
 
+
 export default function RestaurantOrder() {
     const id = 1;
     const CurrentOrder = useQuery({
@@ -29,12 +30,15 @@ export default function RestaurantOrder() {
             {Array.isArray(CurrentOrder.data) &&
             CurrentOrder.data.map((menu, index)=>(        
             <React.Fragment key={index}>
+          
+            <div className='rounded-md border-t-2 border-orange-300'>
             <RestOrder orderInfo={menu} duplicate={isDuplicate(invoice_order, menu)} />
-                 <div className="shadow-md">
+            </div>
+                 <div className='ml-44'>
                      <ViewOrder menuInfo={menu} />
-                </div>
+                 </div>    
             </React.Fragment>
-
+           
             ))    
             }
             </div>
