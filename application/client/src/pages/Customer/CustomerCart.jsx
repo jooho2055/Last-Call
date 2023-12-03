@@ -11,7 +11,7 @@ import BtnForCustomer from '../../components/BtnForCustomer';
 export default function CustomerCart() {
 	const { userId } = useParams();
 	const queryClient = useQueryClient();
-	const [checkedItems, setCheckedItems] = useState({});
+	// const [checkedItems, setCheckedItems] = useState({});
 
 	const {
 		data: cartMenuLists,
@@ -34,13 +34,13 @@ export default function CustomerCart() {
 		onSuccess: () => {
 			// Clearing the cart after successful checkout
 			queryClient.invalidateQueries(['cartMenuLists']);
-			setCheckedItems({}); // Clear the checked items
+			// setCheckedItems({}); // Clear the checked items
 		},
 	});
 
-	const handleCheck = (id, isChecked) => {
-		setCheckedItems((prev) => ({ ...prev, [id]: isChecked }));
-	};
+	// const handleCheck = (id, isChecked) => {
+	// 	setCheckedItems((prev) => ({ ...prev, [id]: isChecked }));
+	// };
 
 	const handleCheckout = () => {
 		cartCheckoutMutation.mutate({
@@ -58,10 +58,7 @@ export default function CustomerCart() {
 		// Check if cartMenuLists and cartMenuLists.orders are defined
 		if (cartMenuLists && cartMenuLists.orders) {
 			return cartMenuLists.orders.reduce((total, item) => {
-				if (checkedItems[item.id]) {
-					return total + item.price * item.quantity;
-				}
-				return total;
+				return total + item.price * item.quantity;
 			}, 0);
 		}
 		return 0; // Return 0 if data is not loaded yet
@@ -101,17 +98,16 @@ export default function CustomerCart() {
 			</div>
 
 			<ul className='flex flex-col mx-28 px-10 pt-10 gap-y-14 lg:mx-12 sm:items-center'>
-				{cartMenuLists.orders.map((item) => (
+				{cartMenuLists.orders?.map((item) => (
 					<div key={item.id} className='flex justify-center'>
-						<div className='mr-10 flex items-center'>
+						{/* <div className='mr-10 flex items-center'>
 							<input
 								type='checkbox'
 								checked={!!checkedItems[item.id]}
 								onChange={(e) => handleCheck(item.id, e.target.checked)}
 								className='w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
 							/>
-						</div>
-
+						</div> */}
 						<CartMenu CartMenuInfo={item} userId={userId} />
 					</div>
 				))}

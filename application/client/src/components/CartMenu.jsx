@@ -32,7 +32,6 @@ export default function CartMenu({ CartMenuInfo, userId }) {
 		mutationFn: ({ cartId, quantity }) => editQuantityInCart({ cartId, quantity }),
 		onSuccess: () => {
 			queryClient.invalidateQueries(['cartMenuLists']);
-			// setQuantityUserSelect(quantity); // Update the state here after successful mutation
 		},
 	});
 
@@ -57,20 +56,6 @@ export default function CartMenu({ CartMenuInfo, userId }) {
 		}
 	};
 
-	// const handleDecrement = () => {
-	// 	// Only decrease if quantity is greater than 1
-	// 	if (quantityUserSelect > 1) {
-	// 		const newQuantity = quantityUserSelect - 1;
-	// 		setQuantityUserSelect(newQuantity); // Update state
-
-	// 		// Call the mutation
-	// 		editQuantity.mutate({
-	// 			cartId: cart_id,
-	// 			quantity: newQuantity,
-	// 		});
-	// 	}
-	// };
-
 	const handleIncrement = () => {
 		if (quantityUserSelect < leftover) {
 			setQuantityUserSelect((prevQuantity) => {
@@ -85,33 +70,17 @@ export default function CartMenu({ CartMenuInfo, userId }) {
 		}
 	};
 
-	// const handleIncrement = () => {
-	// 	// Only increase if quantity is less than leftover
-	// 	if (quantityUserSelect < leftover) {
-	// 		const newQuantity = quantityUserSelect + 1;
-	// 		setQuantityUserSelect(newQuantity); // Update state
-
-	// 		// Call the mutation
-	// 		editQuantity.mutate({
-	// 			cartId: cart_id,
-	// 			quantity: newQuantity,
-	// 		});
-	// 	}
-	// };
-
 	return (
-		<li className='flex justify-between shadow-[6.0px_9.0px_9.0px_rgba(0,0,0,0.30)] rounded-lg'>
+		<li className='flex justify-between w-[55rem] shadow-[6.0px_9.0px_9.0px_rgba(0,0,0,0.30)] rounded-lg'>
 			<div className='flex'>
 				<div className='relative'>
 					<img
 						src={`http://13.52.182.209${img_path}`}
-						className='w-72	h-44 min-w-[18rem] rounded-l-lg ' // Adjusted classes
+						className='max-w-[16rem] h-[11rem] object-cover rounded-l-lg' // Adjusted classes
 						alt='sample img'
 					/>
 					<div className='absolute px-5 inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity bg-black bg-opacity-0 hover:bg-opacity-50 hover:rounded-l-lg'>
-						<p className='text-white text-center'>
-							The food is made by chicken asdfasdf asdfasdf asdfasdf
-						</p>
+						<p className='text-white text-center'>{description}</p>
 					</div>
 				</div>
 
@@ -123,7 +92,7 @@ export default function CartMenu({ CartMenuInfo, userId }) {
 					<div className='pb-10 pl-10'>
 						<span className='block mb-1'>Discounted Price: </span>
 						<span className='line-through mr-1 ml-6'>{original_price}</span>
-						<span className='font-bold text-orange-700'>
+						<span className='font-bold text-orange-700 text-xl'>
 							={'>'} ${price}
 						</span>
 					</div>

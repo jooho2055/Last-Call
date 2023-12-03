@@ -9,7 +9,7 @@ export default function AddToCartModal({
 	restarantmenuInfo,
 	userInfo, //userinfo.userId
 	restaurantKey,
-	setRemainingCount,
+	// setRemainingCount,
 }) {
 	const { id, name, quantity, original_price, price } = restarantmenuInfo;
 	const { userId } = userInfo;
@@ -32,6 +32,10 @@ export default function AddToCartModal({
 			document.removeEventListener('mousedown', handleClickOutside);
 		};
 	}, [isOpen, onClose]);
+
+	useEffect(() => {
+		setQuantityForModal(restarantmenuInfo.quantity);
+	}, [restarantmenuInfo.quantity]);
 
 	const addToCartMutation = useMutation({
 		mutationFn: addToCart,
@@ -62,7 +66,7 @@ export default function AddToCartModal({
 	const adjustQuantity = () => {
 		const newQuantity = quantityForModal - quantityUserSelect;
 		setQuantityForModal(newQuantity);
-		setRemainingCount(newQuantity);
+		// setRemainingCount(newQuantity);
 	};
 
 	const handleAddToCart = () => {

@@ -5,7 +5,7 @@ import AddToCartModal from './AddToCartModal';
 export default function RestaurantMenu({ restarantmenuInfo, userInfo, restaurantKey }) {
 	const { name, description, img_path, quantity, original_price, price } = restarantmenuInfo;
 
-	const [remainingCount, setRemainingCount] = useState(quantity);
+	// const [remainingCount, setRemainingCount] = useState(quantity);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	const openModal = () => {
@@ -18,11 +18,11 @@ export default function RestaurantMenu({ restarantmenuInfo, userInfo, restaurant
 
 	return (
 		// lists of menu
-		<li className=' flex justify-between rounded-xl shadow-md m-auto'>
+		<li className=' flex justify-between rounded-xl shadow-md m-auto w-[36rem] sm:w-[33rem]'>
 			<div className=' w-full flex'>
 				<img
 					src={`http://13.52.182.209${img_path}`}
-					className='max-w-[16rem] rounded-s-xl pr-2'
+					className='max-w-[16rem] h-[10rem] object-cover rounded-s-xl pr-2'
 					alt='sample img'
 				/>
 				<div className='flex flex-col justify-between'>
@@ -30,7 +30,7 @@ export default function RestaurantMenu({ restarantmenuInfo, userInfo, restaurant
 						<div className='flex justify-between sm:flex-col'>
 							<span className='text-lg font-bold pl-1 pt-1'>{name}</span>
 							<span className='text-sm pt-2 pr-3 pl-1'>
-								Remaining Count: <strong>{remainingCount}</strong>
+								Remaining Count: <strong>{quantity}</strong>
 							</span>
 						</div>
 
@@ -60,7 +60,7 @@ export default function RestaurantMenu({ restarantmenuInfo, userInfo, restaurant
 					onClose={closeModal}
 					restaurantKey={restaurantKey}
 					restarantmenuInfo={restarantmenuInfo}
-					setRemainingCount={setRemainingCount}
+					// setRemainingCount={setRemainingCount}
 					userInfo={userInfo}
 				/>
 			</div>
