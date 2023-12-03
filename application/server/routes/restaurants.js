@@ -375,5 +375,23 @@ router.get(`/order/current/:id(\\d+)`, /*isLoggedIn, isRestaurants,*/ async func
     }
 })
 
+/**
+ * To confirm current orders for restaurants
+ * @method PUT
+ * @body orderIds (array of order_ids, ex)[1,3,5])
+ * @path /restaurants/order/confirm 
+ */
+router.put(`/order/confirm`, async function(req, res){
+    const {orderIds} = req.body;
+    try{
+        orderIds.map(async (order)=>{
+            const [confirm, _] = await db.execute(`UPDATE orders SET status = 1 WHERE id = ?`,order); 
+        })
+        return res.status(200).json({message: "orders are confirmed"})
+    }catch(err){
+        return res.status(400).json({message: err.message})
+    }
+})
+
 
 module.exports = router;
