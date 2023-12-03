@@ -43,7 +43,7 @@ router.get(`/order/past/:id(\\d+)`, /*isLoggedIn, isCustomers, isMyPage,*/ async
     try{
         const [results, _ ] = await db.execute(getInvoicesByCustId,[id]);
         if(results.length < 1){
-            return res.status(400).json({message: "no results"})
+            return res.status(400).json({orders: [],message: "no results"})
         }
         // console.log(results)
 
