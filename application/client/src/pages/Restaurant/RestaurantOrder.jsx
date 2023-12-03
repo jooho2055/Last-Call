@@ -3,10 +3,13 @@ import RestOrder from '../../components/Order/RestOrder';
 import { getRestaurantOrder } from '../../apis/get';
 import { useQuery } from '@tanstack/react-query';
 import ViewOrder from '../../components/Button/ViewOrder';
+import { useSelector } from 'react-redux';
+
 
 
 export default function RestaurantOrder() {
-    const id = 1;
+    const user = useSelector((state) => state.user);
+    const id = user.userId;
     const CurrentOrder = useQuery({
         queryKey: ["CurrentOrder"],
         queryFn: () => getRestaurantOrder(id),

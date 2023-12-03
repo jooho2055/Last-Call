@@ -77,7 +77,7 @@ export default function RestaurantMenuQuantity() {
     return (
         <div className='min-h-full m-auto flex justify-center bg-white relative'>
             <div className='absolute top-0 left-50'>
-             <p>Menu</p>
+             <p className='italic font-bold'>Menu</p>
                 <button
 					className='text-3xl mt-[0.85rem] mr-5'
 					onClick={FromShows} >

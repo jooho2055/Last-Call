@@ -131,7 +131,7 @@ export default function RestaurantMenutable() {
 		<div className='min-h-full m-auto flex justify-center bg-white relative'>
 			<div className='absolute top-0 left-50'>
 			<div className='fixed z-10 bg-white w-[400px]'>	
-			<p>Menu Manage</p>
+			<p className='italic font-bold'>Menu Manage</p>
 			<div className='flex space-x-4'>	
 				<button
 				    data-testid="button"

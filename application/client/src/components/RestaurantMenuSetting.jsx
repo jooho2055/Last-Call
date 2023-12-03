@@ -1,7 +1,6 @@
 import React from 'react';
-import sampleFood from '../images/samplefood.png';
 import DeleteButton from './Button/Delete';
-import Edit from './Button/EditRestaurantMenu';
+//import Edit from './Button/EditRestaurantMenu';
 
 export default function RestaurantMenuSetting({restarantmenuInfo, unsold}) {
 if (!restarantmenuInfo) {
