@@ -21,7 +21,7 @@ const getMenusByRestId = "SELECT * FROM menus WHERE restaurant_id = ?;"
 
 const getCartsByMenuId = "SELECT * FROM carts WHERE menu_id = ?;"
 
-const getCustCartsById = "SELECT menus.id, menus.description, menus.img_path, menus.name, menus.price, menus.original_price, menus.quantity as leftover, carts.quantity as quantity, restaurants.name as restaurant FROM menus JOIN restaurants ON menus.restaurant_id = restaurants.id JOIN carts ON carts.menu_id = menus.id WHERE carts.customer_id=?;"
+const getCustCartsById = "SELECT menus.id, menus.description, menus.img_path, carts.id as cart_id, menus.name, menus.price, menus.original_price, menus.quantity as leftover, carts.quantity as quantity, restaurants.name as restaurant FROM menus JOIN restaurants ON menus.restaurant_id = restaurants.id JOIN carts ON carts.menu_id = menus.id WHERE carts.customer_id=?;"
 
 const getCartsByCustId = "SELECT * FROM carts WHERE customer_id = ?;"
 
