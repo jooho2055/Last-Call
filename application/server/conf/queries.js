@@ -1,9 +1,9 @@
 //Get
 const getCustomerById = "SELECT * FROM customers WHERE id = ?;"
 
-const getCurrentOrdersById = "SELECT * FROM orders WHERE customer_id = ? AND status = 0;"
+const getCurrentOrdersById = "SELECT * FROM invoices JOIN orders ON invoices.id = orders.invoice_id JOIN menus ON menus.id = orders.menu_id WHERE orders.status > 0 AND orders.customer_id = ?;"
 
-const getPastOrdersByInvoiceId = "SELECT * FROM orders WHERE invoice_id = ? AND status > 0;"
+const getPastOrdersByInvoiceId = "SELECT * FROM orders JOIN menus on orders.menu_id = menus.id WHERE invoice_id = ? AND orders.status > 0;"
 
 const getOrdersByMenuId = "SELECT * FROM orders WHERE menu_id = ?;"
 
