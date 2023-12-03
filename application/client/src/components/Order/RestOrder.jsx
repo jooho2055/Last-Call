@@ -1,17 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { format } from 'date-fns';
 export default function RestOrder({ orderInfo, duplicate }) {
   const { invoice_id, created_at, customer_id } = orderInfo;
   const dateObject = new Date(created_at);
   const formattedDate = format(dateObject, 'yyyy-MM-dd HH:mm:ss');
-  const [isOpen, setIsOpen] = useState(false);
-  useEffect(() => {
-    setIsOpen(false);
-  }, []);
-
-  const OrderShows = () => {
-    setIsOpen(!isOpen);
-  };
 
   return (
     <div>
@@ -20,13 +12,13 @@ export default function RestOrder({ orderInfo, duplicate }) {
           <div>
           <li className='flex'>
             <div className='pd-2 pl-2'>
-              <span>{invoice_id}</span>
+              <span className='italic text-2xl text-orange-600'>{invoice_id}</span>
             </div>
             <div className='pd-2 pl-32'>
-              <span>{formattedDate}</span>
+              <span className='italic'>{formattedDate}</span>
             </div>
             <div className='flex pd-2 pl-32 flex-col'>
-              <span>Customer id: {customer_id}</span>
+              <span className='italic'>Customer id: {customer_id}</span>
             </div>
             <div className='pd-2 pl-72 flex gap-4 flex-row md:flex-col md:gap-4'>
               <span>

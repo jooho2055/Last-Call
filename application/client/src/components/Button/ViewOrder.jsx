@@ -3,7 +3,7 @@ export default function ViewOrder({ menuInfo }) {
   
     return (
       <div className="w-[900px] relative">
-        <li className='flex'>
+        <li className='flex rounded-md shadow-md'>
           <div className='pd-2 pl-4'>
             <span>{id}</span>
           </div>
@@ -17,6 +17,7 @@ export default function ViewOrder({ menuInfo }) {
             <span className="monospaced">{price}</span>
           </div>
         </li>
+        <br/>
       </div>
     );
   }

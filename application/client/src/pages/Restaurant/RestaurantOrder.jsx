@@ -25,18 +25,18 @@ export default function RestaurantOrder() {
 
     return (
         <div>
-            <h1>Current Order</h1>
+            <h1 className='italic font-bold relative left-16'>Current Order</h1>
+            <br />
             <div className='flex items-center justify-center flex-col'>
             {Array.isArray(CurrentOrder.data) &&
             CurrentOrder.data.map((menu, index)=>(        
             <React.Fragment key={index}>
-          
-            <div className='rounded-md border-t-2 border-orange-300'>
-            <RestOrder orderInfo={menu} duplicate={isDuplicate(invoice_order, menu)} />
-            </div>
-                 <div className='ml-44'>
+              <div className='rounded-t-md border-t-4 border-orange-300'>
+                <RestOrder orderInfo={menu} duplicate={isDuplicate(invoice_order, menu)} />
+             </div>
+            <div className='ml-44'>
                      <ViewOrder menuInfo={menu} />
-                 </div>    
+            </div>    
             </React.Fragment>
            
             ))    

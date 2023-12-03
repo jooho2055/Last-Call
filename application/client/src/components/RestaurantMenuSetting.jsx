@@ -1,6 +1,5 @@
 import React from 'react';
 import sampleFood from '../images/samplefood.png';
-import { deleteMenuItem } from '../apis/delete';
 import DeleteButton from './Button/Delete';
 import Edit from './Button/EditRestaurantMenu';
 
