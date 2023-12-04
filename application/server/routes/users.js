@@ -35,6 +35,8 @@ router.post('/signup/customer',async (req,res)=>{
     }
 })
 
+
+
 // for restaurant sign up
 router.post('/signup/restaurant',async (req,res)=>{
     // get user info from body

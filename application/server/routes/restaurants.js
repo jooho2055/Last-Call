@@ -46,6 +46,7 @@ router.put(`/profile/update`, async(req, res) =>{
         
         const [restaurant, _ ] = await db.execute(getRestaurantsById,[id]);
         const hashPassword = await bcrypt.hash(password,1)
+        
         if(restaurant.length > 0){
             const [result, resultField] = await db.execute(updateRestProfile,
                 [username, email, hashPassword, phone, city, street, restName, zipcode, state, cuisine, id]);
@@ -385,7 +386,7 @@ router.put(`/order/confirm`, async function(req, res){
     const {orderIds} = req.body;
     try{
         orderIds.map(async (order)=>{
-            const [confirm, _] = await db.execute(`UPDATE orders SET status = 1 WHERE id = ?`,order); 
+            const [confirm, _] = await db.execute(`UPDATE orders SET status = 1 WHERE id = ?`,[order]); 
         })
         return res.status(200).json({message: "orders are confirmed"})
     }catch(err){
