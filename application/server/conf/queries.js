@@ -1,9 +1,9 @@
 //Get
 const getCustomerById = "SELECT * FROM customers WHERE id = ?;"
 
-const getCurrentOrdersById = "SELECT * FROM invoices JOIN orders ON invoices.id = orders.invoice_id JOIN menus ON menus.id = orders.menu_id WHERE orders.status > 0 AND orders.customer_id = ?;"
+const getCurrentOrdersById = "SELECT invoices.id as invoice_id, menus.name as name, menus.price as price, menus.original_price as original_price, orders.quantity as quantity, menus.img_path as img_path, menus.description as description FROM invoices JOIN orders ON invoices.id = orders.invoice_id JOIN menus ON menus.id = orders.menu_id WHERE orders.status > 0 AND orders.customer_id = ?;"
 
-const getPastOrdersByInvoiceId = "SELECT * FROM orders JOIN menus on orders.menu_id = menus.id WHERE invoice_id = ? AND orders.status > 0;"
+const getPastOrdersByInvoiceId = "SELECT menus.name as name, menus.price as price, menus.original_price as original_price, orders.quantity as quantity, menus.img_path as img_path, menus.description as description FROM orders JOIN menus on orders.menu_id = menus.id WHERE invoice_id = ? AND orders.status > 0;"
 
 const getOrdersByMenuId = "SELECT * FROM orders WHERE menu_id = ?;"
 
@@ -39,7 +39,7 @@ const addOrder = "INSERT INTO orders(created_at, status, menu_id, customer_id, i
 const addCart = "INSERT INTO carts (menu_id,customer_id,quantity) VALUES(?,?,?);"
 
 //Update
-const updatRestProfile = "UPDATE restaurants SET username = ?, email = ?, phone = ?, city = ?, address = ?, name = ?, zipcode = ?, state = ?, cuisine = ? WHERE id = ?;"
+const updateRestProfile = "UPDATE restaurants SET username = ?, email = ?, password = ?, phone = ?, city = ?, address = ?, name = ?, zipcode = ?, state = ?, cuisine = ? WHERE id = ?;"
 
 const updateRestImgById = "UPDATE restaurants SET img_path=?, updated_at = NOW() WHERE id = ?;"
 
@@ -62,7 +62,7 @@ const deleteMenuById = "DELETE FROM menus WHERE id = ?;"
 const deleteCartById = "DELETE FROM carts WHERE id = ?;"
 
 module.exports = {getCurrentOrdersById, getMenusByRestId, getInvoicesByCustId, getCartsByMenuId,
-    getCustomerById, getRestaurantsById,getRestInfoById,updatRestProfile,updateRestImgById,addMenu,getMenuById,
+    getCustomerById, getRestaurantsById,getRestInfoById,updateRestProfile,updateRestImgById,addMenu,getMenuById,
     deleteCartsByMenuId,getOrdersByMenuId,deleteOrdersByMenuId,deleteMenuById,updateMenuQuantityById,getRestCurrentOrdersById,
     getPastOrdersByInvoiceId,getCustCartsById,getCartsByCustId,addInvoice,addOrder,deleteCartById,getCartsByCustMenuId,
     updateCartItemById,addCart,updateMenuInfo,updateMenuImgById
