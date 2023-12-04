@@ -45,7 +45,7 @@ router.put(`/profile/update`, async(req, res) =>{
     try{
         
         const [restaurant, _ ] = await db.execute(getRestaurantsById,[id]);
-        const hashPassword = bcrypt(password,1)
+        const hashPassword = await bcrypt.hash(password,1)
         if(restaurant.length > 0){
             const [result, resultField] = await db.execute(updateRestProfile,
                 [username, email, hashPassword, phone, city, street, restName, zipcode, state, cuisine, id]);
