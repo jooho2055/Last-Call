@@ -24,7 +24,7 @@ export default function RestaurantMenuUnsold({restarantmenuInfo, onQuantityChang
                 <div className='w-[175px]'>   
                 <img 
                      src={`http://13.52.182.209${img_path}`}
-                     className='max-w-[16rem] max-h-20'
+                     className='max-w-[16rem] max-h-20 rounded-md'
                      alt='sample img'
                      />
                 </div>      

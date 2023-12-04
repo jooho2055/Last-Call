@@ -156,7 +156,10 @@ export default function RestaurantMenutable() {
 				{isFormOpen && (
 					<div className='fixed right-50 top-36 w-96 h-96 bg-gradient-to-r from-orange-200 via-slate-50 to-orange-200 rounded flex flex-col justify-center items-center'>
 						<form onSubmit={handleMenu}>
-						   <input type="file" onChange={onFileChange} />
+						<label className="bg-orange-400 text-white p-2 rounded-md mb-4 absolute top-5 left-28">
+						   <input type="file" onChange={onFileChange} className="hidden"/>
+						   Select Food Image
+						</label> 
 							{inputForMenu.map((input) => (
 								<FormInput
 									key={input.id}
