@@ -5,7 +5,7 @@ const db = require('../conf/database');
 const {isLoggedIn, isRestaurants, isMyPage} = require('../middleware/auth')
 const {getRestaurantsById,updateRestImgById,updateMenuImgById,getRestInfoById,addMenu,getMenusByRestId,
     getMenuById,getCartsByMenuId,deleteCartsByMenuId,getOrdersByMenuId,deleteOrdersByMenuId,deleteMenuById,
-    updateMenuQuantityById,updateMenuInfo,getRestCurrentOrdersById
+    updateMenuQuantityById,updateMenuInfo,getRestCurrentOrdersById,updateRestProfile
 } = require('../conf/queries')
 const {updateProfile, updateMenu} = require('../middleware/restaurantsManage')
 const bcrypt = require('bcrypt');
@@ -45,10 +45,10 @@ router.put(`/profile/update`, async(req, res) =>{
     try{
         
         const [restaurant, _ ] = await db.execute(getRestaurantsById,[id]);
-
+        const hashPassword = bcrypt(password,1)
         if(restaurant.length > 0){
-            const [result, resultField] = await db.execute(updatRestProfile,
-                [username, email, phone, city, street, restName, zipcode, state, cuisine, id]);
+            const [result, resultField] = await db.execute(updateRestProfile,
+                [username, email, hashPassword, phone, city, street, restName, zipcode, state, cuisine, id]);
         }
         return res.status(200).json({message: "updated"})
     }catch(err){

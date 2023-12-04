@@ -39,7 +39,7 @@ const addOrder = "INSERT INTO orders(created_at, status, menu_id, customer_id, i
 const addCart = "INSERT INTO carts (menu_id,customer_id,quantity) VALUES(?,?,?);"
 
 //Update
-const updatRestProfile = "UPDATE restaurants SET username = ?, email = ?, phone = ?, city = ?, address = ?, name = ?, zipcode = ?, state = ?, cuisine = ? WHERE id = ?;"
+const updateRestProfile = "UPDATE restaurants SET username = ?, email = ?, password = ?, phone = ?, city = ?, address = ?, name = ?, zipcode = ?, state = ?, cuisine = ? WHERE id = ?;"
 
 const updateRestImgById = "UPDATE restaurants SET img_path=?, updated_at = NOW() WHERE id = ?;"
 
@@ -62,7 +62,7 @@ const deleteMenuById = "DELETE FROM menus WHERE id = ?;"
 const deleteCartById = "DELETE FROM carts WHERE id = ?;"
 
 module.exports = {getCurrentOrdersById, getMenusByRestId, getInvoicesByCustId, getCartsByMenuId,
-    getCustomerById, getRestaurantsById,getRestInfoById,updatRestProfile,updateRestImgById,addMenu,getMenuById,
+    getCustomerById, getRestaurantsById,getRestInfoById,updateRestProfile,updateRestImgById,addMenu,getMenuById,
     deleteCartsByMenuId,getOrdersByMenuId,deleteOrdersByMenuId,deleteMenuById,updateMenuQuantityById,getRestCurrentOrdersById,
     getPastOrdersByInvoiceId,getCustCartsById,getCartsByCustId,addInvoice,addOrder,deleteCartById,getCartsByCustMenuId,
     updateCartItemById,addCart,updateMenuInfo,updateMenuImgById
