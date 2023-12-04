@@ -8,17 +8,18 @@ import { useSelector } from 'react-redux';
 
 export default function RestaurantProfile() {
   const user = useSelector((state) => state.user);
+  const id = user.userId;
   const profileData = useQuery({
     queryKey: ["profileData"],
-    queryFn: () => fetchRestaurantsProfile(1),
+    queryFn: () => fetchRestaurantsProfile(id),
   })
   console.log(profileData.data);
 
   useEffect(() => {
 	if (profileData.status === 'success' && profileData.data) {
 	  setInputValues({
-		username: profileData.data.username || '',
-		pwd:profileData?.data?.password || '',
+		    username: profileData.data.username || '',
+		    pwd:profileData?.data?.password || '',
         cpwd:profileData?.data?.password || '',
         email:profileData?.data?.email || '',
         phone:profileData?.data?.phone || '',
@@ -128,6 +129,19 @@ export default function RestaurantProfile() {
     event.preventDefault();
     
     if (formModified) {
+      const data = {
+        id: id,
+        username: inputValues.username,
+        password:"E123456!",
+        phone: inputValues.phone,
+        email: inputValues.email,
+        restName: inputValues.rname,
+        street: inputValues.street,
+        city: inputValues.city,
+        zipcode: inputValues.zip,
+        state: inputValues.state,
+        cuisine: inputValues.cuisine}
+        console.log(data);
   
       try {
         const response = await fetch("http://13.52.182.209/restaurants/profile/update", {
@@ -135,18 +149,7 @@ export default function RestaurantProfile() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            id: 18,
-            username: inputValues.username,
-            phone: inputValues.phone,
-            email: inputValues.email,
-            restName: inputValues.rname,
-            street: inputValues.street,
-            city: inputValues.city,
-            zipcode: inputValues.zip,
-            state: inputValues.state,
-            cuisine: inputValues.cuisine
-          }),
+          body: JSON.stringify(data),
         });
   
         const result = await response.json();
