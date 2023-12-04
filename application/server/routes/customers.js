@@ -20,15 +20,17 @@ router.get(`/order/current/:id(\\d+)`, /*isLoggedIn, isCustomers, isMyPage,*/  a
     const {id} = req.params
     try{
         const [results, _ ] = await db.execute(getCurrentOrdersById,[id]);
+
         if(results.length < 1){
           return res.status(200).json({orders: []})
         }
+
         const [restaurant, restaurantField] = await db.execute(getRestInfoById, [results[0].restaurant_id])
-        console.log(results)
+
         return res.status(200).json({orders: results,restaurants: restaurant[0]})
     }catch(err){
         console.log(err)
-        return res.status(400).json({message: "fail to get current order"})
+        return res.status(400).json({message: err.message})
     }
 })
 
