@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 
 export default function RestaurantProfile() {
   const user = useSelector((state) => state.user);
-  const id = user.userId;
+  const id = 18;
   const profileData = useQuery({
     queryKey: ["profileData"],
     queryFn: () => fetchRestaurantsProfile(id),
@@ -132,7 +132,7 @@ export default function RestaurantProfile() {
       const data = {
         id: id,
         username: inputValues.username,
-        password:"E123456!",
+        password: inputValues.pwd,
         phone: inputValues.phone,
         email: inputValues.email,
         restName: inputValues.rname,
