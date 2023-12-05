@@ -170,20 +170,20 @@ export default function CustomerProfile() {
 						))}
 
 						<div className='mt-7 flex justify-center gap-x-2'>
-							<button
+							<BtnForCustomer
 								className={saveButtonClass}
 								disabled={isSubmitDisabled}
 								type='submit'
 							>
 								Save
-							</button>
-							<button
+							</BtnForCustomer>
+							<BtnForCustomer
 								type='button'
 								className='font-bold border-2 px-4 py-2 rounded-full bg-white text-black'
 								onClick={toggleEditMode}
 							>
 								{editMode ? 'Cancel' : 'Edit'}
-							</button>
+							</BtnForCustomer>
 						</div>
 					</form>
 				</div>
