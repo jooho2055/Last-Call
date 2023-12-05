@@ -1,8 +1,8 @@
 import React from 'react';
 
-export default function BtnForCustomer({ onClick, className, children, disabled }) {
+export default function BtnForCustomer({ onClick, className, children, disabled, type }) {
 	return (
-		<button className={className} onClick={onClick} disabled={disabled}>
+		<button className={className} onClick={onClick} disabled={disabled} type={type}>
 			{children}
 		</button>
 	);
