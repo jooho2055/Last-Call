@@ -3,6 +3,8 @@ import FormInput from '../FormInput';
 import { inputForMenu } from '../../utils/resProfile';
 import { AiTwotoneEdit } from 'react-icons/ai';
 import { useQueryClient } from '@tanstack/react-query';
+import { editMenuItem } from '../../apis/post';
+import { useMutation } from '@tanstack/react-query';
 
 
 
@@ -13,13 +15,20 @@ export default function Edit({ initialData }) {
     fname: initialData.name,
     oprice: initialData.original_price,
     aprice: initialData.price,
-    description: '',
+    description: initialData.description || "",
   });
   const [menuvalidity, setmenuValidity] = useState({
     fname: true,
     oprice: true,
     aprice: true,
     description: true,
+  });
+  const editeachMenuItem = useMutation({
+    mutationFn: editMenuItem,
+    onSuccess:data =>{
+		  queryClient.setQueryData(["posts", data.id], data)
+		  queryClient.invalidateQueries(["posts"],{exact: true})
+		},
   });
 
 
@@ -40,8 +49,8 @@ export default function Edit({ initialData }) {
         isValid = /^[0-9]*\.?[0-9]+$/.test(value) && parseFloat(value) > 0;
         break;
       case 'description':
-        isValid = /[A-Za-z]/.test(value);
-        break;
+          isValid = /[A-Za-z]/.test(value);
+          break;  
       default:
         isValid = false;
     }
@@ -61,22 +70,18 @@ export default function Edit({ initialData }) {
   const formatShows = () =>{
     setIsOpen(!isOpen);
 };
-const mydata = {menuId: initialData.id, name: editFormData.fname, desc: editFormData.description, price: editFormData.aprice, originalPrice: editFormData.oprice }
+const mydata = {menuId: initialData.id, name: editFormData.fname, price: editFormData.aprice, originalPrice: editFormData.oprice, quantity: initialData.quantity, desc:editFormData.description}
 const handleMenu = async (e) => {
   e.preventDefault();
- try{
-  const response = await fetch('http://13.52.182.209/restaurants/menu/edit',
-  {method:'PUT',
-  headers: { 
-    'Content-Type': 'application/json'
-   },
-   body: JSON.stringify(mydata),  
+  console.log(mydata);
+  editeachMenuItem.mutate({
+    menuId: initialData.id,
+    name: editFormData.fname,
+    price: editFormData.aprice,
+    originalPrice: editFormData.oprice,
+    quantity: initialData.quantity,
+    desc:editFormData.description,
   })
-  return response;
- }
- catch (error) {
-  console.error("Error:", error);
-}
 }
 
   return (
@@ -94,22 +99,22 @@ const handleMenu = async (e) => {
 )}
 
 {isOpen && (
-  <div className='relative w-[250px] h-[350px] rounded-md border-2 border-orange-500 flex flex-col justify-center items-center'>
-    <form onSubmit={handleMenu}>
-      {inputForMenu.map((input) => (
-        <FormInput
-          key={input.id}
-          {...input}
-          value={editFormData[input.name]}
-          onChange={onMenuChange}
-          isValid={menuvalidity[input.name]}
-        ></FormInput>
-      ))}
-      <div className='flex justify-center'>
-        <button disabled={isMenuSubmitDisable} className={`bg-orange-600 text-white px-4 py-2 rounded ${isMenuSubmitDisable ? 'opacity-50 cursor-not-allowed' : ''}`}>Save</button>
-      </div>
-    </form>
-  </div>
+  <div className='relative z-0 w-[250px] h-[350px] bg-gradient-to-r from-orange-200 via-slate-50 to-orange-200 rounded flex flex-col justify-center items-center'>
+  <form onSubmit={handleMenu}>
+    {inputForMenu.map((input) => (
+      <FormInput
+        key={input.id}
+        {...input}
+        value={editFormData[input.name]}
+        onChange={onMenuChange}
+        isValid={menuvalidity[input.name]}
+      ></FormInput>
+    ))}
+    <div className='flex justify-center'>
+      <button disabled={isMenuSubmitDisable} className={`bg-orange-600 text-white px-4 py-2 rounded ${isMenuSubmitDisable ? 'opacity-50 cursor-not-allowed' : ''}`}>Save</button>
+    </div>
+  </form>
+</div>
 )}
 
     </div>

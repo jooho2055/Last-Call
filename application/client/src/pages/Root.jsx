@@ -20,7 +20,7 @@ export default function Root() {
 	return (
 		<>
 			<header className='text-slate-100 text-lg shadow-xl'>
-				{!isLandingPage && <Navbar />}
+				{!isLandingPage && <Navbar role={user.role}/>}
 			</header>
 			<main
 				className={`h-full w-full m-auto overflow-y-auto ${showbg ? 'bg-custombg' : ''} ${

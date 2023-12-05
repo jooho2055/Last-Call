@@ -15,6 +15,7 @@ export default function CustomerHome() {
 	const navigate = useNavigate();
 
 	const user = useSelector((state) => state.user);
+	console.log(user);
 
 	useEffect(() => {
 		if (!user.isLoggedIn) {

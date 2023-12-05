@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AiOutlineUser } from 'react-icons/ai';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -7,6 +7,15 @@ import { logout } from './../../redux/userActions';
 export default function Dropdown() {
 	const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 	const user = useSelector((state) => state.user);
+	const [restaurant, setRestaurant] = useState(false);
+	useEffect(() => {
+		if (user.role === 'restaurants') { 
+		  console.log('true');
+		  setRestaurant(true);
+		}else{
+			setRestaurant(false);
+		}
+	  }, [user.role]);
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const toggleDropdown = () => {
@@ -40,13 +49,25 @@ export default function Dropdown() {
 			)}
 			{isDropdownOpen && (
 				<div className='absolute right-0 mt-2 py-2 w-48 bg-gray-100 rounded-lg shadow-xl z-10'>
-					<Link
+					{!restaurant && (
+						<Link
 						to='/customer/profile'
 						href='#'
 						className='block px-4 py-2 text-gray-800 hover:bg-orange-400 hover:text-white'
 					>
 						Profile
 					</Link>
+
+					)}
+					{restaurant && (
+						<Link
+						to='/restaurant/profile'
+						href='#'
+						className='block px-4 py-2 text-gray-800 hover:bg-orange-400 hover:text-white'>
+						Profile
+					   </Link>
+
+					)}
 					<button
 						href='#'
 						className='block px-4 py-2 text-gray-800 hover:bg-orange-400 hover:text-white'

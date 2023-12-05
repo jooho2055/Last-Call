@@ -38,7 +38,7 @@ export const addToCart = async ({ menuId, customerId, restaurantId, quantity }) 
 
 export const editLeftoverFoodQuantity = async ({ restaurantId, menuId, quantity }) => {
 	try {
-		const response = await axios.post(`restaurants/menu/setqauntity`, {
+		const response = await axios.post(`http://13.52.182.209/restaurants/menu/setqauntity`, {
 			restaurantId,
 			menuId,
 			quantity,
@@ -49,6 +49,24 @@ export const editLeftoverFoodQuantity = async ({ restaurantId, menuId, quantity 
 		throw error;
 	}
 };
+
+
+export const editMenuItem = async({menuId, quantity, name, price, originalPrice, desc}) =>{
+	try{
+		const response = await axios.post('http://13.52.182.209/restaurants/menu/edit', {
+			menuId,
+			quantity,
+			name,
+			price,
+			originalPrice,
+			desc,
+		});
+		return response.data;
+	}catch(error){
+		console.error('Error edit menu', error);
+		throw error;
+	}
+}
 
 export const cartCheckout = async (customerId) => {
 	try {
@@ -104,3 +122,4 @@ export const editCustomerProfile = async ({
 		throw error;
 	}
 };
+
