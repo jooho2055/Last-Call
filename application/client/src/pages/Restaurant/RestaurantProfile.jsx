@@ -5,15 +5,25 @@ import FormInput from '../../components/FormInput';
 import Select from 'react-select';
 import {fetchRestaurantsProfile} from '../../apis/get';
 import { useSelector } from 'react-redux';
+import axios from 'axios';
 
 export default function RestaurantProfile() {
   const user = useSelector((state) => state.user);
+  const [newImageSelected, setNewImageSelected] = useState(false);
+  const [fileChosen, setFileChosen] = useState(false);
   const id = 18;
   const profileData = useQuery({
     queryKey: ["profileData"],
     queryFn: () => fetchRestaurantsProfile(id),
   })
   console.log(profileData.data);
+  const [file, setFile] = useState(null);
+
+	const onFileChange = (e) => {
+        setFile(e.target.files[0]);
+        setNewImageSelected(true);
+        setFileChosen(true);
+    };
 
   useEffect(() => {
 	if (profileData.status === 'success' && profileData.data) {
@@ -71,7 +81,7 @@ export default function RestaurantProfile() {
     !Object.values(validity).every((isValid) => isValid) ||
     !Object.values(inputValues).every((value) => value) ||
     !passwordMatch ||
-    !formModified;
+    (!formModified && !newImageSelected);
 
   const validateInput = (name, value) => {
     let isValid = true;
@@ -128,7 +138,7 @@ export default function RestaurantProfile() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     
-    if (formModified) {
+    if (formModified || newImageSelected) {
       const data = {
         id: id,
         username: inputValues.username,
@@ -154,13 +164,29 @@ export default function RestaurantProfile() {
   
         const result = await response.json();
         console.log("Success:", result);
+        const formData = new FormData();
+        formData.append('file', file);
+			  formData.append('restaurantId', id);
+            axios.post('http://13.52.182.209/restaurants/profile/image', formData, {
+				headers: {
+					'Content-Type': 'multipart/form-data'
+				}
+				})
+				.then(response => {
+				console.log('File uploaded successfully', response);
+				})
+				.catch(error => {
+				console.error('Error uploading file', error);
+				});
   
         setFormModified(false);
+        setNewImageSelected(false);
+        setFileChosen(false);
         setSubmissionSuccess(true);
-  
+     
         setTimeout(() => {
           setSubmissionSuccess(false);
-        }, 3000); // Adjust the time as needed
+        }, 3000); 
       } catch (error) {
         console.error("Error:", error);
       }
@@ -188,9 +214,10 @@ export default function RestaurantProfile() {
     setEditMode(!editMode);
     setFormModified(false);
     setSubmissionSuccess(false);
+
   };
 
-  const saveButtonClass = formModified
+  const saveButtonClass = (formModified || newImageSelected )
     ? 'bg-orange-400 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded-full'
     : 'bg-orange-200 text-white font-bold py-2 px-4 rounded-full';
 
@@ -224,6 +251,11 @@ export default function RestaurantProfile() {
             value={optionsForCuisine.find((option) => option.value === inputValues.cuisine)}
             isDisabled={!editMode}
           />
+          <br/>
+          <label className={`bg-${newImageSelected ? 'orange-400' : 'orange-200'} text-white p-2 rounded-md mb-4`}>
+						   <input type="file" onChange={onFileChange} className='hidden'/>
+						   {fileChosen ? 'File Chosen' : 'Select Food Image'}
+						</label> 
           <div className="mt-4 flex justify-center">
             <button className="text-black-500 underline font-bold" onClick={toggleEditMode}>
               {editMode ? 'Cancel' : 'Edit'}
