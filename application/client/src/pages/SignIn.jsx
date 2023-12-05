@@ -4,7 +4,6 @@ import { inputsForSignIn } from '../utils/formConfig';
 import FormInput from '../components/FormInput';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../redux/userActions';
-import FooterForLogin from '../components/FooterForLogin';
 import BtnForRegister from '../components/BtnForRegister';
 
 export default function SignIn() {

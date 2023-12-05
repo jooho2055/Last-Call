@@ -34,6 +34,7 @@ export default function CustomerHome() {
 		// use query to fetch data from DB, the key is different from the key in search box
 		queryKey: ['restaurants'],
 		queryFn: fetchRestaurants,
+		staleTime: 120000,
 	});
 
 	const handleSubmit = (e) => {
@@ -49,18 +50,22 @@ export default function CustomerHome() {
 	if (error) return <p>{error.message}</p>;
 
 	return (
-		<div className='max-w-[90rem] m-auto mt-10'>
+		<div className='max-w-[90rem] m-auto mt-10 px-24 custom1175:px-10 custom1050:px-10'>
 			<SearchBox searchValue={searchValue} onSubmit={handleSubmit} onChange={handleChange} />
 
-			<div className='grid grid-cols-3 auto-rows-[minmax(12rem,auto)] px-32 pt-12 gap-7 md:grid-cols-2 sm:grid-cols-1'>
+			<div className='grid grid-cols-3 pt-12 gap-12 custom1050:grid-cols-2 customHome:gap-x-0 custom1050:px-10 custom850:px-0 custom720:grid-cols-1'>
 				{/* Must use a restaurant unique id as a key in the future */}
 				{restaurants.map((restaurant) => (
 					<Link
 						to={`/restaurant/${restaurant.id}`}
-						className='flex flex-col justify-center items-center text-lg rounded-xl shadow-md'
+						className='flex flex-col w-[20rem] h-[16.75rem] justify-center items-center text-lg rounded-xl shadow-md mx-auto'
 						key={restaurant.id}
 					>
-						<img src={sampleFood} alt='sample Food' className='rounded-xl' />
+						<img
+							src={sampleFood}
+							alt='sample Food'
+							className='w-[20rem] h-[12.5rem] rounded-t-lg'
+						/>
 						<RestaurantList restaurantInfo={restaurant} />
 					</Link>
 				))}
