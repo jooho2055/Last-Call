@@ -15,13 +15,7 @@ router.use(
   })
 );
 
-// MySQL database connection setup
-const db = mysql.createConnection({
-  host: '127.0.0.1:3306',
-  user: 'root',
-  password: '@Sakxenavedang47',
-  database: 'LASTCALLDB',
-});
+
 
 db.connect((err) => {
   if (err) {
@@ -38,7 +32,7 @@ db.query(`CREATE TABLE IF NOT EXISTS 'LASTCALLDB'.'favorites' (
   restaurant_id VARCHAR(255)
 )`, (err, result) => {
   if (err) {
-    console.error('Error creating the user_favorites table: ' + err);
+    console.error('Error creating the favorites table: ' + err);
   }
   console.log('favorites table is ready.');
 });
@@ -46,14 +40,14 @@ db.query(`CREATE TABLE IF NOT EXISTS 'LASTCALLDB'.'favorites' (
 // Endpoint to add a restaurant to the user's favorites
 router.post('/addFavoriteRestaurant', (req, res) => {
   const { restaurant_name } = req.body;
-  const user_id = req.session.user_id; // Assuming you have a user authentication mechanism
+  const customer_id = req.session.user_id; // Assuming you have a user authentication mechanism
 
-  if (!user_id) {
+  if (!customer_id) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
 
   // Insert the restaurant into the user's favorites
-  db.query('INSERT INTO user_favorites (user_id, restaurant_name) VALUES (?, ?)', [user_id, restaurant_name], (err, result) => {
+  db.query('INSERT INTO favorites (customer_id, restaurant_name) VALUES (?, ?)', [customer_id, restaurant_name], (err, result) => {
     if (err) {
       console.error('Error adding the restaurant to favorites: ' + err);
       res.status(500).json({ error: 'Failed to add the restaurant to favorites' });
@@ -65,13 +59,13 @@ router.post('/addFavoriteRestaurant', (req, res) => {
 
 // Endpoint to retrieve the user's favorite restaurants
 router.get('/getFavoriteRestaurants', (req, res) => {
-  const user_id = req.session.user_id; // Assuming you have a user authentication mechanism
+  const customer_id = req.session.customer_id; // Assuming you have a user authentication mechanism
 
-  if (!user_id) {
+  if (!customer_id) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
 
-  db.query('SELECT restaurant_name FROM user_favorites WHERE user_id = ?', user_id, (err, rows) => {
+  db.query('SELECT restaurant_name FROM favorites WHERE customer_id = ?', customer_id, (err, rows) => {
     if (err) {
       console.error('Error retrieving the user favorites: ' + err);
       res.status(500).json({ error: 'Failed to retrieve the user favorites' });

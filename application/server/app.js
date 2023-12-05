@@ -4,10 +4,16 @@ const express = require("express");
 const path = require("path");
 const app = express();
 
+const port = process.env.PORT;
+
+
+process.env.PORT = process.env.PORT || 3000;
+
+
 const cookieParser = require('cookie-parser');
 const logger = require("morgan");
-const sessions = require('express-session');
-const mysqlStore = require('express-mysql-session')(sessions);
+const session = require('express-session');
+const mysqlStore = require('express-mysql-session')(session);
 // var db = require('./conf/database');
 const cors = require('cors');
 
@@ -44,8 +50,9 @@ app.use(express.static(path.join(__dirname, "../client/build")));
 app.use(cookieParser());
 
 
-app.use(sessions({
-  secret: process.env.SESSION_SECRET,
+app.use(session({
+  //secret: process.env.SESSION_SECRET,
+  secret: 'your-secret',
   store: sessionStore,
   resave: false,
   saveUninitialized: true,
@@ -100,6 +107,10 @@ app.use(function(err, req, res, next){
   res.render("error");
 });
 
-app.listen(app.get("port"), () => {
-    console.log(app.get("port"), `app listening at ${ process.env.PORT }`);
+//app.listen(app.get("port"), () => {
+  //  console.log(app.get("port"), `app listening at ${ process.env.PORT }`);
+//});
+
+app.listen(3000, () => {
+  console.log('Server is running on port 3000');
 });
