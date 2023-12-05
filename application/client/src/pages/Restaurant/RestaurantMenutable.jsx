@@ -4,7 +4,7 @@ import RestaurantMenuSetting from '../../components/RestaurantMenuSetting';
 import { AiFillPlusSquare } from 'react-icons/ai';
 import FormInput from '../../components/FormInput';
 import { useSelector } from 'react-redux';
-import {getMenuTable} from '../../apis/get';
+import { getMenuTable } from '../../apis/get';
 import { createNewMenu } from '../../apis/post';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Link, useNavigate } from 'react-router-dom';
@@ -14,6 +14,7 @@ export default function RestaurantMenutable() {
 	const navigate = useNavigate();
     const user = useSelector((state) => state.user);
     const queryClient = useQueryClient();
+	const [fileChosen, setFileChosen] = useState(false);
    useEffect(() => {
       if(user.isLoggedIn){
         if(user.role !== 'restaurants'){
@@ -57,6 +58,7 @@ export default function RestaurantMenutable() {
 
 	const onFileChange = (e) => {
         setFile(e.target.files[0]);
+		setFileChosen(true);
     };
 
 	const [isFormOpen, setIsFormOpen] = useState(false);
@@ -72,7 +74,7 @@ export default function RestaurantMenutable() {
 				let isValid = true;
 				switch (name) {
 					case 'fname':
-						isValid = /^[A-Za-z0-9\s]{1,16}$/.test(value);
+						isValid = /^[A-Za-z0-9\s\S]{1,16}$/.test(value);
 					    break;
 					case 'oprice':
 						isValid = /^[0-9]*\.?[0-9]+$/.test(value) && parseFloat(value) > 0;
@@ -121,6 +123,7 @@ export default function RestaurantMenutable() {
 				.catch(error => {
 				console.error('Error uploading file', error);
 				});
+			setFileChosen(false);	
 
 		} catch (error) {
 		  console.error('An error occurred:', error);
@@ -154,21 +157,25 @@ export default function RestaurantMenutable() {
 					></button>
 				)}
 				{isFormOpen && (
-					<div className='fixed right-50 top-36 w-96 h-96 bg-gradient-to-r from-orange-200 via-slate-50 to-orange-200 rounded flex flex-col justify-center items-center'>
+					<div className='fixed right-50 top-36 w-[400px] h-[420px] bg-gradient-to-r from-orange-200 via-slate-50 to-orange-200 rounded flex flex-col justify-center items-center'>
 						<form onSubmit={handleMenu}>
-						<label className="bg-orange-400 text-white p-2 rounded-md mb-4 absolute top-5 left-28">
+						<div className='h-10'>
+						<label className="bg-orange-400 text-white p-2 rounded-md mb-4">
 						   <input type="file" onChange={onFileChange} className="hidden"/>
-						   Select Food Image
+						   {fileChosen ? 'File Chosen' : 'Select Food Image'}
 						</label> 
+						</div>	
 							{inputForMenu.map((input) => (
 								<FormInput
 									key={input.id}
 									{...input}
 									value={menuInput[input.name]}
 									onChange={onMenuChange}
+									classNameForInput={"shadow-md rounded-md h-10"}
 									isValid={menuvalidity[input.name]}
 								></FormInput>
 							))}
+							<br/>
 							<button disabled={isMenuSubmitDisable} className={`bg-orange-600 text-white px-4 py-2 rounded ${isMenuSubmitDisable ? 'opacity-50 cursor-not-allowed' : ''}`}>Submit</button>
 						</form>
 					</div>

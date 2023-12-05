@@ -40,7 +40,6 @@ export const fetchSearchboxRestaurants = async (search) => {
  */
 export const fetchRestaurantAvailableMenu = async (restaurantId) => {
 	try {
-		console.log('fetching');
 		const response = await axios.get(
 			`http://13.52.182.209/restaurants/menu/list/${restaurantId}`
 		);
@@ -58,7 +57,6 @@ export const fetchRestaurantAvailableMenu = async (restaurantId) => {
  */
 export const fetchRestaurantInfo = async (restaurantId) => {
 	try {
-		console.log('fetching');
 		const response = await axios.get(`http://13.52.182.209/restaurants/info/${restaurantId}`);
 		return response.data;
 	} catch (error) {
@@ -103,7 +101,6 @@ export const getPastOrder = async (id) => {
  */
 export const getMenuTable = async (id) => {
 	try {
-		console.log('fetching');
 		const response = await axios.get(`http://13.52.182.209/restaurants/menu/list/${id}`);
 		return response.data;
 	} catch (error) {
@@ -114,7 +111,6 @@ export const getMenuTable = async (id) => {
 
 export const getRestaurantOrder = async (restaurantId) => {
 	try {
-		console.log('fetching');
 		const response = await axios.get(
 			`http://13.52.182.209/restaurants/order/current/${restaurantId}`
 		);
