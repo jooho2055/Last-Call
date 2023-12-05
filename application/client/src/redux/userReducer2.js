@@ -1,4 +1,4 @@
-// userReducer2.js
+
 import { SET_USER_DATA, SET_USER_PROFILE } from '../actions/userActions2';
 
 const initialState = {
@@ -19,7 +19,7 @@ const userReducer2 = (state = initialState, action) => {
         ...state,
         ...action.payload,
       };
-    case SET_USER_PROFILE: 
+    case SET_USER_PROFILE:
       return {
         ...state,
         ...action.payload,

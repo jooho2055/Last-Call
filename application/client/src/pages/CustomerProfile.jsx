@@ -139,16 +139,17 @@ export default function CustomerProfile() {
   const handleSave = (e) => {
     e.preventDefault();
     console.log('Request Payload:', inputValues);
-
+  
     const editProfileUrl = `${BASE_URL}/customers/edit`;
-
+  
     axios
       .post(editProfileUrl, inputValues)
       .then((response) => {
         const updatedUserData = response.data;
-
+        console.log('Updated User Data:', updatedUserData);
+  
         dispatch(setUserProfile(updatedUserData));
-
+  
         setSuccessMessage('Profile updated successfully!');
         setTimeout(() => {
           setSuccessMessage('');
@@ -159,6 +160,7 @@ export default function CustomerProfile() {
         setErrorMsg('An error occurred while updating your profile. Please try again later.');
       });
   };
+  
 
   const toggleEditMode = () => {
     setEditMode(!editMode);
