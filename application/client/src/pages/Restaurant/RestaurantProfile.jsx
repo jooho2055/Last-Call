@@ -16,7 +16,7 @@ export default function RestaurantProfile() {
     queryKey: ["profileData"],
     queryFn: () => fetchRestaurantsProfile(id),
   })
-  console.log(profileData.data);
+  //console.log(profileData.data);
   const [file, setFile] = useState(null);
 
 	const onFileChange = (e) => {
@@ -39,7 +39,6 @@ export default function RestaurantProfile() {
         zip:profileData?.data?.zipcode ||'',
         state:profileData?.data?.state ||'',
         cuisine:profileData?.data?.cuisine ||'',
-		
 	  });
 	}
   }, [profileData.status, profileData.data]);
@@ -81,7 +80,8 @@ export default function RestaurantProfile() {
     !Object.values(validity).every((isValid) => isValid) ||
     !Object.values(inputValues).every((value) => value) ||
     !passwordMatch ||
-    (!formModified && !newImageSelected);
+    !editMode ||
+    (!formModified && !fileChosen);
 
   const validateInput = (name, value) => {
     let isValid = true;
@@ -122,7 +122,6 @@ export default function RestaurantProfile() {
 
     setValidity({ ...validity, [name]: isValid });
 
-    // Check password match
     if (name === 'pwd' || name === 'cpwd') {
       setPasswordMatch(checkPassword(inputValues.pwd, inputValues.cpwd));
     }
@@ -138,11 +137,11 @@ export default function RestaurantProfile() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     
-    if (formModified || newImageSelected) {
+    if (formModified) {
       const data = {
         id: id,
         username: inputValues.username,
-        password: inputValues.pwd,
+        password: "E123456!",
         phone: inputValues.phone,
         email: inputValues.email,
         restName: inputValues.rname,
@@ -164,6 +163,19 @@ export default function RestaurantProfile() {
   
         const result = await response.json();
         console.log("Success:", result);
+  
+        setFormModified(false);
+        setSubmissionSuccess(true);
+     
+        setTimeout(() => {
+          setSubmissionSuccess(false);
+        }, 3000); 
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    }
+
+      if(newImageSelected && fileChosen){
         const formData = new FormData();
         formData.append('file', file);
 			  formData.append('restaurantId', id);
@@ -178,19 +190,15 @@ export default function RestaurantProfile() {
 				.catch(error => {
 				console.error('Error uploading file', error);
 				});
-  
-        setFormModified(false);
         setNewImageSelected(false);
         setFileChosen(false);
         setSubmissionSuccess(true);
-     
         setTimeout(() => {
           setSubmissionSuccess(false);
         }, 3000); 
-      } catch (error) {
-        console.error("Error:", error);
+
       }
-    }
+    
   };
 
   const onChange = (e) => {
@@ -212,12 +220,12 @@ export default function RestaurantProfile() {
 
   const toggleEditMode = () => {
     setEditMode(!editMode);
-    setFormModified(false);
-    setSubmissionSuccess(false);
-
+    setNewImageSelected(!newImageSelected);
+    setFormModified(false);   
+    
   };
 
-  const saveButtonClass = (formModified || newImageSelected )
+  const saveButtonClass = ((formModified || fileChosen) && editMode)
     ? 'bg-orange-400 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded-full'
     : 'bg-orange-200 text-white font-bold py-2 px-4 rounded-full';
 
@@ -225,13 +233,14 @@ export default function RestaurantProfile() {
     <div className="min-h-full m-auto flex justify-center bg-white">
       <div className="w-96 p-4 border rounded-lg shadow-md">
         <form onSubmit={handleSubmit}>
-          <h1 className="text-xl mb-4 font-semibold text-slate-950">Restaurant profile</h1>
+          <h1 className="text-xl mb-4 font-semibold text-slate-950">Restaurant profile</h1>       
           {inputForRestaurant.map((input) => (
             <FormInput
               key={input.id}
               {...input}
               value={inputValues[input.name]}
               onChange={onChange}
+              classNameForInput={"shadow-md rounded-md h-10"}
               isValid={validity[input.name]}
               disabled={!editMode}
             />
@@ -257,12 +266,12 @@ export default function RestaurantProfile() {
 						   {fileChosen ? 'File Chosen' : 'Select Food Image'}
 						</label> 
           <div className="mt-4 flex justify-center">
-            <button className="text-black-500 underline font-bold" onClick={toggleEditMode}>
+            <button className="text-black-500 underline font-bold" type='button' onClick={toggleEditMode}>
               {editMode ? 'Cancel' : 'Edit'}
             </button>
           </div>
           <div className="mt-4 flex justify-center">
-            <button className={saveButtonClass} disabled={isSubmitDisabled}>
+            <button className={saveButtonClass} type='submit' disabled={isSubmitDisabled}>
               Save
             </button>
           </div>
