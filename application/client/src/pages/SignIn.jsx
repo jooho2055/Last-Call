@@ -12,8 +12,8 @@ export default function SignIn() {
 	const user = useSelector((state) => state.user);
 	useEffect(() => {
 		if (user.isLoggedIn) {
-			if (user.role === 'restaurant') {
-				navigate('/restaurantprofile');
+			if (user.role === 'restaurants') {
+				navigate('/restaurant/menu');
 			} else {
 				navigate('/home');
 			}
@@ -40,7 +40,7 @@ export default function SignIn() {
 		if (data.role === 'customers') {
 			navigate('/home');
 		} else if (data.role === 'restaurants') {
-			navigate('/restaurantprofile');
+			navigate('/restaurant/menu');
 		} else {
 			console.log(data.message);
 			console.log('something wrong!');

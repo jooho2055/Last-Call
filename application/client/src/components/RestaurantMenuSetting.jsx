@@ -1,18 +1,21 @@
 import React from 'react';
-import sampleFood from '../images/samplefood.png';
 import DeleteButton from './Button/Delete';
-import Edit from './Button/EditRestaurantMenu';
+//import Edit from './Button/EditRestaurantMenu';
 
-export default function RestaurantMenuSetting({restarantmenuInfo}) {
-const {name, original_price, price, quantity, id, restaurant_id, description} = restarantmenuInfo;
+export default function RestaurantMenuSetting({restarantmenuInfo, unsold}) {
+if (!restarantmenuInfo) {
+    return null;
+  }  
+const {name, original_price, price, quantity, id, restaurant_id, description, img_path} = restarantmenuInfo;
 
 const myData = {restaurantId: restaurant_id, menuId: id};  
 const handleDetele = async(e)=>{
     e.preventDefault();
-    console.log('Delete button clicked');
+    console.log(myData);
      fetch('http://13.52.182.209/restaurants/menu/delete', 
-     {method: 'DELETE',
-     headers: { 
+     {
+      method: 'DELETE',
+      headers: { 
       'Content-Type': 'application/json'
      },
      body: JSON.stringify(myData)
@@ -21,12 +24,11 @@ const handleDetele = async(e)=>{
 }
 
     return (
-      // lists of menu
       <li className='flex items-center justify-center rounded-xl shadow-md'>
         <div>
           <img
-            src={sampleFood}
-            className='rounded-t-xl'
+            src={`http://13.52.182.209${img_path}`}
+            className='rounded-t-xl w-[400px] h-[300px] object-cover'
             alt='sample img'
           />
           <div>
@@ -40,7 +42,7 @@ const handleDetele = async(e)=>{
               </div>
             </div>
             <div className='pb-3 pl-1'>
-             {quantity>0 &&(
+             {unsold &&(
               <div className='flex justify-between text-sm'>
               <span>Quantity: </span>
               <span className='pr-5'>{quantity}</span>
@@ -57,14 +59,16 @@ const handleDetele = async(e)=>{
               </div>
             </div>
           </div>
-          <div className='pb-1 pl-1 flex justify-between'>
-           <span>
-          <DeleteButton handleDetele={handleDetele} />
-           </span>
-           <span className='pr-5'>
-           <Edit initialData={restarantmenuInfo}/>
-            </span>
-      </div>
+          {!unsold && (
+             <div className='pb-1 pl-1 flex justify-between'>
+             <span>
+            <DeleteButton handleDetele={handleDetele} />
+             </span>
+             <span className='pr-5'>
+              </span>
+            </div>
+          )}
+         
         </div>
 
       </li>
