@@ -4,7 +4,7 @@ import RestaurantMenuSetting from '../../components/RestaurantMenuSetting';
 import { AiFillPlusSquare } from 'react-icons/ai';
 import FormInput from '../../components/FormInput';
 import { useSelector } from 'react-redux';
-import {getMenuTable} from '../../apis/get';
+import { getMenuTable } from '../../apis/get';
 import { createNewMenu } from '../../apis/post';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Link, useNavigate } from 'react-router-dom';
@@ -74,7 +74,7 @@ export default function RestaurantMenutable() {
 				let isValid = true;
 				switch (name) {
 					case 'fname':
-						isValid = /^[A-Za-z0-9\s]{1,16}$/.test(value);
+						isValid = /^[A-Za-z0-9\s\S]{1,16}$/.test(value);
 					    break;
 					case 'oprice':
 						isValid = /^[0-9]*\.?[0-9]+$/.test(value) && parseFloat(value) > 0;
