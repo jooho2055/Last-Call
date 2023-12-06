@@ -5,13 +5,7 @@ import Dropdown from './Dropdown';
 import lastcall from '../../images/lastcall.png';
 import { useSelector } from 'react-redux';
 
-const navigation_rest = [
-	{ name: 'Menu', href: '/restaurant/menu', current: true },
-	{ name: 'Order', href: '/restaurant/order', current: false },
-	{ name: 'About Us', href: '/AboutUs', current: false },
-];
-
-export default function Navbar({role}) {
+export default function Navbar({ role }) {
 	// const [isSignIn, setIsSignin] = useState(false);
 	const user = useSelector((state) => state.user);
 
@@ -28,9 +22,15 @@ export default function Navbar({role}) {
 		{ name: 'About Us', href: '/AboutUs', current: false },
 	];
 
+	const navigation_rest = [
+		{ name: 'Menu', href: '/restaurant/menu', current: true },
+		{ name: 'Order', href: '/restaurant/order', current: false },
+		{ name: 'About Us', href: '/AboutUs', current: false },
+	];
+
 	const showNavItems =
 		!isSignin && !isSignup && !isLandingPage && !isSignupCustomer && !isSignupRestaurant;
-		const currentNavigation = role === 'restaurants' ? navigation_rest : navigation;
+	const currentNavigation = role === 'restaurants' ? navigation_rest : navigation;
 
 	return (
 		<>

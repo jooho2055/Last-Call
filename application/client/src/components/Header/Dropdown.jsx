@@ -9,18 +9,18 @@ export default function Dropdown() {
 	const user = useSelector((state) => state.user);
 	const [restaurant, setRestaurant] = useState(false);
 	useEffect(() => {
-		if (user.role === 'restaurants') { 
-		  console.log('true');
-		  setRestaurant(true);
-		}else{
+		if (user.role === 'restaurants') {
+			console.log('true');
+			setRestaurant(true);
+		} else {
 			setRestaurant(false);
 		}
-	  }, [user.role]);
+	}, [user.role]);
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const toggleDropdown = () => {
 		setIsDropdownOpen(!isDropdownOpen);
-	  };
+	};
 
 	const handleSignOut = async () => {
 		const res = await fetch('http://13.52.182.209/users/signout', {
@@ -37,7 +37,7 @@ export default function Dropdown() {
 		console.log(res);
 	};
 	return (
-		<div className='relative'>
+		<div className='relative font-medium'>
 			<button className='text-3xl mt-5 mr-6 text-stone-900' onClick={toggleDropdown}>
 				<AiOutlineUser />
 			</button>
@@ -48,25 +48,24 @@ export default function Dropdown() {
 				></button>
 			)}
 			{isDropdownOpen && (
-				<div className='absolute right-0 mt-2 py-2 w-48 bg-gray-100 rounded-lg shadow-xl z-10'>
+				<div className='absolute right-0 mt-2 py-2 mr-4 w-40 bg-slate-200 rounded-lg shadow-xl'>
 					{!restaurant && (
 						<Link
-						to='/customer/profile'
-						href='#'
-						className='block px-4 py-2 text-gray-800 hover:bg-orange-400 hover:text-white'
-					>
-						Profile
-					</Link>
-
+							to='/customer/profile'
+							href='#'
+							className='block px-4 py-2 text-gray-800 hover:bg-orange-400 hover:text-white'
+						>
+							Profile
+						</Link>
 					)}
 					{restaurant && (
 						<Link
-						to='/restaurant/profile'
-						href='#'
-						className='block px-4 py-2 text-gray-800 hover:bg-orange-400 hover:text-white'>
-						Profile
-					   </Link>
-
+							to='/restaurant/profile'
+							href='#'
+							className='block px-4 py-2 text-gray-800 hover:bg-orange-400 hover:text-white'
+						>
+							Profile
+						</Link>
 					)}
 					<button
 						href='#'
