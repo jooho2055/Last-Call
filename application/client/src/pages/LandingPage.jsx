@@ -23,18 +23,16 @@ export default function LandingPage() {
 					<div>
 						<img src={lastcall} alt='Logo' className='w-[35rem] sm:w-[20rem]' />
 					</div>
-					<p className='text-3xl mt-10 md:text-3xl'>
-						Grab Delicious Deals, Prevent Waste, and Savor Sustainability
-					</p>
+					<p className='text-3xl mt-10 md:text-3xl'>Avoid Food Waste and Save money</p>
 				</div>
 				<div className='mt-16 space-x-8 md:mt-12'>
 					<Link to={'/signin'}>
-						<button className='bg-stone-50 text-lg px-6 py-2.5 rounded-xl text-stone-900 font-medium'>
+						<button className='bg-stone-900 text-lg px-6 py-2.5 rounded-2xl'>
 							Sign In
 						</button>
 					</Link>
 					<Link to={'signup'}>
-						<button className='bg-[#DE6913] text-lg px-6 py-2.5 rounded-xl text-stone-50 font-medium'>
+						<button className='bg-stone-900 text-lg px-6 py-2.5 rounded-2xl'>
 							Sign Up
 						</button>
 					</Link>
