@@ -7,7 +7,8 @@ const multer = require('multer')
 const {customerStorage} = require('../conf/multer')
 const customerUpload = multer({ storage: customerStorage });
 const {getCurrentOrdersById,getInvoicesByCustId,getCustCartsById,getCartsByCustId,getMenuById,addInvoice,
-  addOrder,deleteCartById,getCartsByCustMenuId,updateCartItemById,addCart,getRestInfoById,getPastOrdersByInvoiceId
+  addOrder,deleteCartById,getCartsByCustMenuId,updateCartItemById,addCart,getRestInfoById,getPastOrdersByInvoiceId,
+  updateCustImgById,updateCustPwd
 } = require('../conf/queries')
 
 /**
@@ -303,6 +304,46 @@ router.put(`/order/cart/edit`, /*isLoggedIn, isCustomers,*/ async function(req, 
     }catch(err){
       return res.status(400).json({message: err.message})
     }
+})
+/**
+ * To upload cust image
+ * @method Post
+ * @body customerId
+ * @path /customers/profile/image
+ */
+router.post('/profile/image' ,customerUpload.single('file'), async(req,res)=>{    
+  const {filename} = req.file
+  const path = "/customersimg/" + filename;
+  const {customerId} = req.body
+
+  try{
+      const [result, field] = await db.execute(updateCustImgById,[path,customerId]);
+
+      if(result.affectedRows>0){
+          return res.status(200).json({message:"image updated"})
+      }
+      return res.status(400).json({message:"fail to update"})
+  }catch(err){
+      return res.status(400).json({message:err})
+  }
+})
+
+/**
+ * To update cust pwd
+ * @method PUT
+ * @body customerId, password
+ * @path /customers/profile/password
+ */
+router.put('/profile/password', /*isLoggedIn,*/ async function(req, res){
+  const {password, customerId} = req.body
+  const hashedpwd = await bcrypt.hash(password,1);
+  try{
+      const [upadte, updateResult] = await db.execute(updateCustPwd,[hashedpwd,customerId])
+      return res.status(200).json({message:"pwd updated"})
+  }
+  catch(err){
+      return res.status(400).json({message:err.message})
+  }
 })
 
 

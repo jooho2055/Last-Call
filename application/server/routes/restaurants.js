@@ -5,7 +5,7 @@ const db = require('../conf/database');
 const {isLoggedIn, isRestaurants, isMyPage} = require('../middleware/auth')
 const {getRestaurantsById,updateRestImgById,updateMenuImgById,getRestInfoById,addMenu,getMenusByRestId,
     getMenuById,getCartsByMenuId,deleteCartsByMenuId,getOrdersByMenuId,deleteOrdersByMenuId,deleteMenuById,
-    updateMenuQuantityById,updateMenuInfo,getRestCurrentOrdersById,updateRestProfile
+    updateMenuQuantityById,updateMenuInfo,getRestCurrentOrdersById,updateRestProfile,updateRestPwd
 } = require('../conf/queries')
 const {updateProfile, updateMenu} = require('../middleware/restaurantsManage')
 const bcrypt = require('bcrypt');
@@ -41,15 +41,13 @@ router.get(`/info/:id(\\d+)`,async(req,res) => {
  * @Path /restaurants/profile/update
  */
 router.put(`/profile/update`, async(req, res) =>{
-    let {id, username, password, email, phone, restName, street, city, zipcode, state, cuisine} = req.body;
+    let {id, username, email, phone, restName, street, city, zipcode, state, cuisine} = req.body;
     try{
-        
         const [restaurant, _ ] = await db.execute(getRestaurantsById,[id]);
-        const hashPassword = await bcrypt.hash(password,1)
         
         if(restaurant.length > 0){
             const [result, resultField] = await db.execute(updateRestProfile,
-                [username, email, hashPassword, phone, city, street, restName, zipcode, state, cuisine, id]);
+                [username, email, phone, city, street, restName, zipcode, state, cuisine, id]);
         }
         return res.status(200).json({message: "updated"})
     }catch(err){
@@ -65,7 +63,8 @@ router.put(`/profile/update`, async(req, res) =>{
  * @Method POST
  */
 router.post('/profile/image' ,restaurantUpload.single('file'), async(req,res)=>{    
-    const {path} = req.file
+    const {filename} = req.file
+    const path = "/restaurantsimg/" + filename;
     const {restaurantId} = req.body
 
     try{
@@ -77,6 +76,23 @@ router.post('/profile/image' ,restaurantUpload.single('file'), async(req,res)=>{
         return res.status(400).json({message:"fail to update"})
     }catch(err){
         return res.status(400).json({message:err})
+    }
+})
+/**
+ * To update cust pwd
+ * @method PUT
+ * @body restaurantId, password
+ * @path /restaurants/profile/password
+ */
+router.put('/profile/password', /*isLoggedIn,*/ async function(req, res){
+    const {password, restaurantId} = req.body
+    const hashedpwd = await bcrypt.hash(password,1);
+    try{
+        const [upadte, updateResult] = await db.execute(updateRestPwd,[hashedpwd,restaurantId])
+        return res.status(200).json({message:"pwd updated"})
+    }
+    catch(err){
+        return res.status(400).json({message:err.message})
     }
 })
 
@@ -294,8 +310,8 @@ router.post(`/menu/edit`, /*isLoggedIn, isRestaurants,*/ async function(req,res)
  * @Method POST
  */
 router.post('/menus/image' ,menuUpload.single('file'), async(req,res)=>{    
-    const {filename} = req.file
     const {menuId} = req.body
+    const {filename} = req.file
     const path = "/menusimg/" + filename;
     try{
         const [result, field] = await db.execute(updateMenuImgById,[path,menuId]);
