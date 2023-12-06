@@ -48,7 +48,7 @@ const handleConfirm = async (event) => {
     </div>
     <div className='pd-2 pl-32 flex gap-4 flex-row md:flex-col md:gap-4'>
       <span>
-        <button className="bg-orange-500 text-white px-4 py-2 rounded mb-4 md:mb-0" onClick={handleConfirm}>Confirm</button>
+        <button className="bg-orange-500 text-white px-4 py-2 rounded mb-4 md:mb-0" onClick={handleConfirm}>Completed</button>
       </span>
       <span>
         <button className="text-black px-7 py-2 rounded border border-black p-2" onClick={OrderShows}>View</button>
