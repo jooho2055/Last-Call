@@ -8,20 +8,22 @@ import OrderCard from '../../components/Order/OrderCard';
 export default function CustomerOrder() {
 	const { userId } = useParams();
 
-	const { data: currentOrder } = useQuery({
+	const { isLoading: isLoadingCurrentOrder, data: currentOrder } = useQuery({
 		queryKey: ['currentOrder'],
 		queryFn: () => customerGetCurrentOrder(userId),
-		staleTime: 120000,
 	});
 
-	const { data: orderHistory } = useQuery({
+	const { isLoading: isLoadingOrderHistory, data: orderHistory } = useQuery({
 		queryKey: ['orderHistory'],
 		queryFn: () => customerGetOrderHistory(userId),
-		staleTime: 120000,
 	});
 
-	const { orders, restaurants } = currentOrder;
-	const { orders: historyOrders, restaurants: historyRestaurants } = orderHistory;
+	if (isLoadingCurrentOrder || isLoadingOrderHistory) {
+		return <div>Loading orders...</div>; // Display loading message
+	}
+
+	// const { orders, restaurants } = currentOrder;
+	// const { orders: historyOrders, restaurants: historyRestaurants } = orderHistory;
 
 	return (
 		<div className='max-w-[80rem] m-auto flex flex-col justify-between'>
@@ -29,8 +31,8 @@ export default function CustomerOrder() {
 				<span className='text-3xl'>Current Order</span>
 				<div className='grid grid-cols-3 pt-20 gap-12'>
 					{currentOrder &&
-						currentOrder.orders?.map((order, index) => {
-							const restaurant = currentOrder.restaurants[index];
+						currentOrder?.orders?.map((order, index) => {
+							const restaurant = currentOrder?.restaurants?.[index];
 
 							return (
 								<OrderCard
@@ -49,8 +51,8 @@ export default function CustomerOrder() {
 				<span className='text-3xl'>Order History</span>
 				<div className='grid grid-cols-3 mt-20 gap-12'>
 					{orderHistory &&
-						orderHistory.orders?.map((order, index) => {
-							const restaurant = orderHistory.restaurants[index];
+						orderHistory?.orders?.map((order, index) => {
+							const restaurant = orderHistory?.restaurants?.[index];
 
 							return (
 								<OrderCard

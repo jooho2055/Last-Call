@@ -41,7 +41,7 @@ export default function OrderCard({ restaurant, order, className, isCurrentOrder
 						<div className='ml-6 underline text-xl m-auto px-2 py-[0.17rem] rounded-lg my-4'>
 							Total {order.length} items
 						</div>
-						{order.map((item, itemIndex) => (
+						{order?.map((item, itemIndex) => (
 							<RestaurantMenu
 								key={itemIndex}
 								restarantmenuInfo={item}
@@ -62,7 +62,7 @@ export default function OrderCard({ restaurant, order, className, isCurrentOrder
 							Total {order.length} items
 						</span>
 						<ul className='flex-1 mt-2 ml-12'>
-							{order.map((item, itemIndex) => (
+							{order?.map((item, itemIndex) => (
 								<RestaurantMenu
 									key={itemIndex}
 									restarantmenuInfo={item}
