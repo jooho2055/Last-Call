@@ -4,6 +4,14 @@ const path = require("path");
 const bcrypt = require('bcrypt');
 var db = require('../conf/database');
 const { isLoggedIn, isNotLoggedIn } = require('../middleware/auth');
+// const cors = require('cors')
+
+// let corsOptions = {
+//     origin: ['http://localhost:3000', 'http://localhost:5001'],
+//     credentials: true
+//   }
+  
+// router.use(cors(corsOptions))
 
 // for customer sign up
 router.post('/signup/customer',async (req,res)=>{
@@ -26,6 +34,8 @@ router.post('/signup/customer',async (req,res)=>{
         return res.status(400).json(err)
     }
 })
+
+
 
 // for restaurant sign up
 router.post('/signup/restaurant',async (req,res)=>{

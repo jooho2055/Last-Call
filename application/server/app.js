@@ -1,13 +1,16 @@
 require('dotenv').config();
+
 const express = require("express");
 const path = require("path");
 const app = express();
+
 const cookieParser = require('cookie-parser');
 const logger = require("morgan");
 const sessions = require('express-session');
 const mysqlStore = require('express-mysql-session')(sessions);
 // var db = require('./conf/database');
 const cors = require('cors');
+
 // passport authentication
 // const passport = require('passport');
 // const LocalStrategy = require('passport-local').Strategy;
@@ -28,7 +31,6 @@ const customersRouter = require('./routes/customers');
 const restaurantsRouter = require('./routes/restaurants');
 
 
-
 app.set("port", process.env.PORT || port);
 
 const sessionStore = new mysqlStore({ }, require('./conf/database'))
@@ -40,8 +42,6 @@ app.use(express.urlencoded({extended: false}))
 app.use(express.static(path.join(__dirname, "../client/build")));
 
 app.use(cookieParser());
-
-
 
 
 app.use(sessions({
@@ -79,7 +79,9 @@ app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/customers", customersRouter);
 app.use("/restaurants", restaurantsRouter);
-
+app.use('/menusimg', express.static(path.join(__dirname, 'src/menus')));
+app.use('/customersimg', express.static(path.join(__dirname, 'src/customers')));
+app.use('/restaurantsimg', express.static(path.join(__dirname, 'src/restaurants')));
 app.get('*', (res, req) =>{
     req.sendFile(path.join(__dirname, '../client/build/index.html'))
 })
@@ -101,5 +103,5 @@ app.use(function(err, req, res, next){
 });
 
 app.listen(app.get("port"), () => {
-    console.log(app.get("port"), `app listening at ${ process.env.PORT || port}`);
+    console.log(app.get("port"), `app listening at ${ process.env.PORT }`);
 });
