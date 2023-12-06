@@ -13,9 +13,14 @@ export default function Root() {
 	const isSignup = location.pathname === '/signup';
 	const isSignupCustomer = location.pathname === '/signup/customer';
 	const isSignupRestaurant = location.pathname === '/signup/restaurant';
+	const isRestaurantProfile = location.pathname === '/restaurant/profile';
+	const isRestaurantMenutable = location.pathname === '/restaurant/menu';
+	const isRestaurantMenuQuantity = location.pathname === '/restaurant/menu/unsold';
+	const isRestaurantOrder = location.pathname === '/restaurant/order';
+
 
 	const shouldShowAside = !isLandingPage;
-	const showbg = isSignin || isSignup || isSignupCustomer || isSignupRestaurant;
+	const showbg = isSignin || isSignup || isSignupCustomer || isSignupRestaurant || isRestaurantProfile || isRestaurantMenutable || isRestaurantMenuQuantity || isRestaurantOrder;
 
 	return (
 		<>

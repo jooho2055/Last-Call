@@ -24,7 +24,7 @@ const handleDetele = async(e)=>{
 }
 
     return (
-      <li className='flex items-center justify-center rounded-xl shadow-md'>
+      <li className='flex items-center justify-center rounded-xl shadow-md bg-white'>
         <div>
           <img
             src={`http://13.52.182.209${img_path}`}
