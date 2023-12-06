@@ -13,6 +13,8 @@ export default function RestaurantProfile() {
   const user = useSelector((state) => state.user);
   const [newImageSelected, setNewImageSelected] = useState(false);
   const [fileChosen, setFileChosen] = useState(false);
+  const [orignalPassword, setorignalPassword] = useState('');
+ 
   const id = user.userId;
   const profileData = useQuery({
     queryKey: ["profileData"],
@@ -25,50 +27,50 @@ export default function RestaurantProfile() {
         setNewImageSelected(true);
         setFileChosen(true);
     };
-
-useEffect(() => {
-if(user.isLoggedIn){
-    if(user.role !== 'restaurants'){
-      navigate("/home")
-      }
-    if (profileData.status === 'success' && profileData.data) {
-        setInputValues({
-            username: profileData.data.username || '',
-            pwd:profileData?.data?.password || '',
-            cpwd:profileData?.data?.password || '',
-            email:profileData?.data?.email || '',
-            phone:profileData?.data?.phone || '',
-            rname:profileData?.data?.name || '',
-            street:profileData?.data?.address ||'',
-            city:profileData?.data?.city ||'',
-            zip:profileData?.data?.zipcode ||'',
-            state:profileData?.data?.state ||'',
-            cuisine:profileData?.data?.cuisine ||'',
-            img_path:profileData?.data?.img_path || '',
-        });
-      }  
-  
-    }
-    else{
-      navigate('/signin');
-    }  
-	
-  }, [profileData.status, profileData.data,navigate, user.isLoggedIn, user.role]);
-
   const [inputValues, setInputValues] = useState({
-    username: '',
-    pwd: '',
-    cpwd:'',
-    email:'',
-    phone:'',
-    rname:'',
-    street:'',
-    city:'',
-    zip:'',
-    state:'',
-    cuisine:'',
-    img_path:'',
-  });
+      username: '',
+      pwd: '',
+      cpwd:'',
+      email:'',
+      phone:'',
+      rname:'',
+      street:'',
+      city:'',
+      zip:'',
+      state:'',
+      cuisine:'',
+      img_path:'',
+    });  
+
+    useEffect(() => {
+      if(user.isLoggedIn){
+        if(user.role !== 'restaurants'){
+          navigate("/home")
+          }
+      if (profileData.status === 'success' && profileData.data) {
+              setInputValues({
+                  username: profileData.data.username || '',
+                  pwd:profileData?.data?.password || '',
+                  cpwd:profileData?.data?.password || '',
+                  email:profileData?.data?.email || '',
+                  phone:profileData?.data?.phone || '',
+                  rname:profileData?.data?.name || '',
+                  street:profileData?.data?.address ||'',
+                  city:profileData?.data?.city ||'',
+                  zip:profileData?.data?.zipcode ||'',
+                  state:profileData?.data?.state ||'',
+                  cuisine:profileData?.data?.cuisine ||'',
+                  img_path:profileData?.data?.img_path || '',
+              });
+              setorignalPassword(profileData?.data?.password || '');
+            }  
+          }
+          else{
+            navigate('/signin');
+          }    
+        
+        }, [profileData.status, profileData.data, navigate, user.isLoggedIn, user.role]);    
+
 
   const [validity, setValidity] = useState({
     username: true,
@@ -84,7 +86,6 @@ if(user.isLoggedIn){
     cuisine: true,
   });
 
-  const [passwordMatch, setPasswordMatch] = useState(true);
   const [submissionSuccess, setSubmissionSuccess] = useState(false);
   const [formModified, setFormModified] = useState(false);
   const [editMode, setEditMode] = useState(false);
@@ -92,7 +93,6 @@ if(user.isLoggedIn){
   const isSubmitDisabled =
     !Object.values(validity).every((isValid) => isValid) ||
     !Object.values(inputValues).every((value) => value) ||
-    !passwordMatch ||
     !editMode ||
     (!formModified && !fileChosen);
 
@@ -104,12 +104,14 @@ if(user.isLoggedIn){
         isValid = /^[A-Za-z0-9]{5,16}$/.test(value);
         break;
       case 'pwd':
-        isValid =
-          /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$/.test(value);
-        break;
+          isValid =
+            /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,20}$/.test(
+              value
+            ) && checkpassword(value, inputValues.cpwd);
+          break;
       case 'cpwd':
-        isValid = value === inputValues.pwd;
-        break;
+          isValid = value === inputValues.pwd;
+          break;
       case 'email':
         isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
         break;
@@ -134,18 +136,16 @@ if(user.isLoggedIn){
     }
 
     setValidity({ ...validity, [name]: isValid });
-
-    if (name === 'pwd' || name === 'cpwd') {
-      setPasswordMatch(checkPassword(inputValues.pwd, inputValues.cpwd));
-    }
   };
 
-  function checkPassword(pwd, cpwd) {
-    if (pwd && cpwd) {
-      return pwd === cpwd;
-    }
-    return true;
-  }
+  function checkpassword(pwd, cpwd) {
+		if (pwd && inputValues.cpwd) {
+			if (pwd !== cpwd) {
+				return false;
+			}
+		}
+		return true;
+	}
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -154,7 +154,6 @@ if(user.isLoggedIn){
       const data = {
         id: id,
         username: inputValues.username,
-        password: "E123456!",
         phone: inputValues.phone,
         email: inputValues.email,
         restName: inputValues.rname,
@@ -163,7 +162,6 @@ if(user.isLoggedIn){
         zipcode: inputValues.zip,
         state: inputValues.state,
         cuisine: inputValues.cuisine}
-        console.log(data);
   
       try {
         const response = await fetch("http://13.52.182.209/restaurants/profile/update", {
@@ -176,6 +174,22 @@ if(user.isLoggedIn){
   
         const result = await response.json();
         console.log("Success:", result);
+       
+      if(inputValues.pwd !== orignalPassword){
+        console.log ("new password: "+inputValues.pwd);
+        const Passwordresponse = await fetch("http://13.52.182.209/restaurants/profile/password", {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            restaurantId: id,
+            password: inputValues.pwd,
+          }),
+        });
+        const Passwordresult = await Passwordresponse.json();
+        console.log("Success password", Passwordresult);
+      }
   
         setFormModified(false);
         setSubmissionSuccess(true);
