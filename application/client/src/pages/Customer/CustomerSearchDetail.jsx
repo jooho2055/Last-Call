@@ -4,8 +4,6 @@ import { useSelector } from 'react-redux';
 import { useQuery } from '@tanstack/react-query';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { fetchSearchboxRestaurants } from '../../apis/get';
-import sampleFood from '../../images/samplefood.png';
-
 import Searchbox from '../../components/SearchBox';
 import RestaurantList from '../../components/RestaurantList';
 
@@ -80,7 +78,7 @@ export default function CustomerSearchDetail() {
 						key={restaurant.id}
 					>
 						<img
-							src={sampleFood}
+							src={`http://13.52.182.209${restaurant.img_path}`}
 							alt='sample Food'
 							className='w-[20rem] h-[12.5rem] rounded-t-lg'
 						/>

@@ -53,7 +53,7 @@ export default function Dropdown() {
 						<Link
 							to='/customer/profile'
 							href='#'
-							className='block px-4 py-2 text-gray-800 hover:bg-orange-400 hover:text-white'
+							className='block px-4 py-2 text-gray-800 hover:bg-orange-400 hover:text-white text-center'
 						>
 							Profile
 						</Link>
@@ -62,18 +62,18 @@ export default function Dropdown() {
 						<Link
 							to='/restaurant/profile'
 							href='#'
-							className='block px-4 py-2 text-gray-800 hover:bg-orange-400 hover:text-white'
+							className='block px-4 py-2 text-gray-800 hover:bg-orange-400 hover:text-white text-center'
 						>
 							Profile
 						</Link>
 					)}
-					<button
+					<Link
 						href='#'
-						className='block px-4 py-2 text-gray-800 hover:bg-orange-400 hover:text-white'
+						className='block px-4 py-2 text-gray-800 hover:bg-orange-400 hover:text-white text-center'
 						onClick={handleSignOut}
 					>
 						Sign Out
-					</button>
+					</Link>
 				</div>
 			)}
 		</div>

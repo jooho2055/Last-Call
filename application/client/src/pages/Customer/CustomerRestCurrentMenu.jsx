@@ -39,11 +39,11 @@ export default function CustomerRestCurrentMenu() {
 
 	return (
 		<div className='max-w-[80rem] m-auto mt-10'>
-			<div className='text-xl font-medium'>
+			<div className='text-xl font-medium xl:ml-10'>
 				{restaurantInfo.name} has the following unsold menu items:
 			</div>
 
-			<ul className='grid grid-cols-2 gap-8 px-12 pt-10 xl:grid-cols-1 xl:px-4'>
+			<ul className='grid grid-cols-2 gap-8 gap-y-12 px-12 pt-10 xl:grid-cols-1 xl:px-4'>
 				{restaurantMenu?.map((item) => (
 					<RestaurantMenu restaurantKey={id} restarantmenuInfo={item} userInfo={user} />
 				))}

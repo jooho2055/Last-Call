@@ -33,10 +33,10 @@ export default function SearchBox({ searchValue, onSubmit, onChange, inputRef })
 	};
 
 	return (
-		<div className='w-full justify-center flex'>
+		<div className='w-full justify-center flex font-medium'>
 			<form onSubmit={onSubmit}>
 				<input
-					className='border-gray-300 border rounded-lg py-1 px-3 w-96'
+					className='border-black border-2 rounded-lg py-1 px-3 w-96 h-12 text-lg'
 					type='text'
 					value={searchValue}
 					placeholder='Search...'

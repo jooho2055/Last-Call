@@ -113,17 +113,17 @@ export default function CustomerCart() {
 			</ul>
 
 			<div className='max-w-[80rem] m-auto mt-20 mx-20 px-6 py-6 mb-24  rounded-lg flex justify-between'>
-				<div className='w-28 h-32 flex flex-col justify-center font-medium text-xl gap-y-3 bg-stone-100 rounded-xl text-center ml-10'>
+				<div className='w-28 h-32 flex flex-col justify-center font-medium text-xl gap-y-3 shadow-xl bg-stone-100 rounded-xl text-center ml-10'>
 					<div className='text-lg'>Subtotal</div>
 					<div>${subtotal.toFixed(2)}</div>
 				</div>
 				<div className='flex flex-col justify-center font-medium text-2xl'>+</div>
-				<div className='w-28 h-32 flex flex-col justify-center font-medium text-xl gap-y-3 text-center bg-stone-100 rounded-xl'>
+				<div className='w-28 h-32 flex flex-col justify-center font-medium text-xl gap-y-3 shadow-xl text-center  bg-stone-100 rounded-xl'>
 					<div className='text-lg'>Tax</div>
 					<div>${taxes.toFixed(2)}</div>
 				</div>
 				<div className='flex flex-col justify-center font-medium text-2xl'>=</div>
-				<div className='w-36 h-32 flex flex-col justify-center font-medium text-xl gap-y-3 bg-stone-100 rounded-xl text-center mr-10'>
+				<div className='w-36 h-32 flex flex-col justify-center font-medium text-xl gap-y-3 shadow-xl bg-stone-100 rounded-xl text-center mr-10'>
 					<div className='text-lg text-center'>Total</div>
 					<div className='text-2xl'>${total.toFixed(2)}</div>
 				</div>

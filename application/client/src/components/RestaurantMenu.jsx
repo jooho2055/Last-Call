@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { BsCartPlus } from 'react-icons/bs';
 import AddToCartModal from './AddToCartModal';
+import BtnForCustomer from './BtnForCustomer';
 
 export default function RestaurantMenu({ restarantmenuInfo, userInfo, restaurantKey }) {
 	const { name, description, img_path, quantity, original_price, price } = restarantmenuInfo;
@@ -18,16 +19,16 @@ export default function RestaurantMenu({ restarantmenuInfo, userInfo, restaurant
 
 	return (
 		// lists of menu
-		<li className=' flex justify-between rounded-xl shadow-md m-auto w-[36rem] sm:w-[33rem]'>
+		<li className=' flex justify-between rounded-xl shadow-[6.0px_9.0px_9.0px_rgba(0,0,0,0.30)] m-auto w-[36rem] sm:w-[33rem]'>
 			<div className=' w-full flex'>
 				<img
 					src={`http://13.52.182.209${img_path}`}
-					className='max-w-[16rem] h-[10rem] object-cover rounded-s-xl pr-2'
+					className='w-[16rem] h-[10rem] object-cover rounded-s-xl pr-2'
 					alt='sample img'
 				/>
 				<div className='flex flex-col justify-between'>
 					<div className='flex-1'>
-						<div className='flex justify-between sm:flex-col'>
+						<div className='flex flex-col justify-between'>
 							<span className='text-lg font-bold pl-1 pt-1'>{name}</span>
 							<span className='text-sm pt-2 pr-3 pl-1'>
 								Remaining Count: <strong>{quantity}</strong>
@@ -41,20 +42,24 @@ export default function RestaurantMenu({ restarantmenuInfo, userInfo, restaurant
 					<div className='pb-1 pl-1'>
 						<div className='flex justify-between text-sm sx:flex-col'>
 							<span>Original Price: </span>
-							<span className='pr-5 line-through'>${original_price}</span>
+							<span className='pr-5 line-through ml-5 sx:ml-0'>
+								${original_price}
+							</span>
 						</div>
 						<div className='flex justify-between text-sm sx:flex-col'>
 							<span>Discounted Price: </span>
-							<span className='pr-5 font-bold text-orange-700'> ${price}</span>
+							<span className='pr-5 font-bold text-orange-700 ml-5 sx:ml-0'>
+								${price}
+							</span>
 						</div>
 					</div>
 				</div>
 			</div>
 
 			<div className='pl-3'>
-				<button onClick={openModal}>
+				<BtnForCustomer onClick={openModal}>
 					<BsCartPlus className='text-3xl mt-[3.75rem] mr-2' />
-				</button>
+				</BtnForCustomer>
 				<AddToCartModal
 					isOpen={isModalOpen}
 					onClose={closeModal}
