@@ -3,7 +3,21 @@ export default function ViewOrder({ menuInfo }) {
   
     return (
       <div className="w-[900px] relative">
-        <li className='flex rounded-md shadow-md'>
+         <li className='flex bg-white'>
+            <div className='pd-2 pl-2 '>
+            <span className=''>Menu Id</span>
+             </div>
+             <div className='pd-2 pl-28'>
+            <span className=''>Menu name</span>
+            </div>
+            <div className='pd-2 pl-28'>
+            <span className="monospaced ">Quantity</span>
+            </div>
+            <div className='pd-2 pl-32'>
+             <span className="monospaced ">Price</span>
+            </div>
+            </li>
+        <li className='flex shadow-md bg-white'>
           <div className='pd-2 pl-4'>
             <span>{id}</span>
           </div>

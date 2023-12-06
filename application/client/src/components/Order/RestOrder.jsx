@@ -36,7 +36,7 @@ const handleConfirm = async (event) => {
   return (
   <div>       
    <div className="flex gap-8">  
-     <li className='flex items-center justify-center rounded-xl shadow-md'>
+     <li className='flex items-center justify-center rounded-xl shadow-md bg-white'>
     <div className='pd-2 pl-4'>
       <span className='italic text-2xl text-orange-600'>{invoice_id}</span>
     </div>
@@ -63,21 +63,7 @@ const handleConfirm = async (event) => {
         ></button>
         )} 
         {isOpen && (
-            <div className="w-full">
-             <li className='flex rounded-md'>
-             <div className='pd-2 pl-2'>
-            <span>Menu Id</span>
-             </div>
-             <div className='pd-2 pl-28'>
-            <span>Menu name</span>
-            </div>
-            <div className='pd-2 pl-28'>
-            <span className="monospaced">Quantity</span>
-            </div>
-            <div className='pd-2 pl-32'>
-             <span className="monospaced">Price</span>
-            </div>
-            </li>
+            <div className="w-full ">
               <ViewOrder menuInfo={orderInfo}/>
             </div>
 
