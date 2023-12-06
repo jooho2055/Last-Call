@@ -1,7 +1,9 @@
 //Get
 const getCustomerById = "SELECT * FROM customers WHERE id = ?;"
 
-const getCurrentOrdersById = "SELECT invoices.id as invoice_id, menus.name as name, menus.restaurant_id, menus.price as price, menus.original_price as original_price, orders.quantity as quantity, menus.img_path as img_path, menus.description as description FROM invoices JOIN orders ON invoices.id = orders.invoice_id JOIN menus ON menus.id = orders.menu_id WHERE orders.status > 0 AND orders.customer_id = ?;"
+// const getCurrentOrdersById = "SELECT invoices.id as invoice_id, menus.name as name, menus.restaurant_id, menus.price as price, menus.original_price as original_price, orders.quantity as quantity, menus.img_path as img_path, menus.description as description FROM invoices JOIN orders ON invoices.id = orders.invoice_id JOIN menus ON menus.id = orders.menu_id WHERE orders.status > 0 AND orders.customer_id = ?;"
+
+const getCurrentOrdersById = "SELECT menus.name as name, menus.price as price, menus.restaurant_id as restaurant_id, menus.original_price as original_price, orders.quantity as quantity, menus.img_path as img_path, menus.description as description FROM orders JOIN menus on orders.menu_id = menus.id WHERE invoice_id = ? AND orders.status > 0;"
 
 const getPastOrdersByInvoiceId = "SELECT menus.name as name, menus.price as price, menus.restaurant_id as restaurant_id, menus.original_price as original_price, orders.quantity as quantity, menus.img_path as img_path, menus.description as description FROM orders JOIN menus on orders.menu_id = menus.id WHERE invoice_id = ? AND orders.status > 0;"
 
@@ -27,7 +29,7 @@ const getCartsByCustId = "SELECT * FROM carts WHERE customer_id = ?;"
 
 const getCartsByCustMenuId = "SELECT * FROM carts WHERE customer_id = ? AND menu_id = ?;"
 
-const getRestCurrentOrdersById = "SELECT * from orders LEFT JOIN menus ON orders.menu_id = menus.id WHERE menus.restaurant_id = ? AND orders.status = 0 ORDER BY created_at;"
+const getRestCurrentOrdersById = "SELECT orders.id as id, orders.created_at as created_at, orders.menu_id as menu_id, orders.customer_id as customer_id, orders.invoice_id as invoice_id, orders.quantity as quantity, menus.name as name, menus.price, menus.original_price, menus.img_path FROM orders JOIN menus ON orders.menu_id = menus.id WHERE menus.restaurant_id = ? AND orders.status = 0 ORDER BY created_at;"
 
 //Add
 const addMenu = "INSERT INTO menus (restaurant_id,price,original_price,name,description) VALUES(?,?,?,?,?);"
