@@ -4,7 +4,6 @@ import { inputsForSignIn } from '../utils/formConfig';
 import FormInput from '../components/FormInput';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../redux/userActions';
-import FooterForLogin from '../components/FooterForLogin';
 import BtnForRegister from '../components/BtnForRegister';
 
 export default function SignIn() {
@@ -13,8 +12,8 @@ export default function SignIn() {
 	const user = useSelector((state) => state.user);
 	useEffect(() => {
 		if (user.isLoggedIn) {
-			if (user.role === 'restaurant') {
-				navigate('/restaurantprofile');
+			if (user.role === 'restaurants') {
+				navigate('/restaurant/menu');
 			} else {
 				navigate('/home');
 			}
@@ -41,7 +40,7 @@ export default function SignIn() {
 		if (data.role === 'customers') {
 			navigate('/home');
 		} else if (data.role === 'restaurants') {
-			navigate('/restaurantprofile');
+			navigate('/restaurant/menu');
 		} else {
 			console.log(data.message);
 			console.log('something wrong!');

@@ -3,15 +3,11 @@ import { Link, useLocation } from 'react-router-dom';
 
 import Dropdown from './Dropdown';
 import lastcall from '../../images/lastcall.png';
+import { useSelector } from 'react-redux';
 
-const navigation = [
-	{ name: 'Home', href: '/home', current: true },
-	{ name: 'Order', href: '/order', current: false },
-	{ name: 'About Us', href: '/AboutUs', current: false },
-];
-
-export default function Navbar() {
+export default function Navbar({ role }) {
 	// const [isSignIn, setIsSignin] = useState(false);
+	const user = useSelector((state) => state.user);
 
 	const { pathname } = useLocation();
 	const isLandingPage = pathname === '/';
@@ -20,8 +16,21 @@ export default function Navbar() {
 	const isSignupCustomer = pathname === '/signup/customer';
 	const isSignupRestaurant = pathname === '/signup/restaurant';
 
+	const navigation = [
+		{ name: 'Home', href: '/home', current: true },
+		{ name: 'Order', href: `/order/${user.userId}`, current: false },
+		{ name: 'About Us', href: '/AboutUs', current: false },
+	];
+
+	const navigation_rest = [
+		{ name: 'Menu', href: '/restaurant/menu', current: true },
+		{ name: 'Order', href: '/restaurant/order', current: false },
+		{ name: 'About Us', href: '/AboutUs', current: false },
+	];
+
 	const showNavItems =
 		!isSignin && !isSignup && !isLandingPage && !isSignupCustomer && !isSignupRestaurant;
+	const currentNavigation = role === 'restaurants' ? navigation_rest : navigation;
 
 	return (
 		<>
@@ -35,7 +44,7 @@ export default function Navbar() {
 					<nav className='mr-36 pt-[1.35rem]'>
 						<ul className={!isLandingPage ? 'flex space-x-16' : ''}>
 							{showNavItems &&
-								navigation.map((item) => (
+								currentNavigation.map((item) => (
 									<li
 										key={item.name}
 										className='space-x-3 text-stone-900 font-medium'

@@ -3,6 +3,7 @@ var router = express.Router();
 var db = require('../conf/database');
 const path = require("path");
 const {isLoggedIn, isCustomers, isMyPage} = require('../middleware/auth')
+
 const multer = require('multer')
 const {customerStorage} = require('../conf/multer')
 const customerUpload = multer({ storage: customerStorage });
@@ -37,6 +38,7 @@ const {getCurrentOrdersById,getInvoicesByCustId,getCustCartsById,getCartsByCustI
 
 router.get(`/order/current/:id(\\d+)`, /*isLoggedIn, isCustomers, isMyPage,*/  async function(req, res){
   const {id} = req.params
+
     try{
         const [results, _ ] = await db.execute(getInvoicesByCustId,[id]);
         if(results.length < 1){
@@ -68,6 +70,7 @@ router.get(`/order/current/:id(\\d+)`, /*isLoggedIn, isCustomers, isMyPage,*/  a
     }
 })
 
+
 /**
  * To get past order menus list for customer
  * @params customerId
@@ -75,6 +78,7 @@ router.get(`/order/current/:id(\\d+)`, /*isLoggedIn, isCustomers, isMyPage,*/  a
  * @method GET
  */
 router.get(`/order/past/:id(\\d+)`, /*isLoggedIn, isCustomers, isMyPage,*/ async function(req,res){
+
     const {id} = req.params
     try{
         const [results, _ ] = await db.execute(getInvoicesByCustId,[id]);
@@ -107,6 +111,7 @@ router.get(`/order/past/:id(\\d+)`, /*isLoggedIn, isCustomers, isMyPage,*/ async
     }
 })
 
+
 /**
  * To get list of cart
  * @params customerId
@@ -114,6 +119,7 @@ router.get(`/order/past/:id(\\d+)`, /*isLoggedIn, isCustomers, isMyPage,*/ async
  * @method GET
  */
 router.get(`/order/cart/:id(\\d+)`, /*isLoggedIn, isCustomers, isMyPage,*/ async function(req,res){
+
     const {id} = req.params
     try{
         const [results, _ ] = await db.execute(getCustCartsById, [id])
@@ -138,6 +144,7 @@ router.get(`/order/cart/:id(\\d+)`, /*isLoggedIn, isCustomers, isMyPage,*/ async
  * order status: 0: current, 1: done, 2: declined
  */
 router.post(`/order/cart/checkout`, /*isLoggedIn, isCustomers,*/ async function(req, res){
+
     const {customerId} = req.body
 
     // if(req.session.user.userId !== customerId){
@@ -188,6 +195,7 @@ DEBUG_CART_ADD = {
   quantity:3
 }
 
+
 /**
  * To add menu in the cart
  * @body holds menuId, customerId, restaurantId, quantity
@@ -207,6 +215,7 @@ router.post('/order/cart/add', /*isLoggedIn, isCustomers,*/ async function(req,r
 
     if(typeof(restaurantId) === "string"){
       restaurantId = parseInt(restaurantId)
+
     }
 
     if(typeof(quantity) === "string"){
@@ -243,6 +252,7 @@ DEBUG_CART_DELETE_MENU = {
   menuId:1, 
   restaurantId:1
 }
+
 /**
  * To delete one menu in the cart
  * @body holds menuId and customerId
@@ -250,6 +260,7 @@ DEBUG_CART_DELETE_MENU = {
  * @method DELETE
  */
 router.delete(`/order/cart/delete/menu`, /*isLoggedIn, isCustomers,*/ async function(req,res){
+
     const {menuId, customerId} = req.body
     // const {menuId, customerId} = DEBUG_CART_DELETE_MENU
     
@@ -280,6 +291,7 @@ router.delete(`/order/cart/delete/menu`, /*isLoggedIn, isCustomers,*/ async func
 DEBUG_CART_DELETE = {
   customerId: 1
 }
+
 /**
  * To delete all the menu in the cart
  * @body holds customerId
@@ -288,6 +300,7 @@ DEBUG_CART_DELETE = {
  */
 router.delete('/order/cart/delete', /*isLoggedIn, isCustomers,*/ async function(req,res){
     const { customerId } = req.body
+
     // const {customerId} = DEBUG_CART_DELETE
 
     // if(req.session.user.userId !== customerId){

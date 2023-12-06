@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet, useLocation, Link, useNavigate, useParams } from 'react-router-dom';
+import { Outlet, useLocation, Link } from 'react-router-dom';
 import { BsCartCheck } from 'react-icons/bs';
 import { useSelector } from 'react-redux';
 import Navbar from '../components/Header/Navbar';
@@ -13,14 +13,19 @@ export default function Root() {
 	const isSignup = location.pathname === '/signup';
 	const isSignupCustomer = location.pathname === '/signup/customer';
 	const isSignupRestaurant = location.pathname === '/signup/restaurant';
+	const isRestaurantProfile = location.pathname === '/restaurant/profile';
+	const isRestaurantMenutable = location.pathname === '/restaurant/menu';
+	const isRestaurantMenuQuantity = location.pathname === '/restaurant/menu/unsold';
+	const isRestaurantOrder = location.pathname === '/restaurant/order';
+
 
 	const shouldShowAside = !isLandingPage;
-	const showbg = isSignin || isSignup || isSignupCustomer || isSignupRestaurant;
+	const showbg = isSignin || isSignup || isSignupCustomer || isSignupRestaurant || isRestaurantProfile || isRestaurantMenutable || isRestaurantMenuQuantity || isRestaurantOrder;
 
 	return (
 		<>
 			<header className='text-slate-100 text-lg shadow-xl'>
-				{!isLandingPage && <Navbar />}
+				{!isLandingPage && <Navbar role={user.role}/>}
 			</header>
 			<main
 				className={`h-full w-full m-auto overflow-y-auto ${showbg ? 'bg-custombg' : ''} ${

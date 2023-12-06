@@ -1,123 +1,194 @@
-import React, { useState } from 'react';
-import { inputForMenu } from '../../utils/resProfile';
-import RestaurantMenu from '../../components/RestaurantMenu';
+import React,{useState, useEffect} from 'react';
+import {inputForMenu} from '../../utils/resProfile';
+import RestaurantMenuSetting from '../../components/RestaurantMenuSetting';
 import { AiFillPlusSquare } from 'react-icons/ai';
 import FormInput from '../../components/FormInput';
-
-const foodlist = [
-	{
-		fname: 'apple',
-		quantity: 2,
-		oprice: 3,
-		aprice: 2,
-	},
-	{
-		fname: 'banana',
-		quantity: 1,
-		oprice: 2,
-		aprice: 1,
-	},
-	{
-		fname: 'rice',
-		quantity: 3,
-		oprice: 15,
-		aprice: 10,
-	},
-];
+import { useSelector } from 'react-redux';
+import { getMenuTable } from '../../apis/get';
+import { createNewMenu } from '../../apis/post';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 export default function RestaurantMenutable() {
-	const [menuInput, setMenuInput] = useState({
+	const navigate = useNavigate();
+    const user = useSelector((state) => state.user);
+    const queryClient = useQueryClient();
+	const [fileChosen, setFileChosen] = useState(false);
+   useEffect(() => {
+      if(user.isLoggedIn){
+        if(user.role !== 'restaurants'){
+			navigate("/home")
+        }
+      }
+      else{
+        navigate('/signin');
+      }
+    }, [navigate, user.isLoggedIn, user.role]); 
+    const id = user.userId;
+	const unsold = false;
+    const MenuList = useQuery({
+      queryKey: ["MenuLists"],
+      queryFn: () => getMenuTable(id),
+	  refetchInterval:1000,
+    })
+    const createMenuMutation = useMutation({
+      mutationFn: createNewMenu,
+      onSuccess: data =>{
+        queryClient.setQueryData(["posts", data.id], data)
+        queryClient.invalidateQueries(["posts"],{exact: true})
+        console.log(data);
+		return data;
+      }, 
+    });
+    
+  const [menuInput, setMenuInput] = useState({
 		fname: '',
-		quantity: '',
-		oprice: '',
-		aprice: '',
+		oprice:'',
+		aprice:'',
+		description: '',
 	});
-
 	const [menuvalidity, setmenuValidity] = useState({
-		fail: true,
-		quantity: true,
+		fname: true,
 		oprice: true,
 		aprice: true,
+		description: true,
 	});
+	const [file, setFile] = useState(null);
 
-	const [isOpen, setIsOpen] = useState(false);
+	const onFileChange = (e) => {
+        setFile(e.target.files[0]);
+		setFileChosen(true);
+    };
 
-	const formatShows = () => {
-		setIsOpen(!isOpen);
+	const [isFormOpen, setIsFormOpen] = useState(false);
+
+	const FromShows = () => {
+	  setIsFormOpen(!isFormOpen);
 	};
+    
+    const isMenuSubmitDisable =
+		    !Object.values(menuvalidity).every((isValid) => isValid) ||
+		    !Object.values(menuInput).every((value) => value);
+			const validateMenuInput = (name, value) => {
+				let isValid = true;
+				switch (name) {
+					case 'fname':
+						isValid = /^[A-Za-z0-9\s\S]{1,16}$/.test(value);
+					    break;
+					case 'oprice':
+						isValid = /^[0-9]*\.?[0-9]+$/.test(value) && parseFloat(value) > 0;
+                        break;
+					case 'aprice':
+						isValid = /^[0-9]*\.?[0-9]+$/.test(value) && parseFloat(value) > 0;
+                        break;
+					case 'description':
+						isValid = /[A-Za-z]/.test(value);
+						break;
+					default:
+						isValid=false;
+					
+				}
+				setmenuValidity({...menuvalidity, [name]: isValid});
+			}
+    const onMenuChange = (e) =>{
+        const { name, value } = e.target;
+        setMenuInput({...menuInput, [e.target.name]: e.target.value});
+        validateMenuInput(name, value);
+    }
 
-	const isMenuSubmitDisable =
-		!Object.values(menuvalidity).every((isValid) => isValid) ||
-		!Object.values(menuInput).every((value) => value);
-	const validateMenuInput = (name, value) => {
-		let isValid = true;
-		switch (name) {
-			case 'fname':
-				isValid = /^[A-Za-z0-9]{1,16}$/.test(value);
-				break;
-			case 'quantity':
-				isValid = /^[1-9]\d*$/.test(value);
-				break;
-			case 'oprice':
-				isValid = /^[0-9]*\.?[0-9]+$/.test(value) && parseFloat(value) > 0;
-				break;
-			case 'aprice':
-				isValid = /^[0-9]*\.?[0-9]+$/.test(value) && parseFloat(value) > 0;
-				break;
-			default:
-				isValid = false;
-		}
-		setmenuValidity({ ...menuvalidity, [name]: isValid });
-	};
-	const handleMenu = (e) => {
+	const handleMenu = async (e) => {
 		e.preventDefault();
-		console.log(menuInput);
-	};
+		console.log(id);
+		try {
+		  const menuResponse = await createMenuMutation.mutateAsync({
+			  restaurantId: id,
+			  price: parseFloat(menuInput.aprice),
+			  originalPrice: parseFloat(menuInput.oprice),
+			  name: menuInput.fname,
+			  desc: menuInput.description,
+		  });
+            console.log(menuResponse.menuId);
+			const formData = new FormData();
+			formData.append('file', file);
+			formData.append('menuId', menuResponse.menuId);
+            axios.post('http://13.52.182.209/restaurants/menus/image', formData, {
+				headers: {
+					'Content-Type': 'multipart/form-data'
+				}
+				})
+				.then(response => {
+				console.log('File uploaded successfully', response);
+				})
+				.catch(error => {
+				console.error('Error uploading file', error);
+				});
+			setFileChosen(false);	
 
-	const onMenuChange = (e) => {
-		const { name, value } = e.target;
-		setMenuInput({ ...menuInput, [e.target.name]: e.target.value });
-		validateMenuInput(name, value);
-	};
-
+		} catch (error) {
+		  console.error('An error occurred:', error);
+		}
+	  };
+	  
 	return (
-		<div className='min-h-full m-auto flex justify-center bg-white relative'>
+		<div className='h-auto m-auto flex justify-center bg-white relative'>
 			<div className='absolute top-0 left-50'>
-				<p>Menu Manage</p>
+			<div className='fixed z-10 bg-white w-[400px]'>	
+			<p className='italic font-bold'>Menu Manage</p>
+			<div className='flex space-x-4'>	
 				<button
+				    data-testid="button"
 					className='text-3xl mt-[0.85rem] mr-5'
-					onClick={formatShows} // Toggle the isOpen state when the button is clicked
-				>
+					onClick={FromShows} >	
 					<AiFillPlusSquare />
 				</button>
-				{isOpen && (
+				<button
+				 className='text-sm mt-[0.85rem] rounded bg-slate-900 text-white'>
+				<Link to={'/restaurant/menu/unsold'}>	
+				Set Quantity
+				</Link>
+				</button>
+			</div>
+			</div>	
+				{isFormOpen && (
 					<button
-						onClick={formatShows}
-						className='fixed top-0 right-0 bottom-0 left-0 w-full h-full bg-black opacity-0 cursor-default'
+						onClick={FromShows}
+						className='fixed top-0 right-0 bottom-0 left-0 w-full h-full bg-black opacity-10 cursor-default'
 					></button>
 				)}
-				{isOpen && (
-					<div className='absolute right-50 w-72 h-96 bg-gray-100'>
-						<p>Test</p>
+				{isFormOpen && (
+					<div className='fixed right-50 top-36 w-[400px] h-[420px] bg-gradient-to-r from-orange-200 via-slate-50 to-orange-200 rounded flex flex-col justify-center items-center'>
 						<form onSubmit={handleMenu}>
+						<div className='h-10'>
+						<label className="bg-orange-400 text-white p-2 rounded-md mb-4">
+						   <input type="file" onChange={onFileChange} className="hidden"/>
+						   {fileChosen ? 'File Chosen' : 'Select Food Image'}
+						</label> 
+						</div>	
 							{inputForMenu.map((input) => (
 								<FormInput
 									key={input.id}
 									{...input}
 									value={menuInput[input.name]}
 									onChange={onMenuChange}
+									classNameForInput={"shadow-md rounded-md h-10"}
 									isValid={menuvalidity[input.name]}
 								></FormInput>
 							))}
-							<button disabled={isMenuSubmitDisable}>Submit</button>
+							<br/>
+							<button disabled={isMenuSubmitDisable} className={`bg-orange-600 text-white px-4 py-2 rounded ${isMenuSubmitDisable ? 'opacity-50 cursor-not-allowed' : ''}`}>Submit</button>
 						</form>
 					</div>
 				)}
-				<div className='grid grid-cols-1 gap-4'>
-					{foodlist.map((food) => (
-						<RestaurantMenu restarantmenuInfo={food} />
-					))}
+				<div className='grid grid-cols-1 gap-4 overflow-y-auto mt-20 mb-56'>
+				{Array.isArray(MenuList.data) &&
+                   MenuList.data.map((food) => (
+                  <RestaurantMenuSetting key={food.id} restarantmenuInfo={food} unsold={unsold}/>	
+    
+                 ))
+                }
 				</div>
+
 			</div>
 		</div>
 	);

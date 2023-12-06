@@ -23,11 +23,20 @@ module.exports = {
 			xl: { max: '1279px' },
 			// => @media (max-width: 1279px) { ... }
 
+			custom1175: { max: '1175px' },
+			// => @media (max-width: 1175px) { ... }
+
+			custom1050: { max: '1050px' },
+
 			lg: { max: '1023px' },
 			// => @media (max-width: 1023px) { ... }
 
+			custom850: { max: '850px' },
+
 			md: { max: '767px' },
 			// => @media (max-width: 767px) { ... }
+
+			custom720: { max: '720px' },
 
 			sm: { max: '639px' },
 			// => @media (max-width: 639px) { ... }
@@ -36,5 +45,6 @@ module.exports = {
 			// => @media (max-width: 585px) { ... }
 		},
 	},
-	plugins: [],
+	plugins: [require('@tailwindcss/aspect-ratio')],
 };
+
