@@ -50,9 +50,11 @@ export default function CustomerHome() {
 
 	return (
 		<div className='max-w-[90rem] m-auto mt-10 px-24 custom1175:px-10 custom1050:px-10'>
+			<br />
+			<br />
 			<SearchBox searchValue={searchValue} onSubmit={handleSubmit} onChange={handleChange} />
 
-			<div className='grid grid-cols-3 pt-12 gap-12 custom1050:grid-cols-2 customHome:gap-x-0 custom1050:px-10 custom850:px-0 custom720:grid-cols-1'>
+			<div className='grid grid-cols-3 pt-20 gap-12 custom1050:grid-cols-2 customHome:gap-x-0 custom1050:px-10 custom850:px-0 custom720:grid-cols-1'>
 				{/* Must use a restaurant unique id as a key in the future */}
 				{restaurants.map((restaurant) => (
 					<Link

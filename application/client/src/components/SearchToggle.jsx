@@ -51,7 +51,13 @@ export default function SearchToggle({ isLoading, data }) {
 						>
 							<div className='pb-2 flex justify-between w-full'>
 								<div>{item.name}</div>
-								<div>{item.status}</div>
+								<div
+									className={`font-bold ${
+										item.status === 'open' ? 'text-green-700' : 'text-red-600'
+									}`}
+								>
+									{item.status}
+								</div>
 							</div>
 						</Link>
 					))}
