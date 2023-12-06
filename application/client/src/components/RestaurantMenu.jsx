@@ -3,7 +3,12 @@ import { BsCartPlus } from 'react-icons/bs';
 import AddToCartModal from './AddToCartModal';
 import BtnForCustomer from './BtnForCustomer';
 
-export default function RestaurantMenu({ restarantmenuInfo, userInfo, restaurantKey }) {
+export default function RestaurantMenu({
+	restarantmenuInfo,
+	userInfo,
+	restaurantKey,
+	isOrderView = false,
+}) {
 	const { name, description, img_path, quantity, original_price, price } = restarantmenuInfo;
 
 	// const [remainingCount, setRemainingCount] = useState(quantity);
@@ -16,6 +21,16 @@ export default function RestaurantMenu({ restarantmenuInfo, userInfo, restaurant
 	const closeModal = (e) => {
 		setIsModalOpen(false);
 	};
+
+	if (isOrderView) {
+		return (
+			<li className='flex justify-between ml-5'>
+				<span>
+					- {name} [{quantity}]
+				</span>
+			</li>
+		);
+	}
 
 	return (
 		// lists of menu

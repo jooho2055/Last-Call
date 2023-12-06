@@ -131,16 +131,15 @@ export const getCartLists = async (customerId) => {
 	}
 };
 
-
-export const fetchRestaurantsProfile = async (id) =>{
-	try{
+export const fetchRestaurantsProfile = async (id) => {
+	try {
 		const response = await axios.get(`http://13.52.182.209/restaurants/profile/${id}`);
 		return response.data;
-	}catch (error) {
+	} catch (error) {
 		console.error('Error fetching restaurants:', error);
 		throw error;
 	}
-}
+};
 
 export const customerGetCurrentOrder = async (customerId) => {
 	try {
@@ -155,6 +154,16 @@ export const customerGetCurrentOrder = async (customerId) => {
 	}
 };
 
+export const customerGetOrderHistory = async (customerId) => {
+	try {
+		console.log('fetching');
+		const response = await axios.get(`http://13.52.182.209/customers/order/past/${customerId}`);
+		return response.data;
+	} catch (error) {
+		console.error('Error fetching current order:', error);
+		throw error;
+	}
+};
 
 export const fetchUserInformation = async (username) => {
 	try {
@@ -168,4 +177,3 @@ export const fetchUserInformation = async (username) => {
 		throw error;
 	}
 };
-

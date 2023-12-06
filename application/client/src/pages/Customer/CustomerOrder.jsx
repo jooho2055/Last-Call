@@ -1,10 +1,11 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { customerGetCurrentOrder } from '../../apis/get';
+import { customerGetCurrentOrder, customerGetOrderHistory } from '../../apis/get';
+
+import OrderCard from '../../components/Order/OrderCard';
 
 export default function CustomerOrder() {
-
 	const { userId } = useParams();
 
 	const { data: currentOrder } = useQuery({
@@ -12,6 +13,55 @@ export default function CustomerOrder() {
 		queryFn: () => customerGetCurrentOrder(userId),
 		staleTime: 120000,
 	});
-	return <div className=''>this is order section {userId}</div>;
-}
 
+	const { data: orderHistory } = useQuery({
+		queryKey: ['orderHistory'],
+		queryFn: () => customerGetOrderHistory(userId),
+		staleTime: 120000,
+	});
+
+	const { orders, restaurants } = currentOrder;
+	const { orders: historyOrders, restaurants: historyRestaurants } = orderHistory;
+
+	return (
+		<div className='max-w-[80rem] m-auto flex flex-col justify-between'>
+			<div className='mt-14 mb-14'>
+				<span className='text-3xl'>Current Order</span>
+				<div className='grid grid-cols-3 pt-20 gap-12'>
+					{orders.map((order, index) => {
+						const restaurant = restaurants[index];
+
+						return (
+							<OrderCard
+								key={index}
+								className='w-96 h-96 bg-[#f7e8dc] shadow-[6.0px_9.0px_9.0px_rgba(0,0,0,0.30)] rounded-lg font-medium text-lg mx-auto flex flex-col justify-between '
+								restaurant={restaurant}
+								order={order}
+								isCurrentOrder={true}
+							></OrderCard>
+						);
+					})}
+				</div>
+			</div>
+
+			<div className='mb-14'>
+				<span className='text-3xl'>Order History</span>
+				<div className='grid grid-cols-3 mt-20 gap-12'>
+					{historyOrders.map((order, index) => {
+						const restaurant = historyRestaurants[index];
+
+						return (
+							<OrderCard
+								key={index}
+								className='w-[21rem] h-80 bg-[#e6edf5] shadow-[6.0px_9.0px_9.0px_rgba(0,0,0,0.30)] rounded-lg font-medium text-lg mx-auto flex flex-col justify-between'
+								restaurant={restaurant}
+								order={order}
+								isCurrentOrder={false}
+							></OrderCard>
+						);
+					})}
+				</div>
+			</div>
+		</div>
+	);
+}

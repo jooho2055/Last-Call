@@ -69,7 +69,7 @@ export default function CustomerSearchDetail() {
 					inputRef={inputRef}
 				/>
 			</div>
-			<div className='grid grid-cols-3 pt-12 gap-12 custom1050:grid-cols-2 customHome:gap-x-0 custom1050:px-10 custom850:px-0 custom720:grid-cols-1'>
+			<div className='grid grid-cols-3 pt-20 gap-12 custom1050:grid-cols-2 customHome:gap-x-0 custom1050:px-10 custom850:px-0 custom720:grid-cols-1'>
 				{/* Must use a restaurant unique id as a key in the future */}
 				{searchedRestaurants?.map((restaurant, index) => (
 					<Link
@@ -80,7 +80,7 @@ export default function CustomerSearchDetail() {
 						<img
 							src={`http://13.52.182.209${restaurant.img_path}`}
 							alt='sample Food'
-							className='w-[20rem] h-[12.5rem] rounded-t-lg'
+							className='w-[20rem] h-[12.5rem] rounded-t-lg object-cover'
 						/>
 						<RestaurantList key={index} restaurantInfo={restaurant} />
 					</Link>
