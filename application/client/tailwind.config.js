@@ -25,9 +25,6 @@ module.exports = {
 
 			sm: { max: '639px' },
 			// => @media (max-width: 639px) { ... }
-
-			sx: { max: '585px' },
-			// => @media (max-width: 585px) { ... }
 		},
 	},
 	plugins: [],

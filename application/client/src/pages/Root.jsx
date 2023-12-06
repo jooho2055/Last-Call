@@ -14,7 +14,7 @@ export default function Root() {
 			<main className='h-full w-full m-auto overflow-y-auto'>
 				<Outlet />
 			</main>
-			{!isLandingPage && <footer className='text-center'>Last Call</footer>}
+			{!isLandingPage && <footer>Team 7</footer>}
 		</>
 	);
 }
