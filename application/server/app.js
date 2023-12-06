@@ -79,7 +79,9 @@ app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/customers", customersRouter);
 app.use("/restaurants", restaurantsRouter);
-
+app.use('/menusimg', express.static(path.join(__dirname, 'src/menus')));
+app.use('/customersimg', express.static(path.join(__dirname, 'src/customers')));
+app.use('/restaurantsimg', express.static(path.join(__dirname, 'src/restaurants')));
 app.get('*', (res, req) =>{
     req.sendFile(path.join(__dirname, '../client/build/index.html'))
 })

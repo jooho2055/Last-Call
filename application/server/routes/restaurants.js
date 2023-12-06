@@ -1,139 +1,113 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 const path = require("path");
-var db = require('../conf/database');
+const db = require('../conf/database');
 const {isLoggedIn, isRestaurants, isMyPage} = require('../middleware/auth')
+const {getRestaurantsById,updateRestImgById,updateMenuImgById,getRestInfoById,addMenu,getMenusByRestId,
+    getMenuById,getCartsByMenuId,deleteCartsByMenuId,getOrdersByMenuId,deleteOrdersByMenuId,deleteMenuById,
+    updateMenuQuantityById,updateMenuInfo,getRestCurrentOrdersById,updateRestProfile,updateRestPwd
+} = require('../conf/queries')
+const {updateProfile, updateMenu} = require('../middleware/restaurantsManage')
 const bcrypt = require('bcrypt');
-const cors = require('cors')
 
-let corsOptions = {
-    origin: ['http://localhost:3000', 'http://localhost:5001'],
-    credentials: true
-  }
-  
-router.use(cors(corsOptions))
-
-
-// This is vars for debug
-const TESTMENU_CORRECT = {
-    restautrantId: 11,
-    price: 10,
-    originalPrice: 16,
-    name: "pasta"
-}
-
-const TESTMENU_WRONG = {
-    restautrantId: 1,
-    price: 10,
-    orignalPrice: 16,
-    name: "pasta"
-}
-
-const TEST_DELETE_MENU_CORRECT = {
-    restaurantId:11, 
-    menuId: 7
-}
-
-const TEST_DELETE_MENU_WRONG1 = {
-    restaurantId:1, 
-    menuId: 2
-}
-
-const TEST_DELETE_MENU_WRONG2 = {
-    restaurantId:11, 
-    menuId: 2
-}
-
-const TEST_DELETE_MENU_WRONG3 = {
-    restaurantId:11, 
-    menuId: 9999
-}
-
-const TEST_SET_MENU_CORRECT = {
-    restaurantId:11, 
-    menuId:8, 
-    quantity:7
-}
-
-// correct
-const TEST_SET_MENU_WRONG1 = {
-    restaurantId:11, 
-    menuId:8, 
-    quantity:6
-}
-
-// no change
-const TEST_SET_MENU_WRONG2 = {
-    restaurantId:11, 
-    menuId:8, 
-    quantity:6
-}
-
-// diff rest
-const TEST_SET_MENU_WRONG3 = {
-    restaurantId:11, 
-    menuId:4, 
-    quantity:6
-}
-
-// menu not exist
-const TEST_SET_MENU_WRONG4 = {
-    restaurantId:11, 
-    menuId:9999, 
-    quantity:6
-}
-
-
+const multer = require('multer');
+const {menuStorage, restaurantStorage} = require('../conf/multer')
+const menuUpload = multer({ storage: menuStorage });
+const restaurantUpload = multer({ storage: restaurantStorage });
 
 /**
  * To get restaurants info
  * @params hold restaurants id
  * @Path `/restaurants/info/:id
+ * @method GET
  */
 router.get(`/info/:id(\\d+)`,async(req,res) => {
     const {id} = req.params;
-    console.log(id)
-        try{
-            var [result, _ ] = await db.execute(`SELECT * FROM restaurants WHERE id = ?`,[id]);
-            const restauranat = result[0]
-            return res.status(200).json(restauranat)
-        }catch(err){
-            console.log(err)
-            return res.status(400).json({message: "fail to bring your profile"})
-        }
+
+    try{
+        const [result, _ ] = await db.execute(getRestInfoById,[id]);
+        const restauranat = result[0]
+        return res.status(200).json(restauranat)
+    }catch(err){
+        console.log(err)
+        return res.status(400).json({message: "fail to bring your profile"})
+    }
 })
+
 /**
  * To update rest's profile
- * @Method PUT
- * @body 
+ * @method PUT
+ * @body id username, password, email, phone, restName, street, city, zipcode, state, cuisine
  * @Path /restaurants/profile/update
  */
-// router.put(`/profile/update`, async(req, res) =>{
-//     let {id, username, password, email, phone, restName, street, city, zipcode, state, cuisine} = req.body;
-
-//     try{
-//         const [rows, _ ] = await db.execute(`SELECT * FROM restaurants WHERE id = ?`,[id]);
-    
-//         const user = rows[0];
-    
-//         var hashedPasswrod = await bcrypt.hash(pwd,1);
+router.put(`/profile/update`, async(req, res) =>{
+    let {id, username, email, phone, restName, street, city, zipcode, state, cuisine} = req.body;
+    try{
+        const [restaurant, _ ] = await db.execute(getRestaurantsById,[id]);
         
-//         var [results, _ ] = await db.execute(`UPDATE restaurants SET username = ? AND password = ? AND email = ? AND phone = ? AND restName = ? `)
-//     }
-// })
+        if(restaurant.length > 0){
+            const [result, resultField] = await db.execute(updateRestProfile,
+                [username, email, phone, city, street, restName, zipcode, state, cuisine, id]);
+        }
+        return res.status(200).json({message: "updated"})
+    }catch(err){
+        return res.status(400).json({err: err.message})
+    }
+})
 
+/**
+ * To update restaurnat profile img
+ * @ContentType multipart/form-data
+ * @Body restaurantId
+ * @Path `/restaurants/profile/image`
+ * @Method POST
+ */
+router.post('/profile/image' ,restaurantUpload.single('file'), async(req,res)=>{    
+    const {filename} = req.file
+    const path = "/restaurantsimg/" + filename;
+    const {restaurantId} = req.body
+
+    try{
+        const [result, field] = await db.execute(updateRestImgById,[path,restaurantId]);
+
+        if(result.affectedRows>0){
+            return res.status(200).json({message:"image updated"})
+        }
+        return res.status(400).json({message:"fail to update"})
+    }catch(err){
+        return res.status(400).json({message:err})
+    }
+})
+/**
+ * To update cust pwd
+ * @method PUT
+ * @body restaurantId, password
+ * @path /restaurants/profile/password
+ */
+router.put('/profile/password', /*isLoggedIn,*/ async function(req, res){
+    const {password, restaurantId} = req.body
+    const hashedpwd = await bcrypt.hash(password,1);
+    try{
+        const [upadte, updateResult] = await db.execute(updateRestPwd,[hashedpwd,restaurantId])
+        return res.status(200).json({message:"pwd updated"})
+    }
+    catch(err){
+        return res.status(400).json({message:err.message})
+    }
+})
 
 /**
  * To get restaurants profile
  * @params hold restaurants id
  * @Path `/restaurants/profile/:id(\\d+)`
+ * @method GET
  */
 router.get(`/profile/:id(\\d+)`, /*isLoggedIn, isRestaurants, isMyPage,*/
     async function(req,res){
         const {id} = req.params;
         console.log(id)
         try{
-            var [result, _ ] = await db.execute(`SELECT  * FROM restaurants WHERE id = ?`,[id]);
+            var [result, _ ] = await db.execute(getRestaurantsById,[id]);
             const restauranat = result[0]
             return res.status(200).json(restauranat)
         }catch(err){
@@ -143,16 +117,36 @@ router.get(`/profile/:id(\\d+)`, /*isLoggedIn, isRestaurants, isMyPage,*/
     }
 )
 
+TEST_ADD_MENU = {
+    restaurantId: 1,
+    price: 5,
+    originalPrice: 10,
+    name: "TEST",
+}
 /**
  *  To add new menu for restaurant 
  *  @Post
  *  @Body must hold restautrantId, price, orignalPrice, name 
  *  @Options img, desc
  *  @path `/restaurants/menu/add`
+ *  @method POST
  */
-router.post(`/menu/add`, /*isLoggedIn, isRestaurants,*/ async function(req,res){
-    const {restaurantId, price, originalPrice, name} = req.body
-    var { desc, img } = req.body
+router.post('/menu/add', /*isLoggedIn, isRestaurants,*/ async (req,res)=>{
+    let {restaurantId, price, originalPrice, name} = req.body
+    // let {restaurantId, price, originalPrice, name} = TEST_ADD_MENU
+    if(typeof(restaurantId) === "string"){
+        restaurantId = parseInt(restaurantId)
+    }
+
+    if(typeof(price) === "string"){
+        price = parseFloat(price)
+    }
+
+    if(typeof(originalPrice) === "string"){
+        originalPrice = parseFloat(originalPrice)
+    }
+
+    let { desc } = req.body
     
     // TEST
     // var {restautrantId, price, orignalPrice, desc, name, img} = TESTMENU_CORRECT
@@ -160,7 +154,7 @@ router.post(`/menu/add`, /*isLoggedIn, isRestaurants,*/ async function(req,res){
     // console.log(restautrantId, price, orignalPrice, name, desc, img)
     
     // check correct body form
-    if(!(restaurantId && price && orignalPrice && name)){
+    if(!restaurantId || !price || !originalPrice || !name){
         return res.status(400).json({message: "missed inputs"})
     }
 
@@ -174,14 +168,16 @@ router.post(`/menu/add`, /*isLoggedIn, isRestaurants,*/ async function(req,res){
         if(!desc){
             desc = null
         }
-        if(!img){
-            img = null
-        }
 
         // add menu
-        var [ result, _ ] = await db.execute(`INSERT INTO menus (fk_menus_restaurant,price,original_price,
-            name,description,img_path) VALUES(?,?,?,?,?,?);`,[restaurantId,price,orignalPrice,name,desc,img])
-        return res.status(200).json({message:"new menu is added!"})
+        const [ newMenu, resultField ] = await db.execute(addMenu,[restaurantId,price,originalPrice,name,desc])
+        console.log(newMenu)
+        console.log(resultField)
+        if(newMenu && newMenu.affectedRows !== 1){
+            return res.status(400).json({meesage: 'fail to add menu'})
+        }
+
+        return res.status(200).json({message:"new menu is added!", menuId:newMenu.insertId})
     }catch(err){
         return res.status(400).json({message: "fail to add menu"})
     }
@@ -191,68 +187,147 @@ router.post(`/menu/add`, /*isLoggedIn, isRestaurants,*/ async function(req,res){
  * To get all the menus from restaurants
  * @params hold restaurantsId
  * @path `/restaurants/menu/list/:id(\\d+)`
+ * @method GET
  */
 router.get(`/menu/list/:id(\\d+)`, /*isLoggedIn,*/ async function(req,res){
     const { id } = req.params
     try{
-        var [ results, _ ] = await db.execute(`SELECT * FROM menus WHERE fk_menus_restaurant = ?;`, [id])
-        if(results < 1){
+        var [ menus, menusField ] = await db.execute(getMenusByRestId, [id])
+        if(menus.length < 1){
             return res.status(400).json({message: "menu haven't added yet"})
         }
-        return res.status(200).json(results)
+        return res.status(200).json(menus)
     }catch(err){
         console.log(err)
-        return res.status(400).json({message: err})
+        return res.status(400).json({message: err, err:err.message})
     }
 })
 
+TEST_DELETE = {
+    restaurantId:"1",
+    menuId: 16
+}
 /**
  * To delete menu
- * @body hold restaurantId, menuId (which menu are you going to delete)
+ * @body hold restaurantId, menuId (menu are you going to delete)
  * @path `/restaurants/menu/delete`
+ * @method DELETE
  */
-router.post('/menu/delete', /*isLoggedIn, isRestaurants,*/ async function(req,res){
-    const {restaurantId, menuId} = req.body
-    
+router.delete('/menu/delete', /*isLoggedIn, isRestaurants,*/ async function(req,res){
+    let {restaurantId, menuId} = req.body
+    // let {restaurantId, menuId} = TEST_DELETE
     // FOR DEBUG
     // const {restaurantId, menuId} = TEST_DELETE_MENU_CORRECT
     // const {restaurantId, menuId} = TEST_DELETE_MENU_CORRECT
     // console.log(restaurantId, menuId)
-    
-    // check working on same rest
-    if(req.session.user.userId !== restaurantId){
-        return res.status(400).json({message: "It's not your restaurant"})
+    if(typeof(restaurantId) === "string"){
+        restaurantId = parseInt(restaurantId)
     }
+
+    if(typeof(menuId) === "string"){
+        menuId = parseInt(menuId)
+    }
+
+    // check working on same rest
+    // if(req.session.user.userId !== restaurantId){
+    //     return res.status(400).json({message: "It's not your restaurant"})
+    // }
 
     try{
         // get menu from database
-        var [ result, _ ] = await db.execute(`SELECT * FROM menus WHERE id = ?;`,
-        [menuId])
+        const [ menus, menuField ] = await db.execute(getMenuById,[menuId])
+        
+        const menu = menus[0]
 
         // check menu exists  
-        if(result.length < 1){
+        if(menus.length < 1 || menu.restaurant_id !== restaurantId){
             return res.status(400).json({message: "menu does not exists"})
         }
 
-        var menu = result[0]
 
         // check menu owner
-        if( menu.fk_menus_restaurant !== restaurantId)
-            return res.status(400).json({message: "This menu is not in your restaurant"})
+        // if( )
+        //     return res.status(400).json({message: "This menu is not in your restaurant"})
 
+      
+        const deleteCart = await db.execute(deleteCartsByMenuId,[menuId]);
+                
+        const deleteOrders = await db.execute(deleteOrdersByMenuId, [menuId])
+        
         // delete menu
-        var [ result, _ ] = await db.execute(`DELETE FROM menus WHERE id = ? AND fk_menus_restaurant = ?;`,
-        [menuId, restaurantId])
+        const [ result, resultField ] = await db.execute(deleteMenuById,[menuId])
         
         return res.status(200).json({message: "menu is deleted!"})
     }catch(err){
         console.log(err)
-        return res.status(400).json({message: "fail to delete menu"})
+        return res.status(400).json({message: "fail to delete menu", err:err.message})
+    }
+})
+
+const TEST = {
+    menuId: 3,
+    name: "smaple",
+    quantity: 10,
+    desc: null,
+    price: 15,
+    originalPrice: 300
+}
+/**
+ * To edit menu
+ * @method PUT
+ * @body must contain menuId
+ * @body optional: name, desc, img, quantity, price, originalPrice
+ * @path /restaurants/menu/edit
+ */
+router.post(`/menu/edit`, /*isLoggedIn, isRestaurants,*/ async function(req,res){
+
+    let {menuId, name, desc, quantity, price, originalPrice} = req.body
+    // let {menuId, name, desc, quantity, price, originalPrice} = TEST;
+    try{
+        const [menus] = await db.execute(getMenuById,[menuId]);
+
+        if(menus.length < 1){
+            return res.status(400).json({message: "menu does not exist"})
+        }
+        
+        if(!desc || desc.length < 0){
+            desc = null;
+        }
+
+        const [update, updateField] = await db.execute(updateMenuInfo,[name,price,quantity,originalPrice,desc,menuId])
+
+        return res.status(200).json({message: "menu updated"})
+    }catch(err){
+        return res.status(400).json({message: err.meesage})
+    }
+} )
+
+/**
+ * To update menu img
+ * @ContentType multipart/form-data
+ * @Body menuId
+ * @Path `/restaurants/menus/image`
+ * @Method POST
+ */
+router.post('/menus/image' ,menuUpload.single('file'), async(req,res)=>{    
+    const {menuId} = req.body
+    const {filename} = req.file
+    const path = "/menusimg/" + filename;
+    try{
+        const [result, field] = await db.execute(updateMenuImgById,[path,menuId]);
+
+        if(result.affectedRows>0){
+            return res.status(200).json({message:"image updated"})
+        }
+        return res.status(400).json({message:"fail to update"})
+    }catch(err){
+        return res.status(400).json({message:err})
     }
 })
 
 /**
  * To set up quantity for menu
+ * @method POST
  * @body must holds restaurantId, menuId, quantity(to update)
  * @path `/restaurants/menu/setqauntity`
  */
@@ -268,40 +343,71 @@ router.post('/menu/setqauntity', /*isLoggedIn, isRestaurants,*/ async function(r
     // console.log(restaurantId, menuId, quantity)
 
     // check working on same rest
-    if(req.session.user.userId !== restaurantId){
-        return res.status(400).json({message: "It's not your restaurant"})
-    }
+    // if(req.session.user.userId !== restaurantId){
+    //     return res.status(400).json({message: "It's not your restaurant"})
+    // }
 
     try{
          // get menu from database
-         var [ result, _ ] = await db.execute(`SELECT * FROM menus WHERE id = ?;`,
-         [menuId])
+         const [ result, resultField ] = await db.execute(getMenuById,[menuId])
  
          // check menu exists  
          if(result.length < 1){
              return res.status(400).json({message: "menu does not exists"})
          }
 
-         var menu = result[0]
+         const menu = result[0]
 
          // check menu owner
-        if( menu.fk_menus_restaurant !== restaurantId)
+        if( menu.restaurant_id !== restaurantId)
             return res.status(400).json({message: "This menu is not in your restaurant"})
 
         // check update value
         if( menu.quantity === quantity)
-            return res.status(400).json({message: "Quantity didn't changed"})
+            return res.status(500).json({message: "Quantity didn't change"})
 
         // update quantity
-        var [ result, _ ] = await db.execute(`UPDATE menus SET quantity=? WHERE id = ?;`,
-        [quantity, menuId])
-        console.log(result)
+        const [ update, updateField ] = await db.execute(updateMenuQuantityById,[quantity, menuId])
         return res.status(200).json({message: "quantity is updated"})
     }catch(err){
         console.log(err)
         return res.status(400).json({message: "fail to update"})
     }
+})
 
+/**
+ * To get current order for restaurants
+ * @method GET
+ * @params id (restaurant id)
+ * @path /restaurants/order/current/:id(\\d+)
+ */
+router.get(`/order/current/:id(\\d+)`, /*isLoggedIn, isRestaurants,*/ async function(req,res){
+    const {id} = req.params;
+    try{
+        const [orders, _ ] = await db.execute(getRestCurrentOrdersById,[id]);
+
+        return res.status(200).json(orders)
+    }catch(err){
+        return res.status(400).json({err:err.meesage})
+    }
+})
+
+/**
+ * To confirm current orders for restaurants
+ * @method PUT
+ * @body orderIds (array of order_ids, ex)[1,3,5])
+ * @path /restaurants/order/confirm 
+ */
+router.put(`/order/confirm`, async function(req, res){
+    const {orderIds} = req.body;
+    try{
+        orderIds.map(async (order)=>{
+            const [confirm, _] = await db.execute(`UPDATE orders SET status = 1 WHERE id = ?`,[order]); 
+        })
+        return res.status(200).json({message: "orders are confirmed"})
+    }catch(err){
+        return res.status(400).json({message: err.message})
+    }
 })
 
 

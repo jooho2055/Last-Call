@@ -1,69 +1,106 @@
 var express = require('express');
 var router = express.Router();
 var db = require('../conf/database');
-const cors = require('cors')
 const path = require("path");
 const {isLoggedIn, isCustomers, isMyPage} = require('../middleware/auth')
-
-let corsOptions = {
-  origin: ['http://localhost:3000', 'http://localhost:5001'],
-  credentials: true
-}
-
-router.use(cors(corsOptions))
-
-router.get(`/search`, async(req, res)=>{
-    const query = `SELECT * FROM restaurants `;
-    const {search} = req.query;
-    console.log(search)
-    try{
-        if(search == null){
-            var [rows, fields] = await db.query(`SELECT id, name, cuisine, status FROM restaurants WHERE status = "open";`, []);
-            res.status(200).json(rows);
-        }else{
-            var [rows, fields] = await db.query(`SELECT id, name, cuisine, status, concat_ws(' ', name, cuisine, status) 
-            as haystack FROM restaurants having haystack like ?;`, [`%${search}%`]);
-            res.status(200).json(rows);
-        }
-    }catch(error){
-        res.status(400);
-    }
-});
+const multer = require('multer')
+const {customerStorage} = require('../conf/multer')
+const customerUpload = multer({ storage: customerStorage });
+const {getCurrentOrdersById,getInvoicesByCustId,getCustCartsById,getCartsByCustId,getMenuById,addInvoice,
+  addOrder,deleteCartById,getCartsByCustMenuId,updateCartItemById,addCart,getRestInfoById,getPastOrdersByInvoiceId,
+  updateCustImgById,updateCustPwd
+} = require('../conf/queries')
 
 /**
- * To get curreent order for customer
- * @params customerId
- * @path /customers/order/current/:id(\\d+)
+ To get curreent order menus list for customer
+ @params customerId
+ @path '/customers/order/current/:id(\\d+)'
+ @method GET
  */
+// router.get(`/order/current/:id(\\d+)`, /*isLoggedIn, isCustomers, isMyPage,*/  async function(req, res){
+//     const {id} = req.params
+//     try{
+//         const [results, _ ] = await db.execute(getCurrentOrdersById,[id]);
+
+//         if(results.length < 1){
+//           return res.status(200).json({orders: []})
+//         }
+
+//         const [restaurant, restaurantField] = await db.execute(getRestInfoById, [results[0].restaurant_id])
+
+//         return res.status(200).json({orders: results,restaurants: restaurant[0]})
+//     }catch(err){
+//         console.log(err)
+//         return res.status(400).json({message: err.message})
+//     }
+// })
+
 router.get(`/order/current/:id(\\d+)`, /*isLoggedIn, isCustomers, isMyPage,*/  async function(req, res){
-    const {id} = req.params
+  const {id} = req.params
     try{
-        const [results, _ ] = await db.execute(`SELECT * FROM orders WHERE fk_orders_customer = ? AND status = 0;`,[id]);
+        const [results, _ ] = await db.execute(getInvoicesByCustId,[id]);
         if(results.length < 1){
-          return res.status(400).json({message: "no results"})
+            return res.status(400).json({orders: [],message: "no results"})
         }
-        console.log(results)
-        return res.status(200).json(results)
+        // console.log(results)
+
+        let orderHistory = []
+        let restaurants = []
+        const orderHis = results.map(async (res,count)=>{
+            const [orders, _ ] = await db.execute(getCurrentOrdersById, [res.id])
+            // console.log(orders)
+            if(orders.length>0){
+              orderHistory.push(orders);
+              const [restaurant] = await db.execute(getRestInfoById, [orders[0].restaurant_id])
+              restaurant[0].total = res.price
+              restaurant[0].created_at = res.created_at 
+              restaurants.push(restaurant[0])
+            }
+        })
+        await Promise.all(orderHis)
+        console.log(orderHistory.length)
+        // console.log(orderHistory.length)
+
+        return res.status(200).json({orders: orderHistory, restaurants: restaurants})
     }catch(err){
-        console.log(err)
+       console.log(err)
         return res.status(400).json({message: "fail to get current order"})
     }
 })
 
 /**
- * To get past order for customer
+ * To get past order menus list for customer
  * @params customerId
  * @path customers//order/past/:id(\\d+)
+ * @method GET
  */
 router.get(`/order/past/:id(\\d+)`, /*isLoggedIn, isCustomers, isMyPage,*/ async function(req,res){
     const {id} = req.params
     try{
-        const [results, _ ] = await db.execute(`SELECT * FROM orders WHERE fk_orders_customer = ? AND status = 1;`,[id]);
+        const [results, _ ] = await db.execute(getInvoicesByCustId,[id]);
         if(results.length < 1){
-            return res.status(400).json({message: "no results"})
+            return res.status(400).json({orders: [],message: "no results"})
         }
-        console.log(results)
-        return res.status(200).json(results)
+        // console.log(results)
+
+        let orderHistory = []
+        let restaurants = []
+        const orderHis = results.map(async (res,count)=>{
+            const [orders, _ ] = await db.execute(getPastOrdersByInvoiceId, [res.id])
+            // console.log(orders)
+            if(orders.length>0){
+              orderHistory.push(orders);
+              const [restaurant] = await db.execute(getRestInfoById, [orders[0].restaurant_id])
+              restaurant[0].total = res.price
+              restaurant[0].created_at = res.created_at
+              restaurants.push(restaurant[0])
+            }
+        })
+        await Promise.all(orderHis)
+        console.log(orderHistory.length)
+        // console.log(orderHistory.length)
+
+        return res.status(200).json({orders: orderHistory, restaurants: restaurants})
     }catch(err){
        console.log(err)
         return res.status(400).json({message: "fail to get current order"})
@@ -73,117 +110,162 @@ router.get(`/order/past/:id(\\d+)`, /*isLoggedIn, isCustomers, isMyPage,*/ async
 /**
  * To get list of cart
  * @params customerId
- * @path `/customers//order/cart/:id(\\d+)`
+ * @path `/customers/order/cart/:id(\\d+)`
+ * @method GET
  */
 router.get(`/order/cart/:id(\\d+)`, /*isLoggedIn, isCustomers, isMyPage,*/ async function(req,res){
     const {id} = req.params
     try{
-        var [results, _ ] = await db.execute(`SELECT * FROM orders WHERE fk_orders_customer = ? AND status = 2;`, [id])
+        const [results, _ ] = await db.execute(getCustCartsById, [id])
         if(results.length < 1){
-            return res.status(400).json({message: "cart is empty"})
+            return res.status(200).json({orders: []})
         }
-        console.log(results)
-        return res.status(200).json(results)
+        
+        return res.status(200).json({orders: results})
     }catch(err){
         console.log(err)
         return res.status(400).json({message: "fail to get cart"})
     }
 })
+
+/// need to rewrite
 
 /**
  * To checkout cart and create order
  * @body holds customerId
  * @path `/customers/order/cart/checkout`
- * order status: 0: current, 1: done, 2: cart, 3: declined
+ * @method POST
+ * order status: 0: current, 1: done, 2: declined
  */
 router.post(`/order/cart/checkout`, /*isLoggedIn, isCustomers,*/ async function(req, res){
     const {customerId} = req.body
 
-    if(req.session.user.userId !== customerId){
-        return res.status(400).json({message: "wrong access!"})
-    }
+    // if(req.session.user.userId !== customerId){
+    //     return res.status(400).json({message: "wrong access!"})
+    // }
 
     try{
-        var [items, _ ] = await db.execute(`SELECT * FROM orders WHERE fk_orders_customer = ? AND status = 2;`, [customerId])
-        if(items.length < 1){
-            return res.status(400).json({message: "cart is empty"})
-        }
-        items.map(async function(item){
-            var [result, _ ] = await db.execute(`UPDATE orders SET status=0 WHERE id = ?;`,[item.id])
-            console.log(result)
+        const [carts, _ ] = await db.execute(getCartsByCustId, [customerId])
+        let flag = true;
+        let errMes = [];
+        let price = 0;
+        const getMenu = carts.map(async (item,i)=>{
+          const [quantity, _ ] = await db.execute(getMenuById,[item.menu_id])
+          // console.log("cart q: ", carts[i].quantity, " menu q:", quantity[0].quantity, " ", quantity[0].name)
+          if(quantity[0].quantity < carts[i].quantity){
+            flag = false;
+            errMes.push(`Cannot order ${quantity[0].name} more than ${quantity[0].quantity}`)
+          }
+          price += (carts[i].quantity * quantity[0].price)
         })
-        return res.status(200).json({message: "thank you"})
+        await Promise.all(getMenu);
+
+        if(!flag){
+          return res.status(400).json({message: errMes})
+        }
+        
+        const [newInvoice] = await db.execute(addInvoice,[customerId,price]);
+        const invoice_id = newInvoice.insertId;
+
+        const moveCart = carts.map(async (item,i)=>{
+          const [addOrders] = await db.execute(addOrder,[item.menu_id,customerId,invoice_id,item.quantity])
+          const [subtMenuQuan] = await db.execute(`UPDATE menus SET quantity = ( quantity - ? ) WHERE id = ?`,[item.quantity, item.menu_id])
+          const [deleteCart] = await db.execute(deleteCartById,[item.id])
+        })
+        await Promise.all(moveCart)
+
+        return res.status(200).json({message: "items are checked out"})
     }catch(err){
         console.log(err)
-        return res.status(400).json({message: "fail to get cart"})
+        return res.status(400).json({message: "fail to checkout"})
     }
-
 })
 
 DEBUG_CART_ADD = {
   customerId:1, 
-  menuId:8, 
-  restaurantId:11
+  menuId:1, 
+  restaurantId:1,
+  quantity:3
 }
 
 /**
  * To add menu in the cart
- * @body holds menuId, customerId, restaurantId
+ * @body holds menuId, customerId, restaurantId, quantity
  * @path `/customers//order/cart/add`
+ * @method POST
  */
 router.post('/order/cart/add', /*isLoggedIn, isCustomers,*/ async function(req,res){
-    const {customerId, menuId, restaurantId} = req.body
-    // const {customerId, menuId, restaurantId} = DEBUG_CART_ADD;
-    if(req.session.user.userId !== customerId){
-        return res.status(400).json({message: "wrong access!"})
+    let {customerId, menuId, restaurantId, quantity} = req.body
+    
+    if(typeof(customerId) === "string"){
+      customerId = parseInt(customerId)
     }
 
+    if(typeof(menuId) === "string"){
+      menuId = parseInt(menuId)
+    }
+
+    if(typeof(restaurantId) === "string"){
+      restaurantId = parseInt(restaurantId)
+    }
+
+    if(typeof(quantity) === "string"){
+      quantity = parseInt(quantity)
+    }
+
+    // const {customerId, menuId, restaurantId, quantity} = DEBUG_CART_ADD;
+    // if(req.session.user.userId !== customerId){
+    //     return res.status(400).json({message: "wrong access!"})
+    // }
+
     try{
-        var [result, _ ] = await db.execute(`SELECT * FROM menus WHERE id = ?;`,[menuId])
-        if(result.length < 1){
+        const [menus, _ ] = await db.execute(getMenuById,[menuId])
+        if(menus.length < 1 || menus[0].restaurant_id !== restaurantId){
             return res.status(400).json({message: "menu does not exist"})
         }
-        var menu = result[0]
-        if(menu.fk_menus_restaurant !== restaurantId){
-            return res.status(400).json({message: "error rest don't match with menu"})
-        }
-        var [result, _ ] = await db.execute(`INSERT INTO orders (fk_orders_menu,fk_orders_customer) VALUES(?,?);`,
-        [menuId, customerId])
-        console.log(result)
 
-        return res.status(200).json({message: "new item is added!"})
+        let [cart] = await db.execute(getCartsByCustMenuId,[customerId,menuId]);
+        let result = []
+        if(cart.length> 0){
+          result = await db.execute(updateCartItemById,[cart[0].quantity+quantity, cart[0].id])
+        }else{
+          result = await db.execute(addCart,[menuId, customerId,quantity])
+        }
+        return res.status(200).json({message: "new item is added!", item: result})
     }catch(err){
         console.log(err)
-        return res.status(400).json({message: "fail to get cart"})
+        return res.status(400).json({message: "fail to add item into cart"})
     }
 })
 
 DEBUG_CART_DELETE_MENU = {
   customerId:1, 
-  menuId:8, 
-  restaurantId:99
+  menuId:1, 
+  restaurantId:1
 }
 /**
  * To delete one menu in the cart
  * @body holds menuId and customerId
  * @path `/customers/order/cart/delete/menu`
+ * @method DELETE
  */
-router.post(`/order/cart/delete/menu`, /*isLoggedIn, isCustomers,*/ async function(req,res){
+router.delete(`/order/cart/delete/menu`, /*isLoggedIn, isCustomers,*/ async function(req,res){
     const {menuId, customerId} = req.body
     // const {menuId, customerId} = DEBUG_CART_DELETE_MENU
-    if(req.session.user.userId !== customerId){
-        return res.status(400).json({message: "wrong access!"})
-    }
+    
+    // if(req.session.user.userId !== customerId){
+    //     return res.status(400).json({message: "wrong access!"})
+    // }
 
     try{
-        var [item, _ ] = await db.execute(`SELECT * FROM orders WHERE fk_orders_menu = ? AND fk_orders_customer = ? AND status = 2;`, 
+        var [item, _ ] = await db.execute(`SELECT * FROM carts WHERE menu_id = ? AND customer_id = ?;`, 
         [menuId, customerId]);
         
         if( item.length < 1){
           return res.status(400).json({message: "item does not exist"})
         }
 
-        var [result, _ ] = await db.execute(`DELETE FROM orders WHERE fk_orders_menu = ? AND fk_orders_customer = ? AND status = 2;`,
+        var [result, _ ] = await db.execute(`DELETE FROM carts WHERE menu_id = ? AND customer_id = ?;`,
         [menuId, customerId])
         console.log(result)
 
@@ -200,33 +282,103 @@ DEBUG_CART_DELETE = {
 }
 /**
  * To delete all the menu in the cart
- * @body holds customer detail
+ * @body holds customerId
  * @path `/customers/order/cart/delete`
+ * @method DELETE
  */
-router.post('/order/cart/delete', /*isLoggedIn, isCustomers,*/ async function(req,res){
-    const { customerId} = req.body
+router.delete('/order/cart/delete', /*isLoggedIn, isCustomers,*/ async function(req,res){
+    const { customerId } = req.body
     // const {customerId} = DEBUG_CART_DELETE
-    if(req.session.user.userId !== customerId){
-        return res.status(400).json({message: "wrong access!"})
-    }
+
+    // if(req.session.user.userId !== customerId){
+    //     return res.status(400).json({message: "wrong access!"})
+    // }
 
     try{
-        var [items , _ ] = await db.execute(`SELECT * FROM orders WHERE fk_orders_customer = ? AND status = 2;`, 
+        let [items] = await db.execute(`SELECT * FROM carts WHERE customer_id = ?;`, 
         [customerId]);
 
         if( items.length < 1){
             return res.status(400).json({message: "item does not exist"})
         }
         
-        var [result, _ ] = await db.execute(`DELETE FROM orders WHERE fk_orders_customer = ? AND status = 2;`,
+        let [result] = await db.execute(`DELETE FROM carts WHERE customer_id = ?;`,
         [customerId])
-        console.log(result)
 
         return res.status(200).json({message: "cart is deleted"})
     }catch(err){
         console.log(err)
         return res.status(400).json({message:"fail to empty cart"})
     }
+})
+
+
+
+const EDIT_CART = {
+  cartId:10,
+  quantity:10,
+}
+/**
+ * To edit item in carts
+ * @method PUT
+ * @body cartId, quantity
+ * @path /customers/order/cart/edit
+ */
+router.put(`/order/cart/edit`, /*isLoggedIn, isCustomers,*/ async function(req, res){
+    const {cartId, quantity } = req.body
+    // const {cartId, quantity } = EDIT_CART;
+    try{
+      const [ cart, _ ] = await db.execute(`SELECT * FROM carts WHERE id = ?;`, [cartId]);
+      if(cart.length < 1){
+          return res.status(400).json({message: "Item does not exist in the cart."})
+      }
+
+      const [result] = await db.execute(`UPDATE carts SET quantity = ? WHERE id = ?`,[quantity, cartId])
+
+      return res.status(200).json({message:"cart updated"})
+    }catch(err){
+      return res.status(400).json({message: err.message})
+    }
+})
+/**
+ * To upload cust image
+ * @method Post
+ * @body customerId
+ * @path /customers/profile/image
+ */
+router.post('/profile/image' ,customerUpload.single('file'), async(req,res)=>{    
+  const {filename} = req.file
+  const path = "/customersimg/" + filename;
+  const {customerId} = req.body
+
+  try{
+      const [result, field] = await db.execute(updateCustImgById,[path,customerId]);
+
+      if(result.affectedRows>0){
+          return res.status(200).json({message:"image updated"})
+      }
+      return res.status(400).json({message:"fail to update"})
+  }catch(err){
+      return res.status(400).json({message:err})
+  }
+})
+
+/**
+ * To update cust pwd
+ * @method PUT
+ * @body customerId, password
+ * @path /customers/profile/password
+ */
+router.put('/profile/password', /*isLoggedIn,*/ async function(req, res){
+  const {password, customerId} = req.body
+  const hashedpwd = await bcrypt.hash(password,1);
+  try{
+      const [upadte, updateResult] = await db.execute(updateCustPwd,[hashedpwd,customerId])
+      return res.status(200).json({message:"pwd updated"})
+  }
+  catch(err){
+      return res.status(400).json({message:err.message})
+  }
 })
 
 
