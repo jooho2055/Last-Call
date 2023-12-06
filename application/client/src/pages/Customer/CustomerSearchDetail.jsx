@@ -74,7 +74,7 @@ export default function CustomerSearchDetail() {
 				{searchedRestaurants?.map((restaurant, index) => (
 					<Link
 						to={`/restaurant/${restaurant.id}`}
-						className='flex flex-col w-[20rem] h-[16.75rem] justify-center items-center text-lg rounded-xl shadow-md mx-auto'
+						className='flex flex-col w-[20rem] h-[16.75rem] justify-center shadow-[6.0px_9.0px_9.0px_rgba(0,0,0,0.30)] items-center text-lg rounded-xl mx-auto'
 						key={restaurant.id}
 					>
 						<img
