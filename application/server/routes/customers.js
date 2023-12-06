@@ -17,21 +17,54 @@ const {getCurrentOrdersById,getInvoicesByCustId,getCustCartsById,getCartsByCustI
  @path '/customers/order/current/:id(\\d+)'
  @method GET
  */
+// router.get(`/order/current/:id(\\d+)`, /*isLoggedIn, isCustomers, isMyPage,*/  async function(req, res){
+//     const {id} = req.params
+//     try{
+//         const [results, _ ] = await db.execute(getCurrentOrdersById,[id]);
+
+//         if(results.length < 1){
+//           return res.status(200).json({orders: []})
+//         }
+
+//         const [restaurant, restaurantField] = await db.execute(getRestInfoById, [results[0].restaurant_id])
+
+//         return res.status(200).json({orders: results,restaurants: restaurant[0]})
+//     }catch(err){
+//         console.log(err)
+//         return res.status(400).json({message: err.message})
+//     }
+// })
+
 router.get(`/order/current/:id(\\d+)`, /*isLoggedIn, isCustomers, isMyPage,*/  async function(req, res){
-    const {id} = req.params
+  const {id} = req.params
     try{
-        const [results, _ ] = await db.execute(getCurrentOrdersById,[id]);
-
+        const [results, _ ] = await db.execute(getInvoicesByCustId,[id]);
         if(results.length < 1){
-          return res.status(200).json({orders: []})
+            return res.status(400).json({orders: [],message: "no results"})
         }
+        // console.log(results)
 
-        const [restaurant, restaurantField] = await db.execute(getRestInfoById, [results[0].restaurant_id])
+        let orderHistory = []
+        let restaurants = []
+        const orderHis = results.map(async (res,count)=>{
+            const [orders, _ ] = await db.execute(getCurrentOrdersById, [res.id])
+            // console.log(orders)
+            if(orders.length>0){
+              orderHistory.push(orders);
+              const [restaurant] = await db.execute(getRestInfoById, [orders[0].restaurant_id])
+              restaurant[0].total = res.price
+              restaurant[0].created_at = res.created_at 
+              restaurants.push(restaurant[0])
+            }
+        })
+        await Promise.all(orderHis)
+        console.log(orderHistory.length)
+        // console.log(orderHistory.length)
 
-        return res.status(200).json({orders: results,restaurants: restaurant[0]})
+        return res.status(200).json({orders: orderHistory, restaurants: restaurants})
     }catch(err){
-        console.log(err)
-        return res.status(400).json({message: err.message})
+       console.log(err)
+        return res.status(400).json({message: "fail to get current order"})
     }
 })
 
@@ -58,6 +91,8 @@ router.get(`/order/past/:id(\\d+)`, /*isLoggedIn, isCustomers, isMyPage,*/ async
             if(orders.length>0){
               orderHistory.push(orders);
               const [restaurant] = await db.execute(getRestInfoById, [orders[0].restaurant_id])
+              restaurant[0].total = res.price
+              restaurant[0].created_at = res.created_at
               restaurants.push(restaurant[0])
             }
         })
