@@ -10,7 +10,7 @@ export const inputForRestaurant = [
 	{
 		id: 2,
 		name: 'pwd',
-		type: 'text',
+		type: 'password',
 		placeholder: 'Password',
 		errorMessage:
 			'Password needs 8-20 chars: at least one letter, one number, and a special character!',
@@ -19,7 +19,7 @@ export const inputForRestaurant = [
 	{
 		id: 3,
 		name: 'cpwd',
-		type: 'text',
+		type: 'password',
 		placeholder: 'Confirm Password',
 		errorMessage: 'Passwords do not match!',
 		label: 'Confirm Password',
@@ -99,6 +99,14 @@ export const inputForMenu = [
 		errorMessage: 'Must be a number',
 		label:'Actual price',
 	},
+	{
+		id: 4,
+		name: 'description',
+		type: 'text',
+		placeholder: 'Description',
+		errorMessage: 'Cannot be empty',
+		label: 'Description',
+	}
 
 ]
 

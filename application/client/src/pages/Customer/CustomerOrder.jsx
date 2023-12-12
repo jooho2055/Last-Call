@@ -1,119 +1,70 @@
-// import React,{useEffect, useState} from 'react';
-import HistoryOrderItem from '../../components/Order/HistoryOrderItem';
-import CurrentOrderItem from '../../components/Order/currentOrderItem';
-// import { useSelector } from 'react-redux';
+import React from 'react';
+import { useParams } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { customerGetCurrentOrder, customerGetOrderHistory } from '../../apis/get';
 
-//This is the inputs for testing, will be move later
-const inputsForcurrenttest = [
-	{
-		restaurant_name: 'Test',
-		address: 'test_address',
-		foods: [
-			{
-				name: 'banana',
-				quantity: '1',
-				price: '2',
-			},
-			{
-				name: 'apple',
-				quantity: '1',
-				price: '3',
-			},
-		],
-		price: '$5',
-		date: 'May, 23, 2023',
-		time: '9 pm',
-		status: 3,
-		original_p: '6',
-		actual_p: '5',
-	},
-	{
-		restaurant_name: 'Test2',
-		address: 'test_address2',
-		foods: [
-			{
-				name: 'banana',
-				quantity: '1',
-				price: '2',
-			},
-			{
-				name: 'apple',
-				quantity: '1',
-				price: '3',
-			},
-		],
-		price: '$5',
-		date: 'May, 24, 2023',
-		time: '9 pm',
-		status: 1,
-		original_p: '6',
-		actual_p: '5',
-	},
-	{
-		restaurant_name: 'Test3',
-		address: 'test_address3',
-		foods: [
-			{
-				name: 'banana',
-				quantity: '1',
-				price: '2',
-			},
-			{
-				name: 'apple',
-				quantity: '1',
-				price: '3',
-			},
-		],
-		price: '5',
-		date: 'May, 25, 2023',
-		time: '9 pm',
-		status: 0,
-		original_p: '6',
-		actual_p: '5',
-	},
-];
+import OrderCard from '../../components/Order/OrderCard';
+
 export default function CustomerOrder() {
-	//Comment: add '//' just in case it will show not found state in this branch
-	//	const [currentorderlist, setCurrentorder]=useState([]);
-	//	const [pastorderlist, setPastorder] = useState([]);
-	//	const customerId = useSelector((state)=>state.user.userId);
-	//	useEffect(()=>{
-	//		fetchcurrentorder(customerId);
-	//		fetchpastorder(customerId);
-	//	},[])
-	//	const fetchcurrentorder=(customerId)=>{
-	//		fetch(`http://13.52.182.209/customers/order/current/${customerId}`,{
-	//			method: 'GET',
-	//		})
-	//		.then((res)=>res.json())
-	//		.then((data)=>setCurrentorder(data))
-	//		.then((error)=>console.error('Error', error));
-	//	}
-	//	const fetchpastorder=(customerId)=>{
-	//		fetch(`http://13.52.182.209/customers//order/past/${customerId}`,{
-	//			method: 'GET',
-	//		})
-	//		.then((res)=>res.json())
-	//		.then((data)=>setPastorder(data))
-	//		.then((error)=>console.error('Error', error));
-	//	}
+	const { userId } = useParams();
+
+	const { isLoading: isLoadingCurrentOrder, data: currentOrder } = useQuery({
+		queryKey: ['currentOrder'],
+		queryFn: () => customerGetCurrentOrder(userId),
+	});
+
+	const { isLoading: isLoadingOrderHistory, data: orderHistory } = useQuery({
+		queryKey: ['orderHistory'],
+		queryFn: () => customerGetOrderHistory(userId),
+	});
+
+	if (isLoadingCurrentOrder || isLoadingOrderHistory) {
+		return <div>Loading orders...</div>; // Display loading message
+	}
+
+	// const { orders, restaurants } = currentOrder;
+	// const { orders: historyOrders, restaurants: historyRestaurants } = orderHistory;
+
 	return (
-		<div className='min-h-full m-auto flex flex-col justify-center items-center gap-4'>
-			<br />
-			<h3>Current Order</h3>
-			<div className='grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 grid-cols-5 gap-4'>
-				{inputsForcurrenttest.map((input) => (
-					<CurrentOrderItem currentorderInfo={input} />
-				))}
+		<div className='max-w-[80rem] m-auto flex flex-col justify-between'>
+			<div className='mt-14 mb-14'>
+				<span className='text-3xl'>Current Order</span>
+				<div className='grid grid-cols-3 pt-20 gap-12'>
+					{currentOrder &&
+						currentOrder?.orders?.map((order, index) => {
+							const restaurant = currentOrder?.restaurants?.[index];
+
+							return (
+								<OrderCard
+									key={index}
+									className='w-96 h-96 bg-[#f7e8dc] shadow-[6.0px_9.0px_9.0px_rgba(0,0,0,0.30)] rounded-lg font-medium text-lg mx-auto flex flex-col justify-between '
+									restaurant={restaurant}
+									order={order}
+									isCurrentOrder={true}
+								></OrderCard>
+							);
+						})}
+				</div>
 			</div>
-			<br />
-			<hr className='border-t-4 border-solid border-blue-500 w-full' />
-			<br />
-			<h3>Order History</h3>
-			<div className='grid sm:grid-cols-1 md:grid-cols-1 grid-cols-2 gap-9'>
-				{inputsForcurrenttest.map((input) => (
-					<HistoryOrderItem historyOrderInfo={input} />
-				))}
+
+			<div className='mb-14'>
+				<span className='text-3xl'>Order History</span>
+				<div className='grid grid-cols-3 mt-20 gap-12'>
+					{orderHistory &&
+						orderHistory?.orders?.map((order, index) => {
+							const restaurant = orderHistory?.restaurants?.[index];
+
+							return (
+								<OrderCard
+									key={index}
+									className='w-[21rem] h-80 bg-[#e6edf5] shadow-[6.0px_9.0px_9.0px_rgba(0,0,0,0.30)] rounded-lg font-medium text-lg mx-auto flex flex-col justify-between'
+									restaurant={restaurant}
+									order={order}
+									isCurrentOrder={false}
+								></OrderCard>
+							);
+						})}
+				</div>
 			</div>
 		</div>
 	);

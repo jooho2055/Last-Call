@@ -26,3 +26,19 @@ code {
 	height: 100vh;
 	overflow-x: hidden;
 }
+
+img {
+	-webkit-user-drag: none;
+	-khtml-user-drag: none;
+	-moz-user-drag: none;
+	-o-user-drag: none;
+}
+
+.toggle-checkbox:checked {
+	right: 0;
+	border-color: #de6913;
+}
+
+.toggle-checkbox:checked + .toggle-label {
+	background-color: #de6913;
+}

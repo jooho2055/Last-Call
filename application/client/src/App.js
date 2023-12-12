@@ -9,11 +9,14 @@ import SignUpChoice from './pages/SignUp/SignUpChoice';
 import CustomerSignUp from './pages/SignUp/CustomerSignUp';
 import RestaurantSignUp from './pages/SignUp/RestaurantSignUp';
 import CustomerOrder from './pages/Customer/CustomerOrder';
+import CustomerCart from './pages/Customer/CustomerCart';
 import CustomerProfile from './pages/Customer/CustomerProfile';
 import RestaurantProfile from './pages/Restaurant/RestaurantProfile';
 import CustomerSearchDetail from './pages/Customer/CustomerSearchDetail';
 import RestaurantMenutable from './pages/Restaurant/RestaurantMenutable';
 import CustomerRestCurrentMenu from './pages/Customer/CustomerRestCurrentMenu';
+import RestaurantOrder from './pages/Restaurant/RestaurantOrder';
+import RestaurantMenuQuantity from './pages/Restaurant/RestaurantMenuQuantity';
 
 import AboutMeJooho from './pages/TeamMembers/AboutMeJooho';
 import AboutMeDorrie from './pages/TeamMembers/AboutMeDorrie';
@@ -35,11 +38,14 @@ const router = createBrowserRouter([
 			{ path: '/signup/restaurant', element: <RestaurantSignUp /> },
 			{ path: '/home', element: <CustomerHome /> },
 			{ path: '/search/:searchId', element: <CustomerSearchDetail /> },
-			{ path: '/order', element: <CustomerOrder /> },
+			{ path: '/order/:userId', element: <CustomerOrder /> },
+			{ path: '/cart/:userId', element: <CustomerCart /> },
 			{ path: '/customer/profile', element: <CustomerProfile /> },
 			{ path: '/restaurant/:id', element: <CustomerRestCurrentMenu /> },
 			{ path: '/restaurant/profile', element: <RestaurantProfile /> },
 			{ path: '/restaurant/menu', element: <RestaurantMenutable /> },
+			{ path: '/restaurant/order', element: <RestaurantOrder/>},
+			{ path: '/restaurant/menu/unsold', element: <RestaurantMenuQuantity/>},
 
 			{ path: '/AboutUs', element: <AboutUs /> },
 			{ path: '/AboutUs/Dorrie Shen', element: <AboutMeDorrie /> },
