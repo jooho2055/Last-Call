@@ -2,7 +2,7 @@
 
 1. Last Call
 
-2. Description of our web application
+2. Description of our web application <br>
    Our web application provides a unique platform that connects customers with local restaurants offering unsold food at discounted prices. This innovative solution not only allows customers to save money on each transaction but also aids restaurants in reducing food waste effectively. By bridging the gap between surplus food and potential savings, our app fosters a win-win situation for both consumers and food establishments, contributing to a more sustainable food consumption model.
 
 3. Installation Instructions
@@ -13,18 +13,21 @@
     * Node.js (which includes npm)
 
     3-1> Clone the Repository  
-     git clone https://github.com/jooho2055/Last-Call.git
+     -git clone https://github.com/jooho2055/Last-Call.git
 
     3-2> Navigate to the Project Directory
-    'cd [project-directory-name]'
-    'cd application'
+
+    - 'cd [project-directory-name]'
+    - 'cd application'
 
     3-3> Install Dependencies
-    'npm install'
+
+    - 'npm install'
 
     3-4> Start the Application
-    'npm start'
-    This will launch the app on 'localhost:3000'
+
+    - 'npm start'
+    - This will launch the app on 'localhost:3000'
 
 4. Technologies Used
 
