@@ -1,4 +1,4 @@
-**Application URL: <[http://13.52.182.209/](https://develop--glittery-starburst-3bbf26.netlify.app/)>**
+**Application URL: https://develop--glittery-starburst-3bbf26.netlify.app/**
 
 1. Last Call
 
